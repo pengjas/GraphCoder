@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "eval_db",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--tokenizer_path", "/data/LPJ/new_CodeLlama-7b-Instruct-hf",
+                "--conv_mode", "graphchat_v1",
+                "--bert_tokenizer_max_length", "25",
+                "--bert_path", "/data/LPJ/bert/bert-L12-H128-uncased",
+                "--model_name", "/data/LPJ/ICML25/GraphGPT/checkpoints/fine_tuning/v4/model_epoch=4-step=2685.ckpt",
+                "--prompting_file", "/data/LPJ/ICML25/graphgpt_dataset/HiVerilog_Eval/availiabe_for_graphcoder/conversations.json",
+                "--graph_data_path", "/data/LPJ/ICML25/graphgpt_dataset/HiVerilog_Eval/availiabe_for_graphcoder/graph.jsonl",
+                "--output_res_path", "/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/without_module_head/v2",
+                "--num_gpus", "1",
+                "--output_file_name", "eval_res",
+                "--bf16", "True",
+                "--f16", "False", 
+                "--n_pass_k", "1",
+                "--model_max_length", "3072",
+
+            ]
+        },
+    ]
+}

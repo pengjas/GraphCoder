@@ -1,9 +1,9 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json
-graph_data_path=/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/graph.jsonl
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/without_module_head/avaliable_for_graphcoder/conversations.json
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/without_module_head/avaliable_for_graphcoder/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/GraphGPT/checkpoints/fine_tuning/v4
+output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/without_module_head/v0
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
 
 
@@ -19,7 +19,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 5 \
+    --num_train_epochs 100 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 1 \
