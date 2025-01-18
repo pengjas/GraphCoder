@@ -1,9 +1,9 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/without_module_head/avaliable_for_graphcoder/conversations.json
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/without_module_head/avaliable_for_graphcoder/graph.jsonl
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/without_module_head/v1_lr2e4_100epoch
+output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/with_module_head/v0_lr5e4_100epoch_batch2
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
 
 
@@ -28,7 +28,7 @@ python graphgpt/train/train_light.py \
     --save_strategy "steps" \
     --save_steps 2400 \
     --save_total_limit 1 \
-    --learning_rate 2e-4 \
+    --learning_rate 5e-4 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
@@ -45,3 +45,4 @@ python graphgpt/train/train_light.py \
     --gpus '0,1,2,3' \
     --freeze_backbone True \
     --lora_enable True \
+    --model_save_name "lr5e4_100epoch_batch2" \
