@@ -3,7 +3,7 @@ model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
 instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/without_module_head/avaliable_for_graphcoder/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/without_module_head/avaliable_for_graphcoder/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/without_module_head/v0
+output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/without_module_head/v1_lr2e4_100epoch
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
 
 
@@ -22,13 +22,13 @@ python graphgpt/train/train_light.py \
     --num_train_epochs 100 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
-    --real_batch_size 1 \
+    --real_batch_size 2 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 2400 \
     --save_total_limit 1 \
-    --learning_rate 2e-5 \
+    --learning_rate 2e-4 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \

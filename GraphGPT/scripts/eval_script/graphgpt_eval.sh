@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/GraphGPT/checkpoints/fine_tuning/v4/model_epoch=4-step=2685.ckpt
+output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/without_module_head/v1_lr2e4_100epoch_2batch/model_epoch=92-step=837.ckpt
 tokenizer_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
 datapath=/data/LPJ/ICML25/graphgpt_dataset/HiVerilog_Eval/availiabe_for_graphcoder/conversations.json
 graph_data_path=/data/LPJ/ICML25/graphgpt_dataset/HiVerilog_Eval/availiabe_for_graphcoder/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/without_module_head/v2
+res_path=/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/train_freeze_gnn_with_eval_dataset/without_module_head/v2_lr2e4_100epoch_2batch
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25

@@ -200,7 +200,7 @@ def run_eval(args, num_gpus):
         raise ValueError('error in the number of list')
 
     if osp.exists(args.output_res_path) is False: 
-        os.mkdir(args.output_res_path)
+        os.makedirs(args.output_res_path, exist_ok=True)
     
     for idx in range(len(idx_list) - 1):
         start_idx = idx_list[idx]
