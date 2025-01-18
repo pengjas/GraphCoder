@@ -127,7 +127,18 @@ class GraphGPT_pl(LightningModule):
             if training_args.freeze_graph_mlp_adapter:
                 for p in self.model.get_model().graph_projector.parameters():
                     p.requires_grad = False
+            
+            if training_args.freeze_gnn:
+                for p in self.model.get_model().graph_tower.parameters():
+                    p.requires_grad = False
+            else:
+                for p in self.model.get_model().graph_tower.parameters():
+                    p.requires_grad = True
 
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             if training_args.bits in [4, 8]:
                 self.model.get_model().graph_projector.to(dtype=compute_dtype, device=training_args.device)
 
@@ -153,6 +164,8 @@ class GraphGPT_pl(LightningModule):
                                 module = module.to(torch.bfloat16)
             
             
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
             print('************************** parameters: #', sum(p.numel() for p in self.model.parameters() if p.requires_grad))
             tuned_params = []

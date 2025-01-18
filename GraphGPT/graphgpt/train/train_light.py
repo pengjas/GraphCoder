@@ -110,6 +110,7 @@ class TrainingArguments:
     optim: str = field(default="adamw_torch")
     remove_unused_columns: bool = field(default=False)
     freeze_graph_mlp_adapter: bool = field(default=False)
+    freeze_gnn: bool = field(default=False)
     force_fsdp: bool = field(default=False)
     model_max_length: int = field(
         default=512,

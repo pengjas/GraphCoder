@@ -140,6 +140,7 @@ class TrainingArguments:
     tf32: bool = field(default=True) 
     gradient_checkpointing: bool = field(default=True)
     report_to: str = field(default='wandb')
+    freeze_gnn: bool = field(default=False)
 
 
 def load_graph(graph, bert_tokenizer, bert_model): 
@@ -292,6 +293,9 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     if use_graph_start_end:
         tokenizer.add_tokens([DEFAULT_G_START_TOKEN, DEFAULT_G_END_TOKEN], special_tokens=True)
 
+    if not args.use_trained_gnn:
+        print('not use trained gnn, use pretrained gnn!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
     graph_tower = model.get_model().graph_tower
     
     # TODO: add graph tower
@@ -443,6 +447,7 @@ if __name__ == "__main__":
     parser.add_argument("--model_max_length", type=int, default=3072)
     parser.add_argument("--bf16", type=bool, default=False)
     parser.add_argument("--f16", type=bool, default=False)
+    parser.add_argument("--use_trained_gnn", type=bool, default=False)
     parser.add_argument("--n_pass_k", type=int, default=10)
 
     # parser.add_argument("--start_id", type=int, default=0)

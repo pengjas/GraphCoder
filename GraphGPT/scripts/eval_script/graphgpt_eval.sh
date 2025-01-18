@@ -2,7 +2,7 @@
 output_model=/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/with_module_head/v0_lr5e4_100epoch_batch2/lr5e4_100epoch_batch2.ckpt
 tokenizer_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/conversations.json
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/graph_output.jsonl
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/graph.jsonl
 res_path=/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/train_freeze_gnn_with_eval_dataset/with_module_head/v2_lr5e4_100epoch_2batch
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
@@ -13,6 +13,7 @@ f16=False
 output_file_name='eval_res'
 model_max_length=3072
 n_pass_k=1
+use_trained_gnn=True
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
     --output_file_name ${output_file_name} \
@@ -27,4 +28,5 @@ python ./graphgpt/eval/run_graphgpt.py \
     --graph_data_path ${graph_data_path} \
     --output_res_path ${res_path} \
     --num_gpus ${num_gpus}\
-    --n_pass_k ${n_pass_k}\
+    --n_pass_k ${n_pass_k} \
+    --use_trained_gnn ${use_trained_gnn}
