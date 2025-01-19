@@ -110,7 +110,7 @@ class GraphGPT_pl(LightningModule):
                 pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter,
                 fsdp=None
             )
-            self.model.get_graph_tower().to(dtype=compute_dtype)
+            self.model.get_graph_tower().to(dtype=compute_dtype) 
             # graph_config = model_graph_dict['graph_config']
 
             # data_args.graph_token_len = model_graph_dict['graph_token_len']
