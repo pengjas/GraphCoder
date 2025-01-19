@@ -192,23 +192,23 @@ class GraphLlamaModel(LlamaModel):
         graph_tower = self.get_graph_tower()
         if graph_tower is not None and (input_ids.shape[1] != 1 or self.training) and graph_data is not None:
             # TODO: this is a modified multimodal LLM -- Haotian Liu
-            with torch.no_grad():
-                if type(graph_data) is list:
-                    # variable length images
-                    graph_node_features = []
-                    if type(graph_data[0]) is Data:
-                        for g in graph_data:
-                            # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-                            # print(g)
-                            node_forward_out = graph_tower(g)
-                            graph_node_features.append(node_forward_out)
-                    elif type(graph_data[0]) is dict:
-                        for g_dict in graph_data:
-                            node_forward_out_1 = graph_tower(g_dict['graph_1'])
-                            node_forward_out_2 = graph_tower(g_dict['graph_2'])
-                            graph_node_features.append(node_forward_out_1)
-                            graph_node_features.append(node_forward_out_2)
-                else:
+            # with torch.no_grad():
+            if type(graph_data) is list:
+                # variable length images
+                graph_node_features = []
+                if type(graph_data[0]) is Data:
+                    for g in graph_data:
+                        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        # print(g)
+                        node_forward_out = graph_tower(g)
+                        graph_node_features.append(node_forward_out)
+                elif type(graph_data[0]) is dict:
+                    for g_dict in graph_data:
+                        node_forward_out_1 = graph_tower(g_dict['graph_1'])
+                        node_forward_out_2 = graph_tower(g_dict['graph_2'])
+                        graph_node_features.append(node_forward_out_1)
+                        graph_node_features.append(node_forward_out_2)
+            else:
                     raise ValueError(f'graph_node_reps is expected to be a list but got {type(graph_data)}')
             if type(graph_data) is list:
                 # if type(graph_node_features[0]) is not dict:
