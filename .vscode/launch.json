@@ -55,8 +55,8 @@
                 "--graph_select_layer", "-2",
                 "--use_graph_start_end", "True",
                 "--bf16", "True",
-                "--output_dir", "/data/LPJ/ICML25/all_checkpoints/train_freeze_gnn_with_eval_dataset/with_module_head/v0_lr5e4_100epoch_batch2_debug",
-                "--num_train_epochs", "3",
+                "--output_dir", "/data/LPJ/ICML25/all_checkpoints/debug_unfreeze_gnn/train_unfreeze_gnn_with_eval_dataset/with_module_head/v2_lr1_1epoch_batch2_debug",
+                "--num_train_epochs", "1",
                 "--per_device_train_batch_size", "1",
                 "--per_device_eval_batch_size", "1",
                 "--real_batch_size", "2",
@@ -65,7 +65,7 @@
                 "--save_strategy", "steps",
                 "--save_steps", "2400",
                 "--save_total_limit", "1",
-                "--learning_rate", "2e-4",
+                "--learning_rate", "1",
                 "--weight_decay", "0.",
                 "--warmup_ratio", "0.03",
                 "--lr_scheduler_type", "cosine",
@@ -83,7 +83,7 @@
                 "--freeze_backbone", "True",
                 "--lora_enable", "True", 
                 "--freeze_gnn", "False",
-                "--model_save_name", "lr5e4_100epoch_batch2_debug"
+                "--model_save_name", "lr1_1epoch_batch2_debug"
             ]
         }
     ]

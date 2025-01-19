@@ -198,14 +198,21 @@ class GraphLlamaModel(LlamaModel):
                 graph_node_features = []
                 if type(graph_data[0]) is Data:
                     for g in graph_data:
-                        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                         # print(g)
-                        node_forward_out = graph_tower(g)
+                        node_forward_out = self.graph_tower(g)
                         graph_node_features.append(node_forward_out)
                 elif type(graph_data[0]) is dict:
                     for g_dict in graph_data:
-                        node_forward_out_1 = graph_tower(g_dict['graph_1'])
-                        node_forward_out_2 = graph_tower(g_dict['graph_2'])
+                        # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                        node_forward_out_1 = self.graph_tower(g_dict['graph_1'])
+                        node_forward_out_2 = self.graph_tower(g_dict['graph_2'])
                         graph_node_features.append(node_forward_out_1)
                         graph_node_features.append(node_forward_out_2)
             else:
