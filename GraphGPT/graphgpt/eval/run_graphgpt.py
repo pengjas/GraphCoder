@@ -404,7 +404,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
             outputs = outputs.strip()
             # print(outputs)
 
-            res_data.append({"task_id": instruct_item["task_id"], "res": outputs}.copy())
+            res_data.append({"task_id": instruct_item["task_id"], "response": outputs}.copy())
             # res_data.append({"id": instruct_item["id"], "node_idx": instruct_item["graph"]["node_idx"], "res": outputs}.copy())
             # current_time = datetime.now()
             # formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
