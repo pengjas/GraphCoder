@@ -301,23 +301,23 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # TODO: add graph tower
     # if graph_tower.device.type == 'meta':
     #     print('meta')
-    clip_graph, args_graph= load_model_pretrained(CLIP, '/data/LPJ/ICML25/GraphGPT/clip_gt_arxiv')
-    # clip_graph, args_graph= load_model_pretrained(CLIP, './clip_gt_arxiv')
-    graph_tower = graph_transformer(args_graph)
-    graph_tower = transfer_param_tograph(clip_graph, graph_tower)
-    # graph_tower = graph_tower.to(torch.float32)
-    # model.get_model().graph_tower = graph_tower
-    model.get_model().graph_tower = graph_tower.cuda()
-    # else:
-    #     print('other')
-    # print(next(graph_tower.parameters()).dtype)
-    # graph_tower.to(device='cpu', dtype=torch.float32)
-    graph_tower.to(device='cuda', dtype=compute_dtype)
-    graph_config = graph_tower.config
-    graph_config.graph_patch_token = tokenizer.convert_tokens_to_ids([DEFAULT_GRAPH_PATCH_TOKEN])[0]
-    graph_config.use_graph_start_end = use_graph_start_end
-    if use_graph_start_end:
-        graph_config.graph_start_token, graph_config.graph_end_token = tokenizer.convert_tokens_to_ids([DEFAULT_G_START_TOKEN, DEFAULT_G_END_TOKEN])
+    # clip_graph, args_graph= load_model_pretrained(CLIP, '/data/LPJ/ICML25/GraphGPT/clip_gt_arxiv')
+    # # clip_graph, args_graph= load_model_pretrained(CLIP, './clip_gt_arxiv')
+    # graph_tower = graph_transformer(args_graph)
+    # graph_tower = transfer_param_tograph(clip_graph, graph_tower)
+    # # graph_tower = graph_tower.to(torch.float32)
+    # # model.get_model().graph_tower = graph_tower
+    # model.get_model().graph_tower = graph_tower.cuda()
+    # # else:
+    # #     print('other')
+    # # print(next(graph_tower.parameters()).dtype)
+    # # graph_tower.to(device='cpu', dtype=torch.float32)
+    # graph_tower.to(device='cuda', dtype=compute_dtype)
+    # graph_config = graph_tower.config
+    # graph_config.graph_patch_token = tokenizer.convert_tokens_to_ids([DEFAULT_GRAPH_PATCH_TOKEN])[0]
+    # graph_config.use_graph_start_end = use_graph_start_end
+    # if use_graph_start_end:
+    #     graph_config.graph_start_token, graph_config.graph_end_token = tokenizer.convert_tokens_to_ids([DEFAULT_G_START_TOKEN, DEFAULT_G_END_TOKEN])
     # TODO: add graph token len
 
     # res_data = []
