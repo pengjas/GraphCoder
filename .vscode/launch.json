@@ -65,7 +65,7 @@
                 "--save_strategy", "steps",
                 "--save_steps", "2400",
                 "--save_total_limit", "1",
-                "--learning_rate", "1",
+                "--learning_rate", "10",
                 "--weight_decay", "0.",
                 "--warmup_ratio", "0.03",
                 "--lr_scheduler_type", "cosine",

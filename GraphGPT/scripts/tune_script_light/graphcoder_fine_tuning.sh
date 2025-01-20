@@ -3,9 +3,9 @@ model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
 instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/debug_unfreeze_gnn/train_unfreeze_gnn_with_eval_dataset/with_module_head/v1_lr3e4_2epoch_batch2
+output_model=/data/LPJ/ICML25/all_checkpoints/train_unfreeze_gnn_with_eval_dataset/with_module_head/v2_lr3e1_70epoch_batch2
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=lr3e4_2epoch_batch2_unfreeze_gnn
+model_save_name=lr3e1_70epoch_batch2_unfreeze_gnn
 
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -19,7 +19,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 2 \
+    --num_train_epochs 70 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -28,7 +28,7 @@ python graphgpt/train/train_light.py \
     --save_strategy "steps" \
     --save_steps 2400 \
     --save_total_limit 1 \
-    --learning_rate 3 \
+    --learning_rate 3e-1 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
