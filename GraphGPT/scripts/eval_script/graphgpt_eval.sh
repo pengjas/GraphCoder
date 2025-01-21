@@ -1,10 +1,10 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/train_unfreeze_gnn_with_eval_dataset/with_module_head/v2_lr3e1_70epoch_batch2/lr3e1_70epoch_batch2_unfreeze_gnn.ckpt
-tokenizer_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/conversations.json
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/train_unfreeze_gnn_with_eval_dataset_tune_projector_lora/with_module_head/v2_lr3e1_70epoch_2batch
-num_gpus=4
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_lora/v0_lr3e2_2epoch_batch2/lr3e2_2epoch_batch2_pretraining_gnn_tuning_projector_lora.ckpt
+tokenizer_path=/data/LPJ/Llama-2-7b-chat-hf
+datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/pretraining_eval/graph_as_prefix/available_for_graphcoder/conversations.json
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/pretraining_eval/graph_as_prefix/available_for_graphcoder/graph.jsonl
+res_path=/data/LPJ/ICML25/GraphCoder/pretraining_eval_result/train_unfreeze_gnn_with_tune_projector_lora_10k/v0_lr3e2_2epoch_2batch
+num_gpus=1
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
 conv_mode=graphchat_v1
@@ -12,7 +12,7 @@ bf16=True
 f16=False
 output_file_name='eval_res'
 model_max_length=3072
-n_pass_k=1
+n_pass_k=2
 use_trained_gnn=True
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \

@@ -6,9 +6,9 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_datase
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_dataset/embedding_text/10k_graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_lora/v0_lr3e2_2epoch_batch2
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_freezing_projector_lora/v0_lr3e2_2epoch_batch2
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=lr3e2_2epoch_batch2_pretraining_gnn_tuning_projector_lora
+model_save_name=lr3e2_2epoch_batch2_pretraining_gnn_freezing_projector_lora
 
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -17,7 +17,7 @@ python graphgpt/train/train_light.py \
     --graph_content ./arxiv_ti_ab.json \
     --graph_data_path ${graph_data_path} \
     --graph_tower ${pretra_gnn} \
-    --tune_graph_mlp_adapter True \
+    --tune_graph_mlp_adapter False \
     --graph_select_layer -2 \
     --use_graph_start_end True \
     --bf16 True \
