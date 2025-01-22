@@ -9,7 +9,7 @@ from torch.optim import AdamW
 import torch.nn as nn
 from graphgpt.model.GraphLlama import GraphLlamaForCausalLM
 import transformers
-
+from peft import PeftModelForCausalLM
 def find_all_linear_names(model):
     cls = torch.nn.Linear
     lora_module_names = set()
@@ -188,13 +188,26 @@ class GraphGPT_pl(LightningModule):
         # no_decay = ["bias", "LayerNorm.weight"]
         # if IS_STAGE2:
         
-        optimizer_grouped_parameters = [
-            {
-                "params": [p for n, p in self.model.named_parameters()], "lr_scale": [1e-5, 1e-4]
-            }
-        ]
-        
-        optimizer = AdamW(optimizer_grouped_parameters, lr=self.training_args.learning_rate)
+        if self.training_args.use_seperate_lr:
+            if isinstance(self.model, PeftModelForCausalLM):
+                gnn_params = list(map(id, self.model.get_model().graph_tower.parameters()))
+                projector_params = list(map(id, self.model.get_model().graph_projector.parameters()))
+                combined_params = set(gnn_params + projector_params)
+                lora_params = filter(lambda p: id(p) not in combined_params, self.parameters())
+                optimizer_grouped_parameters = [
+                    {"params": self.model.get_model().graph_tower.parameters(), "lr": self.training_args.gnn_lr},
+                    {"params": self.model.get_model().graph_projector.parameters(), "lr": self.training_args.projector_lr},
+                    {"params": lora_params, "lr": self.training_args.llm_lr},
+                ]
+                optimizer = AdamW(optimizer_grouped_parameters)
+        else:
+            optimizer_grouped_parameters = [
+                {
+                    "params": [p for n, p in self.model.named_parameters()], "lr_scale": [1e-5, 1e-4]
+                }
+            ]
+            
+            optimizer = AdamW(optimizer_grouped_parameters, lr=self.training_args.learning_rate)
 
         # scheduler = get_linear_schedule_with_warmup(
         #     optimizer,

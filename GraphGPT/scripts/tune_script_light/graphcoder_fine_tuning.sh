@@ -1,14 +1,14 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/Llama-2-7b-chat-hf
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_dataset/embedding_text/10k_conversations.json
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_dataset/embedding_text/20k_balanced_dataset/5k_conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_dataset/embedding_text/10k_graph.jsonl
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_dataset/embedding_text/20k_balanced_dataset/5k_graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_freezing_projector_lora/v0_lr3e2_2epoch_batch2
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_lora_separate_lr/v1_balanced_lr_gnn_3e2_prj_3e4_lora_3e5_2epoch_batch2
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=lr3e2_2epoch_batch2_pretraining_gnn_freezing_projector_lora
+model_save_name=balanced_lr_gnn_3e2_prj_3e4_lora_3e5_2epoch_batch2_pretraining
 
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -50,3 +50,7 @@ python graphgpt/train/train_light.py \
     --lora_enable True \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
+    --use_seperate_lr True \
+    --gnn_lr 3e-2 \
+    --projector_lr 3e-4 \
+    --llm_lr 3e-5 \

@@ -170,6 +170,10 @@ class TrainingArguments:
     tf32: bool = field(default=True) 
     gradient_checkpointing: bool = field(default=True)
     report_to: str = field(default='wandb')
+    use_seperate_lr: bool = field(default=False)
+    gnn_lr: float = field(default=1e-4)
+    projector_lr: float = field(default=1e-4)
+    llm_lr: float = field(default=1e-4)
     
 
 
