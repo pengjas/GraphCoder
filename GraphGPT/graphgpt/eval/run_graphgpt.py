@@ -279,7 +279,9 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
                                          ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
-    model = model.model.merge_and_unload()
+    if args.lora_enable:
+        model = model.model.merge_and_unload()
+
     compute_dtype = (torch.float16 if train_args.fp16 else (torch.bfloat16 if train_args.bf16 else torch.float32))
     model = model.to(dtype=compute_dtype)
     model = model.cuda()
@@ -449,6 +451,7 @@ if __name__ == "__main__":
     parser.add_argument("--f16", type=bool, default=False)
     parser.add_argument("--use_trained_gnn", type=bool, default=False)
     parser.add_argument("--n_pass_k", type=int, default=10)
+    parser.add_argument("--lora_enable", type=bool, default=True)
 
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)
