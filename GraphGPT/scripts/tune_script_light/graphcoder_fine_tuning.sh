@@ -6,9 +6,9 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_datase
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/test_pretraining_dataset/embedding_text/20k_balanced_dataset/5k_graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_without_lora_unified_lr/v0_balanced_lr_8e3_2epoch_batch2
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_without_lora_separate_lr/v0_balanced_lr_gnn8e3_projector3e4_2epoch_batch2
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=balanced_lr_8e3_2epoch_batch2
+model_save_name=balanced_lr_gnn8e3_projector3e4_2epoch_batch2
 
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -50,7 +50,8 @@ python graphgpt/train/train_light.py \
     --lora_enable False \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
-    --use_seperate_lr False \
-    --gnn_lr 3e-2 \
+    --use_seperate_lr True \
+    --gnn_lr 8e-3 \
     --projector_lr 3e-4 \
     --llm_lr 3e-5 \
+    --freeze_graph_mlp_adapter False \

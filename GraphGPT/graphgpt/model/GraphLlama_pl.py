@@ -200,6 +200,14 @@ class GraphGPT_pl(LightningModule):
                     {"params": lora_params, "lr": self.training_args.llm_lr},
                 ]
                 optimizer = AdamW(optimizer_grouped_parameters)
+            else:
+                gnn_params = list(map(id, self.model.get_model().graph_tower.parameters()))
+                projector_params = filter(lambda p: id(p) not in gnn_params, self.parameters())
+                optimizer_grouped_parameters = [
+                    {"params": self.model.get_model().graph_tower.parameters(), "lr": self.training_args.gnn_lr},
+                    {"params": projector_params, "lr": self.training_args.projector_lr},
+                ]
+                optimizer = AdamW(optimizer_grouped_parameters)
         else:
             optimizer_grouped_parameters = [
                 {

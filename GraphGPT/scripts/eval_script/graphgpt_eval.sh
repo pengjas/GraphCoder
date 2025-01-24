@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_lora_unified_lr/v1_balanced_lr_3e2_2epoch_batch2/balanced_unified_lr_3e2_2epoch_batch2_pretraining.ckpt
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_without_lora_unified_lr/v0_balanced_lr_8e3_2epoch_batch2/balanced_lr_8e3_2epoch_batch2.ckpt
 tokenizer_path=/data/LPJ/Llama-2-7b-chat-hf
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/pretraining_eval/graph_as_prefix/available_for_graphcoder/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/pretraining_eval/graph_as_prefix/available_for_graphcoder/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/pretraining_eval_result/train_unfreeze_gnn_with_tune_projector_lora_unified_lr_5k/v0_balanced_lr_3e2_2epoch_2batch
+res_path=/data/LPJ/ICML25/GraphCoder/pretraining_eval_result/train_unfreeze_gnn_with_tune_projector_without_lora_unified_lr_5k/v0_balanced_lr_8e3_2epoch_2batch
 num_gpus=1
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -14,7 +14,7 @@ output_file_name='eval_res'
 model_max_length=3072
 n_pass_k=1
 use_trained_gnn=True
-lora_enable=False
+lora_enable=false
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
     --output_file_name ${output_file_name} \

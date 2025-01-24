@@ -25,6 +25,7 @@ from graphgpt.conversation import SeparatorStyle, conv_templates
 from graphgpt.model import *
 from graphgpt.model.GraphLlama_pl import GraphGPT_pl
 from graphgpt.model.utils import KeywordsStoppingCriteria
+from graphgpt.train.train_light import DataArguments, ModelArguments, TrainingArguments
 from graphgpt.utils import disable_torch_init
 from PIL import Image
 from torch_geometric.data import Data
@@ -46,102 +47,105 @@ DEFAULT_GRAPH_PATCH_TOKEN = "<g_patch>"
 DEFAULT_G_START_TOKEN = "<g_start>"
 DEFAULT_G_END_TOKEN = "<g_end>"
 
-@dataclass
-class ModelArguments:
-    model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
-    version: Optional[str] = field(default="v0")
-    freeze_backbone: bool = field(default=False)
-    tune_graph_mlp_adapter: bool = field(default=False)
-    graph_tower: Optional[str] = field(default=None)
-    graph_select_layer: Optional[int] = field(default=-1)   # default to the last layer
-    pretrain_graph_mlp_adapter: Optional[str] = field(default=None)
-    use_graph_start_end: bool = field(default=False)
-    model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
+# @dataclass
+# class ModelArguments:
+#     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
+#     version: Optional[str] = field(default="v0")
+#     freeze_backbone: bool = field(default=False)
+#     tune_graph_mlp_adapter: bool = field(default=False)
+#     graph_tower: Optional[str] = field(default=None)
+#     graph_select_layer: Optional[int] = field(default=-1)   # default to the last layer
+#     pretrain_graph_mlp_adapter: Optional[str] = field(default=None)
+#     use_graph_start_end: bool = field(default=False)
+#     model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
 
 
-@dataclass
-class DataArguments:
-    data_path: str = field(default=None,
-                           metadata={"help": "Path to the training data."})
-    lazy_preprocess: bool = False
-    is_graph: bool = False
-    sep_graph_conv_front: bool = False
-    graph_token_len: int = 0
-    graph_content: Optional[str] = field(default=None)
-    graph_data_path: Optional[str] = field(default=None)
-    image_aspect_ratio: str = 'square'
-    bert_path: Optional[str] = field(default='/data/LPJ/bert/bert-L12-H128-uncased')
-    bert_gpu: Optional[int] = field(default=3)
-    bert_tokenizer_max_length: Optional[int] = field(default=15)
+# @dataclass
+# class DataArguments:
+#     data_path: str = field(default=None,
+#                            metadata={"help": "Path to the training data."})
+#     lazy_preprocess: bool = False
+#     is_graph: bool = False
+#     sep_graph_conv_front: bool = False
+#     graph_token_len: int = 0
+#     graph_content: Optional[str] = field(default=None)
+#     graph_data_path: Optional[str] = field(default=None)
+#     image_aspect_ratio: str = 'square'
+#     bert_path: Optional[str] = field(default='/data/LPJ/bert/bert-L12-H128-uncased')
+#     bert_gpu: Optional[int] = field(default=3)
+#     bert_tokenizer_max_length: Optional[int] = field(default=15)
 
 
-@dataclass
-class TrainingArguments:
-    cache_dir: Optional[str] = field(default=None)
-    optim: str = field(default="adamw_torch")
-    remove_unused_columns: bool = field(default=False)
-    freeze_graph_mlp_adapter: bool = field(default=False)
-    force_fsdp: bool = field(default=False)
-    model_max_length: int = field(
-        default=512,
-        metadata={
-            "help":
-            "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
-        },
-    )
-    double_quant: bool = field(
-        default=True,
-        metadata={"help": "Compress the quantization statistics through double quantization."}
-    )
-    quant_type: str = field(
-        default="nf4",
-        metadata={"help": "Quantization data type to use. Should be one of `fp4` or `nf4`."}
-    )
-    bits: int = field(
-        default=16,
-        metadata={"help": "How many bits to use."}
-    )
-    strategy: str = field(
-        default='fsdp'
-    )
-    real_batch_size: int = field(default=1)
+# @dataclass
+# class TrainingArguments:
+#     cache_dir: Optional[str] = field(default=None)
+#     optim: str = field(default="adamw_torch")
+#     remove_unused_columns: bool = field(default=False)
+#     freeze_graph_mlp_adapter: bool = field(default=False)
+#     freeze_gnn: bool = field(default=False)
+#     force_fsdp: bool = field(default=False)
+#     model_max_length: int = field(
+#         default=512,
+#         metadata={
+#             "help":
+#             "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
+#         },
+#     )
+#     double_quant: bool = field(
+#         default=True,
+#         metadata={"help": "Compress the quantization statistics through double quantization."}
+#     )
+#     quant_type: str = field(
+#         default="nf4",
+#         metadata={"help": "Quantization data type to use. Should be one of `fp4` or `nf4`."}
+#     )
+#     bits: int = field(
+#         default=16,
+#         metadata={"help": "How many bits to use."}
+#     )
+#     strategy: str = field(
+#         default='fsdp'
+#     )
+#     real_batch_size: int = field(default=1)
 
-    lora_enable: bool = False
-    lora_r: int = 64
-    lora_alpha: int = 16
-    lora_dropout: float = 0.05
-    lora_weight_path: str = ""
-    lora_bias: str = "none"
-    disable_tqdm: bool =False
+#     lora_enable: bool = False
+#     lora_r: int = 64
+#     lora_alpha: int = 16
+#     lora_dropout: float = 0.05
+#     lora_weight_path: str = ""
+#     lora_bias: str = "none"
+#     disable_tqdm: bool =False
 
-    gpus: Optional[str] = field(default='0,1')
-    resume: Optional[str] = field(default=None)
+#     gpus: Optional[str] = field(default='0,1')
+#     resume: Optional[str] = field(default=None)
 
-    adam_epsilon: float = field(default=1e-8)
-    warmup_steps:int = field(default=1000)
-    num_workers:int = field(default=16)
+#     adam_epsilon: float = field(default=1e-8)
+#     warmup_steps:int = field(default=1000)
+#     num_workers:int = field(default=16)
 
-    bf16: bool = field(default=False) 
-    fp16: bool = field(default=False) 
-    output_dir: str = field(default='./checkpoints/graphchat-gt-graphmatch-7b') 
-    num_train_epochs: int = field(default=3)
-    per_device_train_batch_size: int = field(default=1)
-    per_device_eval_batch_size: int = field(default=1)
-    gradient_accumulation_steps: int = field(default=1)
-    evaluation_strategy: str = field(default='no')
-    save_strategy: str = field(default='steps')
-    save_steps: int = field(default=2400)
-    save_total_limit: int = field(default=1)
-    learning_rate: float = field(default=2e-5)
-    weight_decay: float = field(default=0.)
-    warmup_ratio: float = field(default=0.03)
-    lr_scheduler_type: str = field(default='cosine')
-    logging_steps: int = field(default=1)
-    tf32: bool = field(default=True) 
-    gradient_checkpointing: bool = field(default=True)
-    report_to: str = field(default='wandb')
-    freeze_gnn: bool = field(default=False)
-
+#     bf16: bool = field(default=False) 
+#     fp16: bool = field(default=False) 
+#     output_dir: str = field(default='./checkpoints/graphchat-gt-graphmatch-7b') 
+#     num_train_epochs: int = field(default=3)
+#     per_device_train_batch_size: int = field(default=1)
+#     per_device_eval_batch_size: int = field(default=1)
+#     gradient_accumulation_steps: int = field(default=1)
+#     evaluation_strategy: str = field(default='no')
+#     save_strategy: str = field(default='steps')
+#     save_steps: int = field(default=2400)
+#     save_total_limit: int = field(default=1)
+#     learning_rate: float = field(default=2e-5)
+#     weight_decay: float = field(default=0.)
+#     warmup_ratio: float = field(default=0.03)
+#     lr_scheduler_type: str = field(default='cosine')
+#     logging_steps: int = field(default=1)
+#     tf32: bool = field(default=True) 
+#     gradient_checkpointing: bool = field(default=True)
+#     report_to: str = field(default='wandb')
+#     use_seperate_lr: bool = field(default=False)
+#     gnn_lr: float = field(default=1e-4)
+#     projector_lr: float = field(default=1e-4)
+#     llm_lr: float = field(default=1e-4)
 
 def load_graph(graph, bert_tokenizer, bert_model): 
     # graph_data_all = torch.load(graph_data_path)
@@ -244,7 +248,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     print('start initiate model')
     # print('start loading')
     model_args = ModelArguments(
-        model_name_or_path="/data/LPJ/new_CodeLlama-7b-Instruct-hf",
+        model_name_or_path=args.tokenizer_path,
         version="v1",
         graph_tower='clip_gt_arxiv',
         tune_graph_mlp_adapter=True,
@@ -253,12 +257,15 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         freeze_backbone=True,
     )
     data_args = DataArguments(
-        data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json',
-        graph_data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/graph.jsonl',
+        # data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json',
+        # graph_data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/graph.jsonl',
         lazy_preprocess=True,
-        bert_path='/data/LPJ/bert/bert-L12-H128-uncased',
+        bert_path=args.bert_path,
         bert_gpu=3,
-        bert_tokenizer_max_length=15,
+        # bert_tokenizer_max_length=15,
+        graph_content="./arxiv_ti_ab.json",
+        bert_tokenizer_max_length=args.bert_tokenizer_max_length,
+
     )
     train_args = TrainingArguments(
         bf16=args.bf16,
@@ -267,7 +274,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         num_train_epochs=3,
         model_max_length=args.model_max_length,
         gpus='0',
-        lora_enable=True
+        lora_enable=args.lora_enable,
     )
     print('start initiate tokenizer from {}'.format(args.tokenizer_path))
     tokenizer = transformers.AutoTokenizer.from_pretrained(args.tokenizer_path, model_max_length=train_args.model_max_length, padding_side="right")
@@ -276,11 +283,15 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # tokenizer.pad_token_id = tokenizer.eos_token_id
     print('finish initiate tokenizer')
 
+    # test_model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
+    # ckpt = torch.load(args.model_name, map_location='cpu')
     model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
                                          ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
     if args.lora_enable:
         model = model.model.merge_and_unload()
+    else:
+        model = model.model
 
     compute_dtype = (torch.float16 if train_args.fp16 else (torch.bfloat16 if train_args.bf16 else torch.float32))
     model = model.to(dtype=compute_dtype)
@@ -431,6 +442,13 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # with open(args.output_res_path, "w") as fout:
     #     json.dump(res_data, fout, indent=4)
 
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', '0'):
+        return False
+    raise argparse.ArgumentTypeError('Boolean value expected.')
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="facebook/opt-350m")
@@ -447,11 +465,11 @@ if __name__ == "__main__":
     parser.add_argument("--bert_path", type=str, default='/data/LPJ/uncased_L-12_H-128_A-2')
     parser.add_argument("--bert_tokenizer_max_length", type=int, default=15)
     parser.add_argument("--model_max_length", type=int, default=3072)
-    parser.add_argument("--bf16", type=bool, default=False)
-    parser.add_argument("--f16", type=bool, default=False)
-    parser.add_argument("--use_trained_gnn", type=bool, default=False)
+    parser.add_argument("--bf16", type=str2bool, default=False)
+    parser.add_argument("--f16", type=str2bool, default=False)
+    parser.add_argument("--use_trained_gnn", type=str2bool, default=False)
     parser.add_argument("--n_pass_k", type=int, default=10)
-    parser.add_argument("--lora_enable", type=bool, default=True)
+    parser.add_argument("--lora_enable", type=str2bool, default=True)
 
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)
@@ -459,7 +477,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # eval_model(args)
-
+    # print("++++++++++++++++++++++++++++++++", args.lora_enable)
     ray.init()
     # ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
