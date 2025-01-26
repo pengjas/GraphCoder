@@ -288,6 +288,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
                                          ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
+    
+
     if args.lora_enable:
         model = model.model.merge_and_unload()
     else:
@@ -478,8 +480,8 @@ if __name__ == "__main__":
 
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
-    ray.init()
-    # ray.init(local_mode=True)
+    # ray.init()
+    ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
 
 

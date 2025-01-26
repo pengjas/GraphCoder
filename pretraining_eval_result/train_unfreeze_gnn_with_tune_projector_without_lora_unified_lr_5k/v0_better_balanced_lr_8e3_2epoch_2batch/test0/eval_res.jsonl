@@ -1,0 +1,5 @@
+{"task_id": "task_1", "response": "op1 point to ripple_adder_32,ripple_adder_32 points to op1."}
+{"task_id": "task_2", "response": "excess_3_out point to bm,bm points to vec_in."}
+{"task_id": "task_3", "response": "wCo point to parity,parity points to ff_inst."}
+{"task_id": "task_4", "response": "xor_3 point to red_en,red_en points to video_in."}
+{"task_id": "task_5", "response": "FA4 point to sum_reverse,sum_reverse points to FA4."}
