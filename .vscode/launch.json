@@ -24,7 +24,7 @@
                 "--conv_mode", "graphchat_v1",
                 "--bert_tokenizer_max_length", "25",
                 "--bert_path", "/data/LPJ/bert/bert-L12-H128-uncased",
-                "--model_name", "/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_without_lora_unified_lr/v0_better_balanced_lr_8e3_2epoch_batch2/better_balanced_lr_8e3_2epoch_batch2.ckpt",
+                "--model_name", "/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_with_tuning_projector_without_lora_separate_lr/v0_better_balanced_lr_gnn8e3_projector3e4_2epoch_batch2/better_balanced_lr_gnn8e3_projector3e4_2epoch_batch2.ckpt",
                 "--prompting_file", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/pretraining_eval/graph_as_prefix/available_for_graphcoder/conversations.json",
                 "--graph_data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/pretraining_eval/graph_as_prefix/available_for_graphcoder/graph.jsonl",
                 "--output_res_path", "/data/LPJ/ICML25/GraphCoder/pretraining_eval_result/train_unfreeze_gnn_with_tune_projector_without_lora_unified_lr_5k/v0_balanced_lr_8e3_2epoch_2batch",
