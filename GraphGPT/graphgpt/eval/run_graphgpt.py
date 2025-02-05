@@ -480,8 +480,8 @@ if __name__ == "__main__":
 
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
-    # ray.init()
-    ray.init(local_mode=True)
+    ray.init()
+    # ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
 
 

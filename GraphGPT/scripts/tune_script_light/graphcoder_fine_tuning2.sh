@@ -18,6 +18,7 @@ python graphgpt/train/train_light.py \
     --graph_content ./arxiv_ti_ab.json \
     --graph_data_path ${graph_data_path} \
     --graph_tower ${pretra_gnn} \
+    --pretrain_graph_mlp_adapter ${tuned_proj_path} \
     --tune_graph_mlp_adapter True \
     --graph_select_layer -2 \
     --use_graph_start_end True \
