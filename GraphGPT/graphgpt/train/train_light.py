@@ -898,6 +898,7 @@ def train():
             cache_dir=training_args.cache_dir,
             model_max_length=training_args.model_max_length,
             padding_side="right",
+            # use_fast=True
             use_fast=False
         )
     bert_tokenizer = BertTokenizer.from_pretrained(
@@ -908,6 +909,9 @@ def train():
     if model_args.version == "v1":
         tokenizer.pad_token = tokenizer.unk_token
         conversation_lib.default_conversation = conversation_lib.conv_templates["vicuna_v1_1"]
+    elif model_args.version == "qwen":
+        tokenizer.pad_token = tokenizer.unk_token
+        conversation_lib.default_conversation = conversation_lib.conv_templates["qwen"]
     else: 
         raise ValueError
 

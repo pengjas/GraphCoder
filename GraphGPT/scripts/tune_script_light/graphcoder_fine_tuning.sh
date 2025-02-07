@@ -1,5 +1,5 @@
 # to fill in the following path to run the first stage of our GraphGPT!
-model_path=/data/LPJ/haven_qwen
+model_path=/data/LPJ/Qwen1.5-7B
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
 instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v2_with_module_head/import_for_graphgpt/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
