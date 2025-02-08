@@ -423,7 +423,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
             # res_data.append({"id": instruct_item["id"], "node_idx": instruct_item["graph"]["node_idx"], "res": outputs}.copy())
             # current_time = datetime.now()
             # formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-            directory = osp.join(args.output_res_path, 'test{}/'.format(i))
+            directory = args.output_res_path
+            # directory = osp.join(args.output_res_path, 'test{}/'.format(i))
             os.makedirs(directory, exist_ok=True)
             file_path = osp.join(directory, '{}.jsonl'.format(args.output_file_name))
             with open(file_path, "a") as fout:
