@@ -146,6 +146,7 @@ class TrainingArguments:
 
     gpus: Optional[str] = field(default='0,1')
     resume: Optional[str] = field(default=None)
+    if_resume: bool =False
 
     adam_epsilon: float = field(default=1e-8)
     warmup_steps:int = field(default=1000)
@@ -955,7 +956,14 @@ def train():
                     logger = wandb_logger, 
                     precision=model_precision,
                     callbacks=[checkpoint_callback])
-    resume = training_args.resume
+    
+    resume = None
+    
+    if training_args.if_resume:
+        resume = training_args.resume
+
+
+    # resume = training_args.resume
 
     # for name, param in model.named_parameters():
     #     print(name, param.dtype)

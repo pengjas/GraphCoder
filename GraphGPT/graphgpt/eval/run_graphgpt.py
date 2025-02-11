@@ -275,6 +275,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         model_max_length=args.model_max_length,
         gpus='0',
         lora_enable=args.lora_enable,
+        lora_r=args.lora_r,
     )
     print('start initiate tokenizer from {}'.format(args.tokenizer_path))
     tokenizer = transformers.AutoTokenizer.from_pretrained(args.tokenizer_path, model_max_length=train_args.model_max_length, padding_side="right")
@@ -473,7 +474,8 @@ if __name__ == "__main__":
     parser.add_argument("--use_trained_gnn", type=str2bool, default=False)
     parser.add_argument("--n_pass_k", type=int, default=10)
     parser.add_argument("--lora_enable", type=str2bool, default=True)
-
+    parser.add_argument("--lora_r", type=int, default=16)
+    
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)
 

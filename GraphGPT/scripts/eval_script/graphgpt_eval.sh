@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_acl25_gpt4_with_module_head/separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5/haven_llama_acl25_gpt4_with_module_head_separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5.ckpt
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/unified_lr_3e4_batch2_epoch5/last.ckpt
 tokenizer_path=/data/LPJ/haven_codellama
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/fine_tune_havenllama_using_acl25_gpt4_unfreeze_gnn_projector_with_lora/v0_best_ckpt_separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5
+res_path=/data/LPJ/ICML25/GraphCoder/HiVerilog_eval_result/fine_tune_havenllama_using_shuffled_acl25_gpt4_unfreeze_gnn_projector_with_lora/v0_last_ckpt_unified_lr_3e4_batch2_epoch5
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -12,10 +12,11 @@ conv_mode=graphchat_v1
 bf16=True
 f16=False
 output_file_name='eval_res'
-model_max_length=3072
+model_max_length=6144
 n_pass_k=2
 use_trained_gnn=True
 lora_enable=True
+lora_r=16
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
     --output_file_name ${output_file_name} \
@@ -32,4 +33,5 @@ python ./graphgpt/eval/run_graphgpt.py \
     --num_gpus ${num_gpus}\
     --n_pass_k ${n_pass_k} \
     --use_trained_gnn ${use_trained_gnn} \
-    --lora_enable ${lora_enable}
+    --lora_enable ${lora_enable} \
+    --lora_r ${lora_r}
