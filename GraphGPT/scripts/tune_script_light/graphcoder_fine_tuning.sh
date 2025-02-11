@@ -55,3 +55,4 @@ python graphgpt/train/train_light.py \
     --projector_lr 3e-4 \
     --llm_lr 3e-5 \
     --freeze_graph_mlp_adapter False \
+    --lora_r 64 \
