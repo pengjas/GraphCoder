@@ -1,14 +1,14 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/haven_codellama
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v2_with_module_head/import_for_graphgpt/conversations.json
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/with_module_head/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v2_with_module_head/import_for_graphgpt/graph.jsonl
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/with_module_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_rtlcoder_gpt4_v2_with_module_head/separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_acl25_gpt4_with_module_head/separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_rtlcoder_gpt4_v2_with_module_head_separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5
+model_save_name=haven_llama_acl25_gpt4_with_module_head_separate_lr_gnn8e3_projector3e4_lora3e5_batch2_epoch5
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -55,3 +55,4 @@ python graphgpt/train/train_light.py \
     --projector_lr 3e-4 \
     --llm_lr 3e-5 \
     --freeze_graph_mlp_adapter False \
+    --lora_r 64 \
