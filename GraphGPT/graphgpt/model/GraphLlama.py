@@ -109,7 +109,14 @@ class GraphLlamaModel(LlamaModel):
             # self.vision_tower = CLIPVisionModel.from_pretrained(config.mm_vision_tower)
 
         if hasattr(config, "use_graph_proj"):
-            self.graph_projector = nn.Linear(config.graph_hidden_size, config.hidden_size)
+            self.graph_projector = nn.Sequential(
+                nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
+                nn.GELU(),
+                nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                nn.GELU(),
+                nn.Linear(self.config.hidden_size, self.config.hidden_size)
+            )
+            # nn.Linear(config.graph_hidden_size, config.hidden_size)
 
     def get_graph_tower(self):
         graph_tower = getattr(self, 'graph_tower', None)
@@ -158,7 +165,15 @@ class GraphLlamaModel(LlamaModel):
         self.config.graph_select_layer = graph_select_layer
 
         if not hasattr(self, 'graph_projector'):
-            self.graph_projector = nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
+            self.graph_projector = nn.Sequential(
+                nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
+                nn.GELU(),
+                nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                nn.GELU(),
+                nn.Linear(self.config.hidden_size, self.config.hidden_size)
+            )
+            # nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
+            # self.graph_projector = nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
 
         if pretrain_graph_mlp_adapter is not None:
             graph_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
