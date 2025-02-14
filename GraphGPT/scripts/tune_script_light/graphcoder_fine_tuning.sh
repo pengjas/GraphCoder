@@ -6,11 +6,11 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_constructio
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/resume_unified_lr_2e6_batch2_epoch15
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/unified_lr_2e4_batch2_epoch5
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_shuffled_acl25_gpt4_with_module_head_resume_unified_lr_2e6_batch2_epoch15
+model_save_name=haven_llama_shuffled_acl25_gpt4_with_module_head_unified_lr_2e4_batch2_epoch5
 resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/unified_lr_3e4_batch2_epoch5/haven_llama_shuffled_acl25_gpt4_with_module_head_unified_lr_3e4_batch2_epoch5.ckpt'
-if_resume=True
+if_resume=False
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -24,7 +24,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 15 \
+    --num_train_epochs 5 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -33,7 +33,7 @@ python graphgpt/train/train_light.py \
     --save_strategy "steps" \
     --save_steps 2400 \
     --save_total_limit 1 \
-    --learning_rate 2e-6 \
+    --learning_rate 2e-4 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
@@ -57,6 +57,6 @@ python graphgpt/train/train_light.py \
     --projector_lr 3e-4 \
     --llm_lr 3e-5 \
     --freeze_graph_mlp_adapter False \
-    --lora_r 16 \
+    --lora_r 64 \
     --if_resume ${if_resume} \
     --resume ${resume}\
