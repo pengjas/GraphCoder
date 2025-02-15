@@ -6,11 +6,11 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_constructio
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/unified_lr_2e4_batch2_epoch5
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch6
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_shuffled_acl25_gpt4_with_module_head_unified_lr_2e4_batch2_epoch5
-resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/unified_lr_3e4_batch2_epoch5/haven_llama_shuffled_acl25_gpt4_with_module_head_unified_lr_3e4_batch2_epoch5.ckpt'
-if_resume=False
+model_save_name=haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch6
+resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch5/haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch5.ckpt'
+if_resume=True
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
@@ -24,7 +24,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 5 \
+    --num_train_epochs 6 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -39,7 +39,7 @@ python graphgpt/train/train_light.py \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --tf32 True \
-    --model_max_length 6144 \
+    --model_max_length 9216 \
     --gradient_checkpointing True \
     --lazy_preprocess True \
     --report_to wandb \
@@ -52,10 +52,10 @@ python graphgpt/train/train_light.py \
     --lora_enable True \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
-    --use_seperate_lr False \
-    --gnn_lr 8e-3 \
-    --projector_lr 3e-4 \
-    --llm_lr 3e-5 \
+    --use_seperate_lr True \
+    --gnn_lr 1e-4 \
+    --projector_lr 1e-4 \
+    --llm_lr 5e-5 \
     --freeze_graph_mlp_adapter False \
     --lora_r 64 \
     --if_resume ${if_resume} \
