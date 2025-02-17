@@ -1,15 +1,15 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/haven_codellama
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/conversations.json
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/v0_customized_440/with_module_head/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/graph.jsonl
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/v0_customized_440/with_module_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch6
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/resume_v0_customized_440_rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch8
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch6
-resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch5/haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch5.ckpt'
+model_save_name=haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_resume_v0_customized_440_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch8
+resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch6/haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch6.ckpt'
 if_resume=True
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
@@ -24,7 +24,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 6 \
+    --num_train_epochs 8 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
