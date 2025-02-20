@@ -74,9 +74,9 @@ class graph_transformer(nn.Module):
         # print("W_P.dtype", self.W_P.weight.dtype)
         # print(self.W_P.dtype, x.dtype)
         z = self.W_P(x)
-        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        print("self.W_P.weight[0][:10]", self.W_P.weight[0][:10])
-        print("self.W_P.weight.grad", self.W_P.weight.grad)
+        # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        # print("self.W_P.weight[0][:10]", self.W_P.weight[0][:10])
+        # print("self.W_P.weight.grad", self.W_P.weight.grad)
         if self.args.if_pos: 
             embeds = self.dropout(z + self.W_pos) 
         else: 

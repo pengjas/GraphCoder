@@ -182,6 +182,14 @@ class GraphGPT_pl(LightningModule):
         log_dict = {f'train_loss': loss.item()}
         self.log_dict(log_dict, on_step=True, on_epoch=True, prog_bar=True, sync_dist=True, batch_size=bs)
         return loss
+    
+    def validation_step(self, batch, batch_idx):
+        bs = len(batch["input_ids"])
+        loss_dict = self.model(**batch)
+        loss = loss_dict['loss']
+        log_dict = {f'val_loss': loss.item()}
+        self.log_dict(log_dict, on_step=False, on_epoch=True, prog_bar=True, sync_dist=True, batch_size=bs)
+        return loss
 
     def configure_optimizers(self):
         """Prepare optimizer and schedule (linear warmup and decay)"""

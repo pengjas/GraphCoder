@@ -1,30 +1,36 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/haven_codellama
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/conversations.json
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/less30_acl25_gpt4/with_module_head/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/graph.jsonl
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/less30_acl25_gpt4/with_module_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/resume_rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch20
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_less_acl25_gpt4_with_module_head/with_val_01_lr_gnn1e4_projector1e4_lora5e5_epoch50
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_resume_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch20
+model_save_name=haven_llama_5layers_with_val_01_lr_gnn1e4_projector1e4_lora5e5_epoch50
 resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch5/haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch5.ckpt'
-if_resume=True
+if_resume=False
+val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
+val_graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
+val_early_stop_threshold=0.1
+
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
     --version v1 \
     --data_path ${instruct_ds} \
+    --val_data_path ${val_data_path} \
     --graph_content ./arxiv_ti_ab.json \
     --graph_data_path ${graph_data_path} \
+    --val_graph_data_path ${val_graph_data_path} \
     --graph_tower ${pretra_gnn} \
     --tune_graph_mlp_adapter True \
     --graph_select_layer -2 \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 20 \
+    --num_train_epochs 50 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -60,3 +66,4 @@ python graphgpt/train/train_light.py \
     --lora_r 64 \
     --if_resume ${if_resume} \
     --resume ${resume}\
+    --val_early_stop_threshold ${val_early_stop_threshold} \

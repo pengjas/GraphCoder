@@ -59,7 +59,7 @@ from transformers import BertTokenizer, BertModel
 from lightning.pytorch.loggers import WandbLogger
 from lightning.pytorch import LightningModule, Trainer, seed_everything
 from graphgpt.model.GraphLlama_pl import GraphGPT_pl
-from lightning.pytorch.callbacks import ModelCheckpoint
+from lightning.pytorch.callbacks import ModelCheckpoint, EarlyStopping
 from lightning.pytorch.callbacks.callback import Callback
 import pandas as pd
 # TODO: import and use code from ../data/dataset.py
@@ -92,12 +92,15 @@ class ModelArguments:
 class DataArguments:
     data_path: str = field(default=None,
                            metadata={"help": "Path to the training data."})
+    val_data_path: str = field(default=None,
+                               metadata={"help": "Path to the validation data."})
     lazy_preprocess: bool = False
     is_graph: bool = False
     sep_graph_conv_front: bool = False
     graph_token_len: int = 0
     graph_content: Optional[str] = field(default=None)
     graph_data_path: Optional[str] = field(default=None)
+    val_graph_data_path: Optional[str] = field(default=None)
     image_aspect_ratio: str = 'square'
     bert_path: Optional[str] = field(default='/data/LPJ/bert/bert-L12-H128-uncased')
     bert_gpu: Optional[int] = field(default=3)
@@ -175,6 +178,7 @@ class TrainingArguments:
     gnn_lr: float = field(default=1e-4)
     projector_lr: float = field(default=1e-4)
     llm_lr: float = field(default=1e-4)
+    val_early_stop_threshold: float = field(default=0.1)
     
 
 
@@ -871,7 +875,21 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                     use_graph_start_end=getattr(data_args, 'use_graph_start_end', False)
                                     ), 
                                     graph_data_path = data_args.graph_data_path)
-    
+    val_dataset = dataset_cls(tokenizer=tokenizer,
+                              bert_tokenizer=bert_tokenizer,
+                              data_path=data_args.val_data_path,
+                              bert_path=data_args.bert_path,
+                              bert_gpu=data_args.bert_gpu,
+                              graph_cfg=dict(
+                                      is_graph=data_args.is_graph,
+                                      sep_graph_conv_front=data_args.sep_graph_conv_front,
+                                      graph_token_len=data_args.graph_token_len,
+                                      graph_content=data_args.graph_content,
+                                      use_graph_start_end=getattr(data_args, 'use_graph_start_end', False)
+                                      ), 
+                                      graph_data_path = data_args.val_graph_data_path)
+
+
     data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
 
     train_dataloader = DataLoader(train_dataset, 
@@ -880,7 +898,26 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                   collate_fn=data_collator,
                                   prefetch_factor=4,
                                   pin_memory=True)
-    return train_dataloader, None
+    val_dataloader = DataLoader(val_dataset,
+                                batch_size=training_args.per_device_eval_batch_size,
+                                num_workers=training_args.num_workers,
+                                prefetch_factor=4,
+                                pin_memory=True,
+                                collate_fn=data_collator)   
+    
+    return train_dataloader, val_dataloader
+
+
+class ThresholdEarlyStopping(Callback):
+    def __init__(self, threshold: float):
+        super().__init__()
+        self.threshold = threshold
+
+    def on_validation_epoch_end(self, trainer, pl_module):
+        current_val_loss = trainer.callback_metrics.get("val_loss")
+        if current_val_loss is not None and current_val_loss < self.threshold:
+            trainer.should_stop = True  # 触发训练终止
+
 #########
 def train():
     parser = transformers.HfArgumentParser(
@@ -923,16 +960,36 @@ def train():
     elif training_args.bf16:
         model.to(dtype=torch.bfloat16)
         
-    train_dataloader, _ = make_supervised_data_module(tokenizer=tokenizer, bert_tokenizer=bert_tokenizer,
+    train_dataloader, val_dataloader = make_supervised_data_module(tokenizer=tokenizer, bert_tokenizer=bert_tokenizer,
                                               data_args=data_args, training_args=training_args)
+    
+    # checkpoint_callback = ModelCheckpoint(
+    #         dirpath=training_args.output_dir,
+    #         filename=model_args.model_save_name,
+    #         monitor="train_loss",
+    #         # monitor="loss",
+    #         save_top_k=1,
+    #         save_last=True,
+    #     )
+    
     checkpoint_callback = ModelCheckpoint(
             dirpath=training_args.output_dir,
             filename=model_args.model_save_name,
-            monitor="train_loss",
+            monitor="val_loss",
+            mode="min",
             # monitor="loss",
             save_top_k=1,
             save_last=True,
         )
+    
+    early_stop_callback = EarlyStopping(
+        monitor='val_loss',
+        mode='min',
+        stopping_threshold=training_args.val_early_stop_threshold,
+        check_finite=True,
+        check_on_train_epoch_end=False,
+        # patience=3,
+    )
 
     if training_args.strategy == 'fsdp': 
         strategy = FSDPStrategy(
@@ -955,7 +1012,10 @@ def train():
                     strategy=strategy,
                     logger = wandb_logger, 
                     precision=model_precision,
-                    callbacks=[checkpoint_callback])
+                    callbacks=[checkpoint_callback, early_stop_callback],
+                    check_val_every_n_epoch=1,
+                    enable_progress_bar=True,
+                    num_sanity_val_steps=2)
     
     resume = None
     
@@ -972,7 +1032,7 @@ def train():
     # for i, (data, target) in enumerate(train_dataloader):
     #     train_dataloader[i] = (data.to(torch.bfloat16), target.to(torch.bfloat16))
 
-    trainer.fit(model, train_dataloaders=train_dataloader, ckpt_path=resume)
+    trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, ckpt_path=resume)
 
     # safe_save_model_for_hf_trainer(trainer=trainer,
     #                                    output_dir=training_args.output_dir)
