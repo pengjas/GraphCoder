@@ -116,7 +116,11 @@ class GraphLlamaModel(LlamaModel):
                 nn.GELU(),
                 nn.Linear(self.config.hidden_size, self.config.hidden_size),
                 nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size)
+                nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                nn.GELU(),
+                nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                nn.GELU(),
+                nn.Linear(self.config.hidden_size, self.config.hidden_size),
             )
             # nn.Linear(config.graph_hidden_size, config.hidden_size)
 

@@ -179,6 +179,7 @@ class TrainingArguments:
     projector_lr: float = field(default=1e-4)
     llm_lr: float = field(default=1e-4)
     val_early_stop_threshold: float = field(default=0.1)
+    if_val: bool = field(default=False)
     
 
 
@@ -875,20 +876,22 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                     use_graph_start_end=getattr(data_args, 'use_graph_start_end', False)
                                     ), 
                                     graph_data_path = data_args.graph_data_path)
-    val_dataset = dataset_cls(tokenizer=tokenizer,
-                              bert_tokenizer=bert_tokenizer,
-                              data_path=data_args.val_data_path,
-                              bert_path=data_args.bert_path,
-                              bert_gpu=data_args.bert_gpu,
-                              graph_cfg=dict(
-                                      is_graph=data_args.is_graph,
-                                      sep_graph_conv_front=data_args.sep_graph_conv_front,
-                                      graph_token_len=data_args.graph_token_len,
-                                      graph_content=data_args.graph_content,
-                                      use_graph_start_end=getattr(data_args, 'use_graph_start_end', False)
-                                      ), 
-                                      graph_data_path = data_args.val_graph_data_path)
-
+    if training_args.if_val:
+        val_dataset = dataset_cls(tokenizer=tokenizer,
+                                bert_tokenizer=bert_tokenizer,
+                                data_path=data_args.val_data_path,
+                                bert_path=data_args.bert_path,
+                                bert_gpu=data_args.bert_gpu,
+                                graph_cfg=dict(
+                                        is_graph=data_args.is_graph,
+                                        sep_graph_conv_front=data_args.sep_graph_conv_front,
+                                        graph_token_len=data_args.graph_token_len,
+                                        graph_content=data_args.graph_content,
+                                        use_graph_start_end=getattr(data_args, 'use_graph_start_end', False)
+                                        ), 
+                                        graph_data_path = data_args.val_graph_data_path)
+    else:
+        val_dataset = None
 
     data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
 
@@ -898,13 +901,15 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                   collate_fn=data_collator,
                                   prefetch_factor=4,
                                   pin_memory=True)
-    val_dataloader = DataLoader(val_dataset,
-                                batch_size=training_args.per_device_eval_batch_size,
-                                num_workers=training_args.num_workers,
-                                prefetch_factor=4,
-                                pin_memory=True,
-                                collate_fn=data_collator)   
-    
+    if training_args.if_val:
+        val_dataloader = DataLoader(val_dataset,
+                                    batch_size=training_args.per_device_eval_batch_size,
+                                    num_workers=training_args.num_workers,
+                                    prefetch_factor=4,
+                                    pin_memory=True,
+                                    collate_fn=data_collator)   
+    else:
+        val_dataloader = None
     return train_dataloader, val_dataloader
 
 
@@ -975,21 +980,23 @@ def train():
     checkpoint_callback = ModelCheckpoint(
             dirpath=training_args.output_dir,
             filename=model_args.model_save_name,
-            monitor="val_loss",
+            monitor="train_loss",
             mode="min",
             # monitor="loss",
             save_top_k=1,
             save_last=True,
         )
     
-    early_stop_callback = EarlyStopping(
-        monitor='val_loss',
-        mode='min',
-        stopping_threshold=training_args.val_early_stop_threshold,
-        check_finite=True,
-        check_on_train_epoch_end=False,
-        # patience=3,
-    )
+    if training_args.if_val:
+
+        early_stop_callback = EarlyStopping(
+            monitor='val_loss',
+            mode='min',
+            stopping_threshold=training_args.val_early_stop_threshold,
+            check_finite=True,
+            check_on_train_epoch_end=False,
+            # patience=3,
+        )
 
     if training_args.strategy == 'fsdp': 
         strategy = FSDPStrategy(
@@ -1006,16 +1013,30 @@ def train():
     wandb_logger = WandbLogger(save_dir=training_args.output_dir, project="GraphGPTv1", offline=True, name=model_args.model_save_name)
     model_precision = ('16' if training_args.fp16 else ('bf16' if training_args.bf16 else '32'))
     # print('************* epoch:', training_args.num_train_epochs)
-    trainer = Trainer(default_root_dir=training_args.output_dir, max_epochs=int(training_args.num_train_epochs), 
-                    accumulate_grad_batches=gradient_accumulation_steps,
-                    accelerator="gpu", devices=devices, 
-                    strategy=strategy,
-                    logger = wandb_logger, 
-                    precision=model_precision,
-                    callbacks=[checkpoint_callback, early_stop_callback],
-                    check_val_every_n_epoch=1,
-                    enable_progress_bar=True,
-                    num_sanity_val_steps=2)
+    if training_args.if_val:
+        trainer = Trainer(default_root_dir=training_args.output_dir, max_epochs=int(training_args.num_train_epochs), 
+                        accumulate_grad_batches=gradient_accumulation_steps,
+                        accelerator="gpu", devices=devices, 
+                        strategy=strategy,
+                        logger = wandb_logger, 
+                        precision=model_precision,
+                        callbacks=[checkpoint_callback, early_stop_callback],
+                        check_val_every_n_epoch=1,
+                        enable_progress_bar=True,
+                        num_sanity_val_steps=2)
+    else:
+        trainer = Trainer(default_root_dir=training_args.output_dir, max_epochs=int(training_args.num_train_epochs), 
+                        accumulate_grad_batches=gradient_accumulation_steps,
+                        accelerator="gpu", devices=devices, 
+                        strategy=strategy,
+                        logger = wandb_logger, 
+                        precision=model_precision,
+                        callbacks=[checkpoint_callback],
+                        check_val_every_n_epoch=1,
+                        enable_progress_bar=True,
+                        num_sanity_val_steps=2,
+                        limit_val_batches=0)
+        
     
     resume = None
     
@@ -1031,8 +1052,10 @@ def train():
     # 将数据转换为 bfloat16
     # for i, (data, target) in enumerate(train_dataloader):
     #     train_dataloader[i] = (data.to(torch.bfloat16), target.to(torch.bfloat16))
-
-    trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, ckpt_path=resume)
+    if training_args.if_val:
+        trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader, ckpt_path=resume)
+    else:
+        trainer.fit(model, train_dataloaders=train_dataloader, ckpt_path=resume)
 
     # safe_save_model_for_hf_trainer(trainer=trainer,
     #                                    output_dir=training_args.output_dir)
