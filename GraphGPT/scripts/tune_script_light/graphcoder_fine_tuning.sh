@@ -6,10 +6,10 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_constructio
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/more200_gpt4/specific_task/instr_reg/v0/with_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_specific_tasks_with_module_head/instr_reg/v0_seed0/v0_epoch4
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_specific_tasks_with_module_head/instr_reg/v0_seed0/v1_epoch6
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_5layers_instr_reg_v0_epoch4
-resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/resume_rank64_separate_lr_gnn1e4_projector1e4_lora5e5_batch2_epoch20/haven_llama_5layers_shuffled_acl25_gpt4_with_module_head_resume_rank64_separate_gnn1e4_projector1e4_lora5e5_batch2_epoch20.ckpt'
+model_save_name=haven_llama_5layers_instr_reg_v0_epoch6
+resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_specific_tasks_with_module_head/instr_reg/v0_seed0/v0_epoch4/haven_llama_5layers_instr_reg_v0_epoch4.ckpt'
 if_resume=True
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 val_graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
@@ -31,7 +31,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 24 \
+    --num_train_epochs 26 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
