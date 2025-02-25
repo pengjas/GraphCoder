@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'D', 'type': 'output port'}, {'id': 3, 'content': 'B_out', 'type': 'output port'}, {'id': 4, 'content': 'sub0', 'type': 'submodule'}, {'id': 5, 'content': 'sub1', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 1, 0, 4, 5, 4, 5], [4, 4, 5, 5, 2, 2, 3, 3]]\n, Implement a module of a 64-bit subtractor that utilizes a hierarchical architecture consisting of submodules for modular design.\n\nModule name:  \n    sub_64bit               \nInput ports:\n    A[63:0]: 64-bit input operand A.\n    B[63:0]: 64-bit input operand B.\nOutput ports:\n    D[63:0]: 64-bit output representing the difference A - B.\n    B_out: Borrow-out output.\n\nImplementation:\nThe top module sub_64bit consists of two instances of the 32-bit subtractor module, which in turn consists of two instances of the 16-bit subtractor module, and each 16-bit subtractor contains two 8-bit subtractor modules.\n\nGive me the complete code.\nmodule sub_64bit(A, B, D, B_out);"
+            }
+        ],
+        "task_id": "sub_64bit"
+    }
+]

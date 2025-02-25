@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'd', 'type': 'input port'}, {'id': 2, 'content': 'sel', 'type': 'input port'}, {'id': 3, 'content': 'q', 'type': 'output port'}, {'id': 4, 'content': 'u0', 'type': 'submodule'}, {'id': 5, 'content': 'u1', 'type': 'submodule'}, {'id': 6, 'content': 'u2', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 4, 0, 0, 5, 4, 6, 5, 1], [4, 4, 5, 5, 6, 6, 3, 3, 3, 3]]\n, A top-level module designed to instantiate three 8-bit D flip-flops (my_dff8) and connect them to create an 8-bit wide shift register of length 3. Additionally, implement a 4-to-1 multiplexer that selects the output based on a 2-bit select signal (sel), which determines the delay of the input signal (d) through the shift register.\n\nModule name:\n    shift8\n\nInput ports:\n    clk: Clock signal for synchronization.\n    d [7:0]: 8-bit data input to be shifted through the register.\n    sel [1:0]: Control signal that selects which output to present (0-3 cycles of delay).\n\nOutput ports:\n    q [7:0]: The output data after the selected number of clock cycles.\n\nImplementation:\nThe top_module consists of three instances of my_dff8, each representing a D flip-flop. The output of each flip-flop is connected to the next one, creating a chain that allows the input data to be shifted through the register.\nThe output q is determined by the sel input, which selects the output of the appropriate flip-flop or the original input d based on the number of cycles to delay\n\nGive me the complete code.\nmodule shift8 (\n    input clk,\n    input [7:0] d,\n    input [1:0] sel,\n    output reg [7:0] q\n);"
+            }
+        ],
+        "task_id": "shift8"
+    }
+]

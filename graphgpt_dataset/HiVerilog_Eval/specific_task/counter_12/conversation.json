@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'rst_n', 'type': 'input port'}, {'id': 1, 'content': 'clk', 'type': 'input port'}, {'id': 2, 'content': 'valid_count', 'type': 'input port'}, {'id': 3, 'content': 'out', 'type': 'output port'}, {'id': 4, 'content': 'u_counter_logic', 'type': 'submodule'}, {'id': 5, 'content': 'u_output_register', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 2, 1, 0, 4, 2, 5], [4, 4, 4, 5, 5, 5, 5, 3]]\n, Implement a module of a counter design that counts from 4'b0000 to 4'd11, with the counting controlled by an input signal valid_count. The counter should pause when valid_count is 0. It should increment on each clock cycle when valid_count is active and reset to 0 when the reset signal (rst_n) is active.\n\nModule Name:\n    counter_12\n\nInput Ports:\n    rst_n: Reset signal (active low)\n    clk: Clock signal\n    valid_count: Signal to enable counting\n\nOutput Ports:\n    out: 4-bit output representing the current count value\n\nImplementation:\nThe main module (counter_12) integrates two submodules: counter_logic and output_register.\ncounter_logic:\nIf the reset signal is active (!rst_n), the counter resets to 0 (4'b0000).\nWhen valid_count is 1, the counter increments. If the count value equals 4'd11, it wraps around and resets to 0.\noutput_register:\nIf the reset signal is active, the output is set to 0.\nWhen valid_count is active, it updates the output with the current count value from counter_logic. If valid_count is 0, it retains the current output.\n\nGive me the complete code.\nmodule\nmodule counter_12 (\n    input rst_n,\n    input clk,\n    input valid_count,\n    output [3:0] out\n);"
+            }
+        ],
+        "task_id": "counter_12"
+    }
+]

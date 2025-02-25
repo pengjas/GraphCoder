@@ -1023,7 +1023,9 @@ def train():
                         callbacks=[checkpoint_callback, early_stop_callback],
                         check_val_every_n_epoch=1,
                         enable_progress_bar=True,
-                        num_sanity_val_steps=2)
+                        num_sanity_val_steps=2,
+                        log_every_n_steps=training_args.logging_steps
+                        )
     else:
         trainer = Trainer(default_root_dir=training_args.output_dir, max_epochs=int(training_args.num_train_epochs), 
                         accumulate_grad_batches=gradient_accumulation_steps,
@@ -1035,7 +1037,9 @@ def train():
                         check_val_every_n_epoch=1,
                         enable_progress_bar=True,
                         num_sanity_val_steps=2,
-                        limit_val_batches=0)
+                        limit_val_batches=0,
+                        log_every_n_steps=training_args.logging_steps
+                        )
         
     
     resume = None

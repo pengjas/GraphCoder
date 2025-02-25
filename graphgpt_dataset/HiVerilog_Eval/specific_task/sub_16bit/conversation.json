@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'D', 'type': 'output port'}, {'id': 3, 'content': 'B_out', 'type': 'output port'}, {'id': 4, 'content': 'sub1', 'type': 'submodule'}, {'id': 5, 'content': 'sub2', 'type': 'submodule'}, {'id': 6, 'content': 'sub3', 'type': 'submodule'}, {'id': 7, 'content': 'sub4', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 1, 4, 0, 1, 0, 5, 1, 0, 6, 6, 7, 4, 5, 7], [4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 2, 2, 2, 2, 3]]\n, Implement a module of a borrow-lookahead 16-bit subtractor that uses the Borrow-Lookahead Subtractor (BLS) architecture.\n\nModule name:\n    sub_16bit               \nInput ports:\n    A[16:1]: 16-bit input operand A.\n    B[16:1]: 16-bit input operand B.\nOutput ports:\n    D[16:1]: 16-bit output representing the difference of A and B.\n    B_out: Borrow-out output.\n\nImplementation:\nThe top module sub_16bit consists of several instances of the 4-bit full subtractor block you design.\n\nGive me the complete code.\nmodule sub_16bit(A, B, D, B_out);"
+            }
+        ],
+        "task_id": "sub_16bit"
+    }
+]

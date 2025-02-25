@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'result', 'type': 'output port'}, {'id': 3, 'content': 'odd', 'type': 'output port'}, {'id': 4, 'content': 'prep', 'type': 'submodule'}, {'id': 5, 'content': 'div_op', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 4, 5, 5], [4, 4, 5, 2, 3]]\n, Implement a 32-bit divider module where the dividend is 32 bits and the divisor is 16 bits using a modular design approach. The module should be composed of submodules to enhance clarity and maintainability. The first submodule will prepare the dividend and divisor by adjusting their bit widths. The second submodule will perform the division operation by shifting the dividend and comparing it with the divisor to compute the quotient and remainder.\n\nModule name:\n    div_32bit\n\nInput ports:\n    A: 32-bit dividend.\n    B: 16-bit divisor.\n\nOutput ports:\n    result: 32-bit quotient.\n    odd: 32-bit remainder.\n\nImplementation:\nThe top module (div_32bit) instantiates two submodules: prep_dividend and div_operation. The prep_dividend module prepares the inputs, while the div_operation module handles the division algorithm. The output signals are assigned from the results of the division operation.\n\nGive me the complete code.\nmodule div_32bit(\n    input wire [31:0] A,   // 32-bit dividend\n    input wire [15:0] B,   // 16-bit divisor\n    output wire [31:0] result, // 32-bit quotient\n    output wire [31:0] odd      // 32-bit remainder\n);"
+            }
+        ],
+        "task_id": "div_32bit"
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'reset', 'type': 'input port'}, {'id': 2, 'content': 'out', 'type': 'output port'}, {'id': 3, 'content': 'init', 'type': 'submodule'}, {'id': 4, 'content': 'transition', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 1, 0, 3, 4], [3, 3, 4, 4, 4, 2]]\n, Implement a modular version of an 8-bit ring counter for cyclic state sequences.\n\nModule name:\n    ring_counter\n\nInput ports:\n    clk: Clock signal that drives the state transitions of the ring counter.\n    reset: Reset signal to initialize the counter to its starting state.\nOutput ports:\n    out [7:0]: 8-bit output representing the current state of the ring counter. Only one bit is set high at any time, and the set bit cycles through the 8-bit output.\n\nInternal logic:\nState Initialization: A submodule initializes the counter to its starting state when the reset signal is high, typically with the least significant bit (LSB) of out set to 1 (i.e., out = 8'b0000_0001).\nState Transition: Another submodule handles the cyclic behavior of the ring counter, where the 1 shifts to the next bit in the sequence on each rising edge of the clock signal. After reaching the most significant bit (MSB), it wraps around to the LSB.\nModularity: The design consists of separate submodules for initialization and state transition, promoting better organization and reusability of the code.\nReset Behavior: When reset is high, the ring counter is reset to its initial state (out = 8'b0000_0001).\n\nGive me the complete code.\nmodule ring_counter (\n    input wire clk,\n    input wire reset,\n    output wire [7:0] out\n);"
+            }
+        ],
+        "task_id": "ring_counter"
+    }
+]

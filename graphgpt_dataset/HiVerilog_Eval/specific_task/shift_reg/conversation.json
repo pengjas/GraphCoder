@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'd', 'type': 'input port'}, {'id': 2, 'content': 'q', 'type': 'output port'}, {'id': 3, 'content': 'u0', 'type': 'submodule'}, {'id': 4, 'content': 'u1', 'type': 'submodule'}, {'id': 5, 'content': 'u2', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 0, 3, 0, 4, 5], [3, 3, 4, 4, 5, 5, 2]]\n, You are to design a shift register module that utilizes three instances of a D flip-flop. The shift register should shift the input data through each flip-flop on the rising edge of the clock.\n\nModule name:\n    shift_reg\n\nInput ports:\n    clk: Clock signal for synchronization.\n    d: Data input to be shifted through the register.\n\nOutput ports:\n    q: The output from the last flip-flop in the chain.\n\nImplementation:\nThe shift register consists of three instances of the provided D flip-flop module (my_dff).\nEach flip-flop's output is connected to the next flip-flop's data input, creating a chain effect.\nThe clock signal is connected to all instances to ensure synchronized operation.\n\nGive me the complete code.\nmodule shift_reg (\n    input clk,\n    input d,\n    output q\n);"
+            }
+        ],
+        "task_id": "shift_reg"
+    }
+]

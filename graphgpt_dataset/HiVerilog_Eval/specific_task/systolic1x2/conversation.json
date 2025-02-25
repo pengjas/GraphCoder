@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst', 'type': 'input port'}, {'id': 2, 'content': 'a0', 'type': 'input port'}, {'id': 3, 'content': 'a1', 'type': 'input port'}, {'id': 4, 'content': 'b0', 'type': 'input port'}, {'id': 5, 'content': 'c0', 'type': 'output port'}, {'id': 6, 'content': 'c1', 'type': 'output port'}, {'id': 7, 'content': 'pe0', 'type': 'submodule'}, {'id': 8, 'content': 'pe1', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[2, 0, 4, 1, 4, 0, 3, 1, 7, 8], [7, 7, 7, 7, 8, 8, 8, 8, 5, 6]]\n, Implement a module of a systolic array with 1x2 configuration in sequential logic.\n\nModule name:  \n    systolic1x2               \nInput ports:\n    clk: Clock signal.\n    rst: Reset signal, active high.\n    a0[15:0]: 16-bit input operand A0.\n    a1[15:0]: 16-bit input operand A1.\n    b0[15:0]: 16-bit input operand B0.\nOutput ports:\n    c0[31:0]: 32-bit output representing the accumulated product of A0 and B0.\n    c1[31:0]: 32-bit output representing the accumulated product of A1 and the forwarded value of B0 (now B1).\n\nImplementation:\nIn the systolic1x2 module, two Processing Elements (PEs) are instantiated. Each PE performs multiplication and accumulation of its inputs. The first PE (pe0) takes inputs a0 and b0 directly. The second PE (pe1) takes input a1 and a delayed version of b0, named b1, which is updated with the value of b0 every clock cycle unless reset is active. This systolic passing of data (b0 to b1) among the PEs is crucial for pipelining in larger systolic array configurations.\n\nGive me the complete code.\nmodule systolic1x2 (\n  input clk,\n  input rst,\n  input [15:0] a0,\n  input [15:0] a1,\n  input [15:0] b0,\n  output [31:0] c0,\n  output [31:0] c1\n);"
+            }
+        ],
+        "task_id": "systolic1x2"
+    }
+]

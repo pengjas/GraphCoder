@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'a', 'type': 'input port'}, {'id': 1, 'content': 'b', 'type': 'input port'}, {'id': 2, 'content': 'cin', 'type': 'input port'}, {'id': 3, 'content': 'sum', 'type': 'output port'}, {'id': 4, 'content': 'cout', 'type': 'output port'}, {'id': 5, 'content': 'rca1', 'type': 'submodule'}, {'id': 6, 'content': 'csa_slice1', 'type': 'submodule'}, {'id': 7, 'content': 'csa_slice2', 'type': 'submodule'}, {'id': 8, 'content': 'csa_slice3', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 2, 0, 1, 5, 6, 0, 1, 7, 0, 1, 6, 7, 5, 8, 8], [5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 3, 3, 3, 3, 4]]\n, Implement a module of a 16-bit carry select adder in combinational logic.\n\nModule name:\n    carry_select_adder_16bit\nInput ports:\n    a[15:0]: 16-bit input operand A.\n    b[15:0]: 16-bit input operand B.\n    cin: Carry-in input.\nOutput ports:\n    sum[15:0]: 16-bit output representing the sum of A and B.\n    cout: Carry-out output.\n\nImplementation:\nThe carry_select_adder_16bit is built using a 4-bit ripple carry adder and several 4-bit carry select adder slices. The initial 4-bit section uses a ripple carry adder. Subsequent sections use carry select adder slices, which compute sums and carry-out bits based on the previous carry. Each 4-bit carry select adder slice includes two ripple carry adders and a multiplexer to select the appropriate sum and carry based on the carry-in.\n\nGive me the complete code.\nmodule adder_16bit_csa(a, b, cin, sum, cout);"
+            }
+        ],
+        "task_id": "adder_16bit_csa"
+    }
+]

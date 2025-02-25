@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'reset', 'type': 'input port'}, {'id': 2, 'content': 'up_down', 'type': 'input port'}, {'id': 3, 'content': 'count', 'type': 'output port'}, {'id': 4, 'content': 'u_counter_logic', 'type': 'submodule'}, {'id': 5, 'content': 'u_counter_register', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 2, 0, 5, 1, 0, 4, 5], [4, 4, 4, 4, 5, 5, 5, 3]]\n, Module name:\n    up_down_counter\n\nFunction:\nA 16-bit counter that can increment or decrement based on control signals, implemented in a modular fashion.\n\nInput ports:\n    - clk: Clock signal (1-bit), used to synchronize the counting process.\n    - reset: Reset signal (1-bit), used to reset the counter to zero.\n    - up_down: Control signal (1-bit), determines the counting direction.\n    If up_down = 1, the counter increments; if up_down = 0, it decrements.\n\nOutput ports:\n    - count [15:0]: 16-bit output representing the current counter value.\n\nImplementation:\nThe module consists of two submodules: counter_logic and counter_register.\n- The counter_logic module calculates the next count value based on the current count and control signals.\n- The counter_register module updates the current count value on the rising edge of the clock signal or resets it based on the reset condition.\nThe count output reflects the current value of the counter, which can range from 0 to 65535.\n\nGive me the complete code.\nmodule up_down_counter (\n    input wire clk,\n    input wire reset,\n    input wire up_down,\n    output wire [15:0] count\n);"
+            }
+        ],
+        "task_id": "up_down_counter"
+    }
+]

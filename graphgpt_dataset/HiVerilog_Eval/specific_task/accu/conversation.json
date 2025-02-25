@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst_n', 'type': 'input port'}, {'id': 2, 'content': 'data_in', 'type': 'input port'}, {'id': 3, 'content': 'valid_in', 'type': 'input port'}, {'id': 4, 'content': 'valid_out', 'type': 'output port'}, {'id': 5, 'content': 'data_out', 'type': 'output port'}, {'id': 6, 'content': 'u_counter', 'type': 'submodule'}, {'id': 7, 'content': 'u_data_accumulator', 'type': 'submodule'}, {'id': 8, 'content': 'u_valid_output', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 3, 6, 0, 1, 3, 2, 6, 0, 1, 3, 6, 8, 7], [6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 4, 5]]\n, Implement a modular design for a serial input data accumulator. The system should receive 8-bit data inputs and accumulate the values. The valid_in signal will indicate when new data is ready for accumulation. After receiving four valid input data, the module should output the accumulated result and set valid_out to 1 for one cycle.\n\nModule name:\n    accu\nInput ports:\n    clk: Clock input for synchronization.\n    rst_n: Active-low reset signal.\n    data_in[7:0]: 8-bit input data for addition.\n    valid_in: Input signal indicating readiness for new data.\nOutput ports:\n    valid_out: Output signal indicating when four input data accumulations have been reached.\n    data_out[9:0]: 10-bit output data representing the accumulated sum.\n\nImplementation:\nThe design consists of the following submodules:\nCounter Module: Counts the number of valid input data received. It resets after counting four inputs.\nData Accumulator Module: Accumulates the four received data_in values and maintains the accumulated result.\nValid Output Module: Generates the valid_out signal, which is set to 1 when four inputs have been accumulated.\n\nGive me the complete code.\nmodule accu (\n    input               clk,\n    input               rst_n,\n    input       [7:0]   data_in,\n    input               valid_in,\n\n    output              valid_out,\n    output      [9:0]   data_out\n);"
+            }
+        ],
+        "task_id": "accu"
+    }
+]

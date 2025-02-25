@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst_n', 'type': 'input port'}, {'id': 2, 'content': 'Q', 'type': 'output port'}, {'id': 3, 'content': 'reg_inst', 'type': 'submodule'}, {'id': 4, 'content': 'logic_inst', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 0, 1, 3, 4], [3, 3, 4, 4, 4, 2]]\n, Implement a modular 64-bit Johnson counter (torsional ring counter) with the following specifications:\n\nModule name:\n    JC_counter\n\nInput ports:\n    - clk: Clock signal used for synchronous operation.\n    - rst_n: Active-low reset signal to initialize the counter.\n\nOutput port:\n    - Q: 64-bit register representing the current count value.\n\nImplementation:\nThe design should consist of submodules for better organization and separation of functionality.\nJC_counter: The main module that integrates the submodules.\nJC_register: A submodule responsible for storing the current state of the counter. It should reset to zero when the reset signal (rst_n) is low.\nJC_logic: A submodule that calculates the next state of the counter based on the current state. It should update the output Q based on the least significant bit (LSB) of the current state.\n\nGive me the complete code.\nmodule for the Johnson Counter\nmodule JC_counter(\n    input                clk,\n    input                rst_n,\n    output [63:0]       Q\n);"
+            }
+        ],
+        "task_id": "JC_counter"
+    }
+]

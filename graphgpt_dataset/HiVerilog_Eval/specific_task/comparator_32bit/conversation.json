@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'A_greater', 'type': 'output port'}, {'id': 3, 'content': 'A_equal', 'type': 'output port'}, {'id': 4, 'content': 'A_less', 'type': 'output port'}, {'id': 5, 'content': 'sub_inst', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 5, 1, 0, 5], [5, 5, 2, 3, 3, 4]]\n, Implement a module of a 32-bit comparator using submodules with multiple bit-level comparators in combinational logic.\n\nModule name:\n    comparator_32bit\n\nInput ports:\n    A [31:0]: First 32-bit input operand (binary number to compare).\n    B [31:0]: Second 32-bit input operand (binary number to compare).\nOutput ports:\n    A_greater: 1-bit output indicating if A is greater than B.\n    A_equal: 1-bit output indicating if A is equal to B.\n    A_less: 1-bit output indicating if A is less than B.\n\nImplementation:\nComparison Logic: The module compares the two 32-bit binary numbers A and B using combinational logic.\nA subtraction operation is performed: A - B. The result of this subtraction helps determine whether A is greater than, equal to, or less than B.\nCarry Generation: If a borrow occurs during the subtraction, A is less than B (A_less).\nIf no borrow occurs and the result of subtraction is non-zero, A is greater than B (A_greater).\nIf A and B are equal, the result of subtraction is zero (A_equal).\nModular Design:\nThe main module (comparator_32bit) instantiates a submodule (subtractor_32bit) that performs the actual subtraction.\nThe outputs (A_greater, A_equal, A_less) are mutually exclusive, ensuring only one of the three outputs is high (1) at any given time.\n\nGive me the complete code.\nmodule comparator_32bit(\n    input [31:0] A,   // First 32-bit input operand\n    input [31:0] B,   // Second 32-bit input operand\n    output A_greater, \n    output A_equal,   \n    output A_less     \n);"
+            }
+        ],
+        "task_id": "comparator_32bit"
+    }
+]

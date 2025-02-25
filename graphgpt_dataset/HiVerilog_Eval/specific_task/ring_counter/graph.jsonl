@@ -1,0 +1,1 @@
+{"nodes": [{"id": 0, "content": "clk", "type": "input port"}, {"id": 1, "content": "reset", "type": "input port"}, {"id": 2, "content": "out", "type": "output port"}, {"id": 3, "content": "init", "type": "submodule"}, {"id": 4, "content": "transition", "type": "submodule"}], "edge_attrs": [], "connectivity": [[1, 0, 1, 0, 3, 4], [3, 3, 4, 4, 4, 2]]}

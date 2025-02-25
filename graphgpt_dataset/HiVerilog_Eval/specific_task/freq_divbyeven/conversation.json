@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst_n', 'type': 'input port'}, {'id': 2, 'content': 'clk_div', 'type': 'output port'}, {'id': 3, 'content': 'u_counter', 'type': 'submodule'}, {'id': 4, 'content': 'u_clk_divider', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 0, 1, 3, 4], [3, 3, 4, 4, 4, 2]]\n, Create a modular frequency divider that divides the input clock frequency by even numbers. This module generates a divided clock signal by toggling its output every specified number of input clock cycles.\n\nModule name:\n    freq_divbyeven\n\nInput ports:\n    clk: Input clock signal that will be divided.\n    rst_n: Active-low reset signal to initialize the module.\n\nOutput ports:\n    clk_div: Divided clock output signal.\n\nImplementation:\nThe frequency divider consists of two submodules: a counter and a clock divider. The NUM_DIV parameter specifies the division factor, which must be an even number.\nThe counter submodule counts the number of clock cycles. When the reset signal (rst_n) is low, the counter initializes to zero.\nThe counter increments until it reaches half of NUM_DIV - 1.\nWhen the counter reaches this limit, it resets to zero.\nThe clock divider submodule toggles the clk_div output signal whenever the counter resets, effectively dividing the frequency of the input clock by the even number specified by NUM_DIV.\nCounter:\nThe counter is a 4-bit register that tracks the number of clock cycles.\nSubmodules:\nCounter Submodule: Responsible for counting clock cycles.\nClock Divider Submodule: Responsible for toggling the divided clock output.\n\nGive me the complete code.\nmodule freq_divbyeven(\n    input clk,\n    input rst_n,\n    output clk_div\n);"
+            }
+        ],
+        "task_id": "freq_divbyeven"
+    }
+]

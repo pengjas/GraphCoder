@@ -1,0 +1,1 @@
+{"nodes": [{"id": 0, "content": "clk", "type": "input port"}, {"id": 1, "content": "rst_n", "type": "input port"}, {"id": 2, "content": "wave", "type": "output port"}, {"id": 3, "content": "state_inst", "type": "submodule"}, {"id": 4, "content": "wave_inst", "type": "submodule"}], "edge_attrs": [], "connectivity": [[4, 0, 1, 0, 1, 3, 4], [3, 3, 3, 4, 4, 4, 2]]}

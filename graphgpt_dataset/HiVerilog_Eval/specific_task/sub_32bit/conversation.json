@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'Diff', 'type': 'output port'}, {'id': 3, 'content': 'B_out', 'type': 'output port'}, {'id': 4, 'content': 'S1', 'type': 'submodule'}, {'id': 5, 'content': 'S2', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 1, 0, 4, 5, 4, 5], [4, 4, 5, 5, 5, 2, 2, 3]]\n, Implement a module of a 32-bit subtractor that uses a modular architecture.\n\nModule name:\n    sub_32bit\n\nInput ports:\n    A[31:0]: 32-bit input operand A.\n    B[31:0]: 32-bit input operand B.\n\nOutput ports:\n    Diff[31:0]: 32-bit output representing the difference of A and B.\n    B_out: Borrow-out output.\n\nImplementation:\nThe top module sub_32bit consists of two instances of a 16-bit subtractor block you design.\n\nPlease provide the complete code.\nmodule sub_32bit(A, B, Diff, B_out);"
+            }
+        ],
+        "task_id": "sub_32bit"
+    }
+]

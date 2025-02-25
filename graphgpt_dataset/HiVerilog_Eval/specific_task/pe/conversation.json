@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst', 'type': 'input port'}, {'id': 2, 'content': 'a', 'type': 'input port'}, {'id': 3, 'content': 'b', 'type': 'input port'}, {'id': 4, 'content': 'c', 'type': 'output port'}, {'id': 5, 'content': 'u_multiplier', 'type': 'submodule'}, {'id': 6, 'content': 'u_accumulator', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[2, 3, 5, 0, 1, 6], [5, 5, 6, 6, 6, 4]]\n, Implement a modular Multiplying Accumulator for 32-bit integers. In the pe module, there are submodules for multiplication and accumulation. The pe module connects these submodules to perform the operations.\n\nModule name:\n    pe\n\nInput ports:\n    clk: Clock signal used for synchronous operations.\n    rst: Reset signal. Defined as 1 for reset and 0 for reset signal inactive.\n    a: 32-bit input operand A.\n    b: 32-bit input operand B.\n\nOutput ports:\n    c: 32-bit output representing the accumulated result.\n\nImplementation:\nThe module includes:\nMultiplier Submodule:\nThis submodule takes two 32-bit inputs (a and b) and produces a 64-bit result of their multiplication.\nAccumulator Submodule:\nThis submodule accumulates the lower 32 bits of the multiplication result into a register, current_value. It resets the value to 0 when rst is high and adds the new multiplication result during each clock cycle when rst is low.\nThe main pe module connects these submodules and drives the output c with the accumulated result.\n\nGive me the complete code.\nmodule pe(\n    input clk,\n    input rst,\n    input [31:0] a,\n    input [31:0] b,\n    output [31:0] c\n);"
+            }
+        ],
+        "task_id": "pe"
+    }
+]

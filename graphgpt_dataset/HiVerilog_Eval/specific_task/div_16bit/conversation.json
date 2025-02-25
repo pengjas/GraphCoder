@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'result', 'type': 'output port'}, {'id': 3, 'content': 'odd', 'type': 'output port'}, {'id': 4, 'content': 'ctrl', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 4, 4], [4, 4, 2, 3]]\n, Implement a modular 16-bit divider module, where the dividend is 16 bits and the divisor is 8 bits in combinational logic. The module should consist of submodules, enhancing organization and reusability. The main module should handle input and output ports, while a separate control unit submodule performs the division operation.\n\nModule name:\n    div_16bit\n\nInput ports:\n    A: 16-bit dividend.\n    B: 8-bit divisor.\n    \nOutput ports:\n    result: 16-bit quotient.\n    odd: 16-bit remainder.\n\nImplementation:\nThe top module connects the input and output ports and instantiates a control unit. The control unit handles the division logic, initializing temporary variables, performing the division algorithm, and updating the quotient and remainder. The division process involves shifting the dividend, comparing it with the divisor, and constructing the final results.\n\nGive me the complete code.\nmodule div_16bit (\n    input wire [15:0] A,       // 16-bit dividend\n    input wire [7:0] B,       // 8-bit divisor\n    output wire [15:0] result, // 16-bit quotient\n    output wire [15:0] odd     // 16-bit remainder\n);"
+            }
+        ],
+        "task_id": "div_16bit"
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'CLK_in', 'type': 'input port'}, {'id': 1, 'content': 'RST', 'type': 'input port'}, {'id': 2, 'content': 'CLK_50', 'type': 'output port'}, {'id': 3, 'content': 'CLK_10', 'type': 'output port'}, {'id': 4, 'content': 'CLK_1', 'type': 'output port'}, {'id': 5, 'content': 'clk_div_50', 'type': 'submodule'}, {'id': 6, 'content': 'clk_div_10', 'type': 'submodule'}, {'id': 7, 'content': 'clk_div_1', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 0, 1, 0, 1, 5, 6, 7], [5, 5, 6, 6, 7, 7, 2, 3, 4]]\n, Implement a modular frequency divider that takes an input clock frequency of 100MHz and generates three output clock frequencies: 50MHz, 10MHz, and 1MHz.\n\nModule name:\n    freq_div\n\nInput ports:\n    CLK_in: Input clock signal\n    RST: Reset signal\n\nOutput ports:\n    CLK_50: Output clock signal with a frequency of CLK_in divided by 2.\n    CLK_10: Output clock signal with a frequency of CLK_in divided by 10.\n    CLK_1: Output clock signal with a frequency of CLK_in divided by 100.\n\nImplementation:\nThe module uses three submodules to generate the required clock frequencies:\nclk_div_2 generates the 50MHz clock by toggling the output on every positive edge of CLK_in.\nclk_div_10 generates the 10MHz clock by counting to 4 and toggling the output.\nclk_div_100 generates the 1MHz clock by counting to 49 and toggling the output.\nOn every positive edge of CLK_in or when RST is active, if RST is asserted, all output clocks are reset to 0. Otherwise, the counters increment accordingly to generate the desired frequencies.\n\nGive me the complete code.\nmodule freq_div (\n    input CLK_in,\n    input RST,\n    output CLK_50,\n    output CLK_10,\n    output CLK_1\n);"
+            }
+        ],
+        "task_id": "freq_div"
+    }
+]

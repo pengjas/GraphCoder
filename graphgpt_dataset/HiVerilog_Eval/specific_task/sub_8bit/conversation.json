@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'D', 'type': 'output port'}, {'id': 3, 'content': 'B_out', 'type': 'output port'}, {'id': 4, 'content': 'adder_inst', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 4, 4], [4, 4, 2, 3]]\n, Implement a module of an 8-bit subtractor that uses modular design principles.\n\nModule name:\n    sub_8bit\n\nInput ports:\n    A[7:0]: 8-bit input operand A.\n    B[7:0]: 8-bit input operand B.\n\nOutput ports:\n    D[7:0]: 8-bit output representing the difference of A and B.\n    B_out: Borrow output indicating if a borrow was generated during the subtraction.\n\nImplementation:\nThe top module sub_8bit generates the 2's complement of B and utilizes an adder_8bit module to perform the subtraction operation. The adder_8bit module consists of multiple instances of the full_adder module to handle the addition of each bit.\n\nGive me the complete code.\nmodule sub_8bit(A, B, D, B_out);"
+            }
+        ],
+        "task_id": "sub_8bit"
+    }
+]

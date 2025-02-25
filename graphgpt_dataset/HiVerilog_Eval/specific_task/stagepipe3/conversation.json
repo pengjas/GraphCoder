@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst', 'type': 'input port'}, {'id': 2, 'content': 'instr_mem', 'type': 'input port'}, {'id': 3, 'content': 'reg_file', 'type': 'input port'}, {'id': 4, 'content': 'out_reg_file', 'type': 'output port'}, {'id': 5, 'content': 'fetch', 'type': 'submodule'}, {'id': 6, 'content': 'execute', 'type': 'submodule'}, {'id': 7, 'content': 'writeback', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 2, 1, 0, 5, 3, 0, 6, 7], [5, 5, 5, 6, 6, 6, 7, 7, 4]]\n, Implement a module of a 3-stage pipeline processor.\n\nModule name:  \n    stagepipe3               \nInput ports:\n    clk: Clock signal.\n    rst: Reset signal, active high.\n    instr_mem[0:31]: 32x32-bit memory array representing the instruction memory.\n    reg_file[0:31]: 32x32-bit array representing the register file.\nOutput ports:\n    out_reg_file[31:0]: 32-bit output representing the updated value in the register file.\n\nImplementation:\nIn the stagepipe3 module, three stages of a pipeline (fetch, execute, writeback) are instantiated and connected sequentially. The fetch_stage module is responsible for fetching instructions from instruction memory using a program counter (pc). It outputs the fetched instruction to the execute_stage. The execute_stage module decodes the fetched instruction and performs the necessary arithmetic operations on operands fetched from the register file. Depending on the instruction type, it performs either addition or subtraction. The result of this computation is then passed to the writeback_stage, which writes the computed value back into a specific register in the register file, completing the cycle。\n\nGive me the complete code.\nmodule stagepipe3(\n    input clk,\n    input rst,\n    input [31:0] instr_mem [0:31],\n    input [31:0] reg_file [0:31],\n    output [31:0] out_reg_file  \n);"
+            }
+        ],
+        "task_id": "stagepipe3"
+    }
+]

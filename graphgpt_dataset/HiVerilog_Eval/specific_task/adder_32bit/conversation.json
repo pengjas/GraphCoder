@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'A', 'type': 'input port'}, {'id': 1, 'content': 'B', 'type': 'input port'}, {'id': 2, 'content': 'S', 'type': 'output port'}, {'id': 3, 'content': 'C32', 'type': 'output port'}, {'id': 4, 'content': 'CLA1', 'type': 'submodule'}, {'id': 5, 'content': 'CLA2', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[1, 0, 4, 0, 1, 5, 4, 5, 4], [4, 4, 5, 5, 5, 2, 2, 3, 3]]\n, Implement a module of a carry-lookahead 32-bit adder that uses the Carry-Lookahead Adder (CLA) architecture.\n\nModule name:  \n    adder_32bit               \nInput ports:\n    A[32:1]: 32-bit input operand A.\n    B[32:1]: 32-bit input operand B.\nOutput ports:\n    S[32:1]: 32-bit output representing the sum of A and B.\n    C32: Carry-out output.\n\nImplementation:\nThe top module adder_32bit consists of several instances of the 16 bit CLA block you design.\n\nGive me the complete code.\nmodule adder_32bit(A,B,S,C32);"
+            }
+        ],
+        "task_id": "adder_32bit"
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "conversations": [
+            {
+                "from": "human",
+                "value": "Given a submodules interconnection graph: \n<graph>\n, \nnodes: [{'id': 0, 'content': 'clk', 'type': 'input port'}, {'id': 1, 'content': 'rst_n', 'type': 'input port'}, {'id': 2, 'content': 'clk_div', 'type': 'output port'}, {'id': 3, 'content': 'u_pos_counter', 'type': 'submodule'}, {'id': 4, 'content': 'u_neg_counter', 'type': 'submodule'}], \nedge_attrs: [], \nconnectivity: [[0, 1, 0, 1, 4, 3], [3, 3, 4, 4, 2, 2]]\n, A frequency divider that divides the input clock frequency by odd numbers. The module generates a divided clock output by an odd divisor value provided as a parameter.\n\nModule name:\n    freq_divbyodd\n\nInput ports:\n    clk: Input clock signal.\n    rst_n: Active low reset signal that initializes the divider.\n\nOutput ports:\n    clk_div: Divided clock output.\n\nImplementation:\n\nThe module divides the input clock frequency by an odd number defined by the parameter NUM_DIV, which defaults to 5. \nIt consists of two submodules: `pos_edge_counter` and `neg_edge_counter`, which count the rising and falling edges of the clock, respectively. \nEach counter counts up to NUM_DIV - 1. \nThe `pos_edge_counter` generates a clock output for the positive edge, while the `neg_edge_counter` generates a clock output for the negative edge. \nThe final divided clock output, clk_div, is derived by logically OR-ing clk_div1 and clk_div2 to account for both clock edges. \nThe active low reset signal rst_n initializes the counters and the clock divider outputs.\n\nGive me the complete code.\nmodule freq_divbyodd(\n    input clk,\n    input rst_n,\n    output clk_div\n);"
+            }
+        ],
+        "task_id": "freq_divbyodd"
+    }
+]
