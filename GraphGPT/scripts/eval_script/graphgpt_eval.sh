@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_specific_tasks_with_module_head/instr_reg/v0_seed0/v1_epoch14/haven_llama_5layers_instr_reg_v0_epoch14.ckpt
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_specific_tasks_with_module_head/instr_reg/v1_seed1/v0_epoch6/haven_llama_5layers_instr_reg_v1_epoch6.ckpt
 tokenizer_path=/data/LPJ/haven_codellama
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/specific_task/instr_reg/conversation.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/specific_task/instr_reg/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/fine_tune_5layers_specific_tasks_with_head/instr_reg/v0_seed0/v3_epoch14
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/fine_tune_5layers_specific_tasks_with_head/instr_reg/v1_seed1/v0_epoch6
 num_gpus=1
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
