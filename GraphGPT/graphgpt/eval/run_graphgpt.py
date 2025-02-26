@@ -405,7 +405,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     # graph_data=graph_data,
                     graph_data=graph_data.cuda(),
                     do_sample=True,
-                    temperature=0.2,
+                    temperature=args.temperature,
                     max_new_tokens=1024,
                     stopping_criteria=[stopping_criteria])
             # print("==============================================================")
@@ -475,6 +475,7 @@ if __name__ == "__main__":
     parser.add_argument("--n_pass_k", type=int, default=10)
     parser.add_argument("--lora_enable", type=str2bool, default=True)
     parser.add_argument("--lora_r", type=int, default=16)
+    parser.add_argument("--temperature", type=float, default=0.2)
     
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)
