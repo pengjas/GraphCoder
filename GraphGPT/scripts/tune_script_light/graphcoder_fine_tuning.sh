@@ -6,10 +6,10 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_constructio
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/similar_logic/instr_reg/v0/with_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_similar_logic_with_module_head/instr_reg/v0/epoch36
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_similar_logic_with_module_head/instr_reg/v0/epoch50
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_5layers_similar_logic_instr_reg_v0_epoch36
-resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_similar_logic_with_module_head/instr_reg/v0/epoch30/haven_llama_5layers_similar_logic_instr_reg_v0_epoch30.ckpt'
+model_save_name=haven_llama_5layers_similar_logic_instr_reg_v0_epoch50
+resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_similar_logic_with_module_head/instr_reg/v0/epoch36/haven_llama_5layers_similar_logic_instr_reg_v0_epoch36.ckpt'
 if_resume=True
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 val_graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
@@ -31,7 +31,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 36 \
+    --num_train_epochs 50 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
