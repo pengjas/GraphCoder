@@ -1,14 +1,14 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/haven_codellama
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
-instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/similar_logic/instr_reg/v1/with_head/conversations.json
+instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/without_textualized_graph/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/similar_logic/instr_reg/v1/with_head/graph.jsonl
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/acl25_gpt4/shuffled_with_module_head/without_textualized_graph/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_similar_logic_with_module_head/instr_reg/v1_1/epoch16
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/without_textualized_graph/epoch5
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_5layers_similar_logic_instr_reg_v1_1_epoch16
+model_save_name=haven_llama_5layers_1326_acl25_epoch5_without_textualized_graph
 resume='/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_similar_logic_with_module_head/instr_reg/v1/epoch10/haven_llama_5layers_similar_logic_instr_reg_v1_epoch10.ckpt'
 if_resume=False
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
@@ -31,7 +31,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 16 \
+    --num_train_epochs 5 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -60,9 +60,9 @@ python graphgpt/train/train_light.py \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
     --use_seperate_lr True \
-    --gnn_lr 1e-3 \
-    --projector_lr 5e-4 \
-    --llm_lr 5e-4 \
+    --gnn_lr 1e-4 \
+    --projector_lr 1e-4 \
+    --llm_lr 5e-5 \
     --freeze_graph_mlp_adapter False \
     --lora_r 64 \
     --if_resume ${if_resume} \
