@@ -3,7 +3,7 @@ output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_7layers_havenllama_gnn
 tokenizer_path=/data/LPJ/haven_codellama
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/fine_tune_7layers_havenllama_using_shuffled_acl25_gpt4_unfreeze_gnn_projector_with_lora/v0_epoch50/v1/tmp0.2
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/fine_tune_7layers_havenllama_using_shuffled_acl25_gpt4_unfreeze_gnn_projector_with_lora/v0_epoch50/v1/tmp0.8
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -17,7 +17,7 @@ n_pass_k=15
 use_trained_gnn=True
 lora_enable=True
 lora_r=64
-temperature=0.2
+temperature=0.8
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
     --output_file_name ${output_file_name} \
