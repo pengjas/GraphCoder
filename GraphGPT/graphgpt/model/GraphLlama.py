@@ -25,6 +25,7 @@ from transformers import AutoConfig, AutoModelForCausalLM, \
                          CLIPVisionModel, CLIPImageProcessor
 
 from transformers.modeling_outputs import BaseModelOutputWithPast, CausalLMOutputWithPast
+from lavis.models.blip2_models.Qformer import BertConfig, BertLMHeadModel
 
 from graphgpt.model.graph_layers import MPNN, GNN, CLIP, graph_transformer
 from torch_geometric.data import Data
@@ -104,8 +105,18 @@ class GraphLlamaModel(LlamaModel):
                 self.graph_tower = graph_transformer(args)
                 self.graph_tower = transfer_param_tograph(clip_graph, self.graph_tower)
 
-            
+        self.num_query_token = self.config.num_query_token
+        self.qformer, self.query_tokens = self.init_Qformer(self.config.bert_name, self.num_query_token, self.config.graph_hidden_size, self.config.cross_attention_freq)
+        self.qformer.cls = None
+        self.qformer.bert.embeddings.word_embeddings = None
+        self.qformer.bert.embeddings.position_embeddings = None
+        for layer in self.qformer.bert.encoder.layer:
+            layer.output = None
+            layer.intermediate = None
 
+        self.opt_proj = nn.Linear(
+            self.qformer.config.hidden_size, self.config.hidden_size
+        )
             # self.vision_tower = CLIPVisionModel.from_pretrained(config.mm_vision_tower)
 
         if hasattr(config, "use_graph_proj"):
@@ -123,6 +134,20 @@ class GraphLlamaModel(LlamaModel):
                 # nn.Linear(self.config.hidden_size, self.config.hidden_size),
             )
             # nn.Linear(config.graph_hidden_size, config.hidden_size)
+    
+    @classmethod
+    def init_Qformer(cls, model_name, num_query_token, graph_width, cross_attention_freq=2):
+        encoder_config = BertConfig.from_pretrained(model_name)
+        encoder_config.encoder_width = graph_width
+        encoder_config.add_cross_attention = True
+        encoder_config.cross_attention_freq = cross_attention_freq
+        encoder_config.query_length = num_query_token
+        qformer = BertLMHeadModel.from_pretrained(model_name, config=encoder_config)
+        query_tokens = nn.Parameter(
+            torch.zeros(1, num_query_token, encoder_config.hidden_size),
+        )
+        query_tokens.data.normal_(mean=0.0, std=encoder_config.initializer_range)
+        return qformer, query_tokens
 
     def get_graph_tower(self):
         graph_tower = getattr(self, 'graph_tower', None)
