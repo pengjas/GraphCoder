@@ -28,10 +28,12 @@ from transformers.modeling_outputs import BaseModelOutputWithPast, CausalLMOutpu
 from lavis.models.blip2_models.Qformer import BertConfig, BertLMHeadModel
 
 from graphgpt.model.graph_layers import MPNN, GNN, CLIP, graph_transformer
+from torch_geometric.utils import add_self_loops, degree, softmax, to_dense_batch
 from torch_geometric.data import Data
 import json
 import os.path as osp
 import glob
+from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool, GlobalAttention, Set2Set
 
 DEFAULT_GRAPH_TOKEN = "<graph>"
 DEFAULT_GRAPH_PATCH_TOKEN = "<g_patch>"
@@ -105,6 +107,7 @@ class GraphLlamaModel(LlamaModel):
                 self.graph_tower = graph_transformer(args)
                 self.graph_tower = transfer_param_tograph(clip_graph, self.graph_tower)
 
+        self.ln_graph = nn.LayerNorm(self.config.graph_hidden_size)
         self.num_query_token = self.config.num_query_token
         self.qformer, self.query_tokens = self.init_Qformer(self.config.bert_name, self.num_query_token, self.config.graph_hidden_size, self.config.cross_attention_freq)
         self.qformer.cls = None
@@ -266,10 +269,21 @@ class GraphLlamaModel(LlamaModel):
             else:
                     raise ValueError(f'graph_node_reps is expected to be a list but got {type(graph_data)}')
             if type(graph_data) is list:
-                # if type(graph_node_features[0]) is not dict:
-                graph_node_features = [self.graph_projector(node_feature) for node_feature in graph_node_features]
-                # else: 
-                #     graph_node_features = [{'graph_1': self.graph_projector(node_feature['graph_1']), 'graph_2': self.graph_projector(node_feature['graph_2'])} for node_feature in graph_node_features]
+                # # if type(graph_node_features[0]) is not dict:
+
+                graph_embeds, graph_mask = additional_process_for_qformer(graph_node_features)
+                graph_embeds = self.ln_graph(graph_embeds, graph_mask)
+                query_tokens = self.query_tokens.expand(graph_embeds.shape[0], -1, -1)
+                query_output = self.qformer.bert(
+                    query_embeds=query_tokens,
+                    encoder_hidden_states=graph_embeds,
+                    encoder_attention_mask=graph_mask, # fixme: check whether this mask is correct
+                    return_dict=True,
+                )
+                graph_node_features = self.opt_proj(query_output.last_hidden_state)
+                # graph_node_features = [self.graph_projector(node_feature) for node_feature in graph_node_features]
+                # # else: 
+                # #     graph_node_features = [{'graph_1': self.graph_projector(node_feature['graph_1']), 'graph_2': self.graph_projector(node_feature['graph_2'])} for node_feature in graph_node_features]
             else:
                 raise ValueError(f'graph_node_reps is expected to be a list but got {type(graph_data)}')
             dummy_graph_features = torch.zeros(256, 128, device=inputs_embeds.device, dtype=inputs_embeds.dtype)
@@ -332,6 +346,18 @@ class GraphLlamaModel(LlamaModel):
             output_attentions=output_attentions, output_hidden_states=output_hidden_states,
             return_dict=return_dict
         )
+
+def additional_process_for_qformer(graph_node_features):
+    num_nodes = graph_node_features.shape[0]
+    batch = torch.zeros(num_nodes, device=graph_node_features.device)
+    h_graph = global_mean_pool(graph_node_features, batch)
+    batch_node, batch_mask = to_dense_batch(graph_node_features, batch)
+    batch_mask = batch_mask.bool()
+
+    batch_node = torch.cat((h_graph.unsqueeze(1), batch_node), dim=1)
+    batch_mask = torch.cat((torch.ones(batch_mask.shape[0], 1, device=batch.device, dtype=torch.bool), batch_mask), dim=1)
+    return batch_node, batch_mask
+
 
 
 class GraphLlamaForCausalLM(LlamaForCausalLM):
