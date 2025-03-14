@@ -96,6 +96,7 @@
                 "--if_resume", "False",
                 "--val_early_stop_threshold", "0.5",
                 "--if_val", "False",
+                "--num_query_token", "24",
             ]
         }
     ]

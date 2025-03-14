@@ -122,11 +122,23 @@ class GraphGPT_pl(LightningModule):
                 self.model.requires_grad_(False)
                 for p in self.model.get_model().graph_projector.parameters():
                     p.requires_grad = True
+                # for p in self.model.get_model().ln_graph.parameters():
+                #     p.requires_grad = True
+                # for p in self.model.get_model().qformer.parameters():
+                #     p.requires_grad = True
+                # for p in self.model.get_model().opt_proj.parameters():
+                #     p.requires_grad = True
 
             self.model.config.freeze_graph_mlp_adapter = training_args.freeze_graph_mlp_adapter
             if training_args.freeze_graph_mlp_adapter:
                 for p in self.model.get_model().graph_projector.parameters():
                     p.requires_grad = False
+                # for p in self.model.get_model().ln_graph.parameters():
+                #     p.requires_grad = False
+                # for p in self.model.get_model().qformer.parameters():
+                #     p.requires_grad = False
+                # for p in self.model.get_model().opt_proj.parameters():
+                #     p.requires_grad = False
             
             if training_args.freeze_gnn:
                 for p in self.model.get_model().graph_tower.parameters():
@@ -141,6 +153,9 @@ class GraphGPT_pl(LightningModule):
             # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             if training_args.bits in [4, 8]:
                 self.model.get_model().graph_projector.to(dtype=compute_dtype, device=training_args.device)
+                self.model.get_model().ln_graph.to(dtype=compute_dtype, device=training_args.device)
+                self.model.get_model().qformer.to(dtype=compute_dtype, device=training_args.device)
+                self.model.get_model().opt_proj.to(dtype=compute_dtype, device=training_args.device)
 
             self.model.config.use_graph_start_end = data_args.use_graph_start_end = model_args.use_graph_start_end
             # graph_config.use_graph_start_end = training_args.use_graph_start_end = model_args.use_graph_start_end

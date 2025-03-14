@@ -107,50 +107,50 @@ class GraphLlamaModel(LlamaModel):
                 self.graph_tower = graph_transformer(args)
                 self.graph_tower = transfer_param_tograph(clip_graph, self.graph_tower)
 
-        self.ln_graph = nn.LayerNorm(self.config.graph_hidden_size)
-        self.num_query_token = self.config.num_query_token
-        self.qformer, self.query_tokens = self.init_Qformer(self.config.bert_name, self.num_query_token, self.config.graph_hidden_size, self.config.cross_attention_freq)
-        self.qformer.cls = None
-        self.qformer.bert.embeddings.word_embeddings = None
-        self.qformer.bert.embeddings.position_embeddings = None
-        for layer in self.qformer.bert.encoder.layer:
-            layer.output = None
-            layer.intermediate = None
+            self.ln_graph = LayerNorm(self.config.graph_hidden_size)
+            self.num_query_token = self.config.num_query_token
+            self.qformer, self.query_tokens = self.init_Qformer(self.config.bert_name, self.num_query_token, self.config.graph_hidden_size, self.config.cross_attention_freq)
+            self.qformer.cls = None
+            self.qformer.bert.embeddings.word_embeddings = None
+            self.qformer.bert.embeddings.position_embeddings = None
+            for layer in self.qformer.bert.encoder.layer:
+                layer.output = None
+                layer.intermediate = None
 
-        self.opt_proj = nn.Linear(
-            self.qformer.config.hidden_size, self.config.hidden_size
-        )
+            self.opt_proj = nn.Linear(
+                self.qformer.config.hidden_size, self.config.hidden_size
+            )
             # self.vision_tower = CLIPVisionModel.from_pretrained(config.mm_vision_tower)
 
-        if hasattr(config, "use_graph_proj"):
-            self.graph_projector = nn.Sequential(
-                nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                # nn.GELU(),
-                # nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                # nn.GELU(),
-                # nn.Linear(self.config.hidden_size, self.config.hidden_size),
-            )
-            # nn.Linear(config.graph_hidden_size, config.hidden_size)
+        # if hasattr(config, "use_graph_proj"):
+        #     self.graph_projector = nn.Sequential(
+        #         nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
+        #         nn.GELU(),
+        #         nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #         nn.GELU(),
+        #         nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #         nn.GELU(),
+        #         nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #         # nn.GELU(),
+        #         # nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #         # nn.GELU(),
+        #         # nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #     )
+        #     # nn.Linear(config.graph_hidden_size, config.hidden_size)
     
-    @classmethod
-    def init_Qformer(cls, model_name, num_query_token, graph_width, cross_attention_freq=2):
-        encoder_config = BertConfig.from_pretrained(model_name)
-        encoder_config.encoder_width = graph_width
-        encoder_config.add_cross_attention = True
-        encoder_config.cross_attention_freq = cross_attention_freq
-        encoder_config.query_length = num_query_token
-        qformer = BertLMHeadModel.from_pretrained(model_name, config=encoder_config)
-        query_tokens = nn.Parameter(
-            torch.zeros(1, num_query_token, encoder_config.hidden_size),
-        )
-        query_tokens.data.normal_(mean=0.0, std=encoder_config.initializer_range)
-        return qformer, query_tokens
+    # @classmethod
+    # def init_Qformer(cls, model_name, num_query_token, graph_width, cross_attention_freq=2):
+    #     encoder_config = BertConfig.from_pretrained(model_name)
+    #     encoder_config.encoder_width = graph_width
+    #     encoder_config.add_cross_attention = True
+    #     encoder_config.cross_attention_freq = cross_attention_freq
+    #     encoder_config.query_length = num_query_token
+    #     qformer = BertLMHeadModel.from_pretrained(model_name, config=encoder_config)
+    #     query_tokens = nn.Parameter(
+    #         torch.zeros(1, num_query_token, encoder_config.hidden_size),
+    #     )
+    #     query_tokens.data.normal_(mean=0.0, std=encoder_config.initializer_range)
+    #     return qformer, query_tokens
 
     def get_graph_tower(self):
         graph_tower = getattr(self, 'graph_tower', None)
@@ -197,23 +197,39 @@ class GraphLlamaModel(LlamaModel):
 
         self.config.use_graph_proj = True
         self.config.graph_select_layer = graph_select_layer
+        if not hasattr(self, 'qformer'):
+            self.graph_projector = Qformer_proj(graph_hidden_size=self.config.graph_hidden_size, num_query_token=self.config.num_query_token, bert_name=self.config.bert_name, cross_attention_freq=self.config.cross_attention_freq, llm_hidden_size=self.config.hidden_size)
 
-        if not hasattr(self, 'graph_projector'):
-            self.graph_projector = nn.Sequential(
-                nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size)
-            )
+            # self.ln_graph = nn.LayerNorm(self.config.graph_hidden_size)
+            # self.num_query_token = self.config.num_query_token
+            # self.qformer, self.query_tokens = self.init_Qformer(self.config.bert_name, self.num_query_token, self.config.graph_hidden_size, self.config.cross_attention_freq)
+            # self.qformer.cls = None
+            # self.qformer.bert.embeddings.word_embeddings = None
+            # self.qformer.bert.embeddings.position_embeddings = None
+            # for layer in self.qformer.bert.encoder.layer:
+            #     layer.output = None
+            #     layer.intermediate = None
+
+            # self.opt_proj = nn.Linear(
+            #     self.qformer.config.hidden_size, self.config.hidden_size
+            # )
+
+        # if not hasattr(self, 'graph_projector'):
+        #     self.graph_projector = nn.Sequential(
+        #         nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
+        #         nn.GELU(),
+        #         nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #         nn.GELU(),
+        #         nn.Linear(self.config.hidden_size, self.config.hidden_size),
+        #         nn.GELU(),
+        #         nn.Linear(self.config.hidden_size, self.config.hidden_size)
+        #     )
             # nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
             # self.graph_projector = nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
 
-        if pretrain_graph_mlp_adapter is not None:
-            graph_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
-            self.graph_projector.load_state_dict({k.split('.')[-1]: v for k, v in graph_projector_weights.items()})
+        # if pretrain_graph_mlp_adapter is not None:
+        #     graph_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
+        #     self.graph_projector.load_state_dict({k.split('.')[-1]: v for k, v in graph_projector_weights.items()})
 
     def forward(
         self,
@@ -271,16 +287,16 @@ class GraphLlamaModel(LlamaModel):
             if type(graph_data) is list:
                 # # if type(graph_node_features[0]) is not dict:
 
-                graph_embeds, graph_mask = additional_process_for_qformer(graph_node_features)
-                graph_embeds = self.ln_graph(graph_embeds, graph_mask)
-                query_tokens = self.query_tokens.expand(graph_embeds.shape[0], -1, -1)
-                query_output = self.qformer.bert(
-                    query_embeds=query_tokens,
-                    encoder_hidden_states=graph_embeds,
-                    encoder_attention_mask=graph_mask, # fixme: check whether this mask is correct
-                    return_dict=True,
-                )
-                graph_node_features = self.opt_proj(query_output.last_hidden_state)
+                # graph_embeds, graph_mask = additional_process_for_qformer(graph_node_features)
+                # graph_embeds = self.ln_graph(graph_embeds, graph_mask)
+                # query_tokens = self.query_tokens.expand(graph_embeds.shape[0], -1, -1)
+                # query_output = self.qformer.bert(
+                #     query_embeds=query_tokens,
+                #     encoder_hidden_states=graph_embeds,
+                #     encoder_attention_mask=graph_mask, # fixme: check whether this mask is correct
+                #     return_dict=True,
+                # )
+                graph_node_features = self.graph_projector(graph_node_features)
                 # graph_node_features = [self.graph_projector(node_feature) for node_feature in graph_node_features]
                 # # else: 
                 # #     graph_node_features = [{'graph_1': self.graph_projector(node_feature['graph_1']), 'graph_2': self.graph_projector(node_feature['graph_2'])} for node_feature in graph_node_features]
@@ -348,8 +364,11 @@ class GraphLlamaModel(LlamaModel):
         )
 
 def additional_process_for_qformer(graph_node_features):
+
+    if type(graph_node_features) is list:
+        graph_node_features = graph_node_features[0]
     num_nodes = graph_node_features.shape[0]
-    batch = torch.zeros(num_nodes, device=graph_node_features.device)
+    batch = torch.zeros(num_nodes, dtype=torch.int64, device=graph_node_features.device)
     h_graph = global_mean_pool(graph_node_features, batch)
     batch_node, batch_mask = to_dense_batch(graph_node_features, batch)
     batch_mask = batch_mask.bool()
@@ -358,7 +377,57 @@ def additional_process_for_qformer(graph_node_features):
     batch_mask = torch.cat((torch.ones(batch_mask.shape[0], 1, device=batch.device, dtype=torch.bool), batch_mask), dim=1)
     return batch_node, batch_mask
 
+class LayerNorm(nn.LayerNorm):
+    """Subclass torch's LayerNorm to handle fp16."""
 
+    def forward(self, x: torch.Tensor, mask=None):
+        orig_type = x.dtype
+        ret = super().forward(x.type(torch.float32))
+        return ret.type(orig_type)
+
+class Qformer_proj(nn.Module):
+    def __init__(self, graph_hidden_size, num_query_token, bert_name, cross_attention_freq, llm_hidden_size):
+        super(Qformer_proj, self).__init__()
+        self.ln_graph = LayerNorm(graph_hidden_size)
+        self.num_query_token = num_query_token
+        self.qformer, self.query_tokens = self.init_Qformer(bert_name, num_query_token, graph_hidden_size, cross_attention_freq)
+        self.qformer.cls = None
+        self.qformer.bert.embeddings.word_embeddings = None
+        self.qformer.bert.embeddings.position_embeddings = None
+        for layer in self.qformer.bert.encoder.layer:
+            layer.output = None
+            layer.intermediate = None
+
+        self.opt_proj = nn.Linear(
+            self.qformer.config.hidden_size, llm_hidden_size
+        )
+    
+    def forward(self, graph_node_features):
+        graph_embeds, graph_mask = additional_process_for_qformer(graph_node_features)
+        graph_embeds = self.ln_graph(graph_embeds, graph_mask)
+        query_tokens = self.query_tokens.expand(graph_embeds.shape[0], -1, -1)
+        query_output = self.qformer.bert(
+            query_embeds=query_tokens,
+            encoder_hidden_states=graph_embeds,
+            encoder_attention_mask=graph_mask, # fixme: check whether this mask is correct
+            return_dict=True,
+        )
+        graph_node_features = self.opt_proj(query_output.last_hidden_state)
+        return graph_node_features
+    
+    @classmethod
+    def init_Qformer(cls, model_name, num_query_token, graph_width, cross_attention_freq=2):
+        encoder_config = BertConfig.from_pretrained(model_name)
+        encoder_config.encoder_width = graph_width
+        encoder_config.add_cross_attention = True
+        encoder_config.cross_attention_freq = cross_attention_freq
+        encoder_config.query_length = num_query_token
+        qformer = BertLMHeadModel.from_pretrained(model_name, config=encoder_config)
+        query_tokens = nn.Parameter(
+            torch.zeros(1, num_query_token, encoder_config.hidden_size),
+        )
+        query_tokens.data.normal_(mean=0.0, std=encoder_config.initializer_range)
+        return qformer, query_tokens
 
 class GraphLlamaForCausalLM(LlamaForCausalLM):
     config_class = GraphLlamaConfig

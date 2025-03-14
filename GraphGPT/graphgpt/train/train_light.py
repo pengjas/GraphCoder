@@ -86,6 +86,7 @@ class ModelArguments:
     pretrain_graph_mlp_adapter: Optional[str] = field(default=None)
     use_graph_start_end: bool = field(default=False)
     model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
+    num_query_token: int = field(default=24)
 
 
 @dataclass
@@ -638,6 +639,7 @@ class LazySupervisedDataset(Dataset):
     def __init__(self, data_path: str,
                  bert_path: str,
                  bert_gpu: int,
+                 num_query_tokens: int,
                  tokenizer: transformers.PreTrainedTokenizer,
                  bert_tokenizer: BertTokenizer, 
                  graph_cfg: dict, 
@@ -649,6 +651,7 @@ class LazySupervisedDataset(Dataset):
 
         self.tokenizer = tokenizer
         self.bert_tokenizer = bert_tokenizer
+        self.num_query_tokens = num_query_tokens
         self.bert_model = BertModel.from_pretrained(bert_path, torch_dtype=torch.bfloat16, device_map='cpu')
         self.list_data_dict = list_data_dict
         self.graph_cfg = graph_cfg
@@ -691,7 +694,8 @@ class LazySupervisedDataset(Dataset):
         graph_node_rep = graph_node_rep.detach().cpu().clone()
         # graph_node_rep = graph_node_rep.to(torch.bfloat16)
         # graph_node_rep = graph_node_rep.to(torch.float32)
-        cur_token_len = len(graph_node_rep)   # FIXME: 14 is hardcoded patch size
+        cur_token_len = self.num_query_tokens   # FIXME: 14 is hardcoded patch size # +1 for the graph-level token
+        # cur_token_len = len(graph_node_rep) + 1   # FIXME: 14 is hardcoded patch size # +1 for the graph-level token
         sources = preprocess_graph(
             copy.deepcopy([e["conversations"] for e in sources]),
             self.graph_cfg, cur_token_len)
@@ -857,7 +861,7 @@ class DataCollatorForSupervisedDataset(object):
 
 
 def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
-                                bert_tokenizer: BertTokenizer,
+                                bert_tokenizer: BertTokenizer, num_query_token: int,
                                 data_args, training_args) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
     dataset_cls = (LazySupervisedDataset
@@ -868,6 +872,7 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                 data_path=data_args.data_path,
                                 bert_path=data_args.bert_path,
                                 bert_gpu=data_args.bert_gpu,
+                                num_query_tokens=num_query_token,
                                 graph_cfg=dict(
                                     is_graph=data_args.is_graph,
                                     sep_graph_conv_front=data_args.sep_graph_conv_front,
@@ -882,6 +887,7 @@ def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                 data_path=data_args.val_data_path,
                                 bert_path=data_args.bert_path,
                                 bert_gpu=data_args.bert_gpu,
+                                num_query_tokens=num_query_token,
                                 graph_cfg=dict(
                                         is_graph=data_args.is_graph,
                                         sep_graph_conv_front=data_args.sep_graph_conv_front,
@@ -965,7 +971,7 @@ def train():
     elif training_args.bf16:
         model.to(dtype=torch.bfloat16)
         
-    train_dataloader, val_dataloader = make_supervised_data_module(tokenizer=tokenizer, bert_tokenizer=bert_tokenizer,
+    train_dataloader, val_dataloader = make_supervised_data_module(tokenizer=tokenizer, bert_tokenizer=bert_tokenizer, num_query_token=model_args.num_query_token,
                                               data_args=data_args, training_args=training_args)
     
     # checkpoint_callback = ModelCheckpoint(

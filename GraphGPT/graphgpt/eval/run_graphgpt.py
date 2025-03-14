@@ -255,6 +255,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         graph_select_layer=-2,
         use_graph_start_end=True,
         freeze_backbone=True,
+        num_query_tokens=args.num_query_tokens,
     )
     data_args = DataArguments(
         # data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json',
@@ -475,6 +476,7 @@ if __name__ == "__main__":
     parser.add_argument("--n_pass_k", type=int, default=10)
     parser.add_argument("--lora_enable", type=str2bool, default=True)
     parser.add_argument("--lora_r", type=int, default=16)
+    parser.add_argument("--num_query_tokens", type=int, default=24)
     parser.add_argument("--temperature", type=float, default=0.2)
     
     # parser.add_argument("--start_id", type=int, default=0)

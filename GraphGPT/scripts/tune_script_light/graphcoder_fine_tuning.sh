@@ -15,6 +15,7 @@ val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_datas
 val_graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 val_early_stop_threshold=0.1
 if_val=False
+num_query_token=24
 
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
@@ -69,3 +70,4 @@ python graphgpt/train/train_light.py \
     --resume ${resume}\
     --val_early_stop_threshold ${val_early_stop_threshold} \
     --if_val ${if_val} \
+    --num_query_token ${num_query_token} \

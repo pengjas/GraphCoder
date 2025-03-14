@@ -18,6 +18,7 @@ use_trained_gnn=True
 lora_enable=True
 lora_r=64
 temperature=0.2
+num_query_tokens=24
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
     --output_file_name ${output_file_name} \
@@ -36,4 +37,5 @@ python ./graphgpt/eval/run_graphgpt.py \
     --use_trained_gnn ${use_trained_gnn} \
     --lora_enable ${lora_enable} \
     --lora_r ${lora_r}\
-    --temperature ${temperature}
+    --temperature ${temperature}\
+    --num_query_tokens ${num_query_tokens}
