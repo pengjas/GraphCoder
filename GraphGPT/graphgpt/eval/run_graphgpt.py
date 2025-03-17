@@ -255,7 +255,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         graph_select_layer=-2,
         use_graph_start_end=True,
         freeze_backbone=True,
-        num_query_tokens=args.num_query_tokens,
+        num_query_token=args.num_query_tokens,
     )
     data_args = DataArguments(
         # data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json',
@@ -344,7 +344,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         model_max_length=args.bert_tokenizer_max_length,
         padding_side="right")
     
-    bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.float32).to('cuda')
+    bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.bfloat16).to('cpu')
+    # bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.bfloat16).to('cuda')
     # model = model.float()
     # bert_model = bert_model.float()
     for idx, (instruct_item, (graph_index, graph)) in tqdm(enumerate(zip(prompt_file, graph_pd.iterrows())), total=len(prompt_file)):
@@ -357,7 +358,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
             res_data = []
 
             graph_dict = load_graph( graph=graph, bert_tokenizer=bert_tokenizer, bert_model=bert_model)
-            graph_token_len = graph_dict['graph_token_len']
+            # graph_token_len = graph_dict['graph_token_len']
+            graph_token_len = args.num_query_tokens
             graph_data = graph_dict['graph_data']
 
             qs = instruct_item["conversations"][0]["value"]
@@ -405,9 +407,10 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     input_ids,
                     # graph_data=graph_data,
                     graph_data=graph_data.cuda(),
-                    do_sample=True,
+                    do_sample=False,
+                    # do_sample=True,
                     temperature=args.temperature,
-                    max_new_tokens=1024,
+                    max_new_tokens=args.model_max_length,
                     stopping_criteria=[stopping_criteria])
             # print("==============================================================")
             input_token_len = input_ids.shape[1]
@@ -486,8 +489,8 @@ if __name__ == "__main__":
 
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
-    ray.init()
-    # ray.init(local_mode=True)
+    # ray.init()
+    ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
 
 

@@ -192,6 +192,7 @@ class GraphGPT_pl(LightningModule):
     def training_step(self, batch, batch_idx):
         bs = len(batch["input_ids"])
         loss_dict = self.model(**batch)
+        
         loss = loss_dict['loss']
         
         log_dict = {f'train_loss': loss.item()}

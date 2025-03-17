@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_5layers_havenllama_gnn_projector_with_lora_using_shuffled_acl25_gpt4_with_module_head/without_textualized_graph/epoch5/haven_llama_5layers_1326_acl25_epoch5_without_textualized_graph.ckpt
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt
 tokenizer_path=/data/LPJ/haven_codellama
-datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/conversations.json
-graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_Eval/graph_as_prefix/with_module_head/availiable_for_graphcoder/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/fine_tune_5layers_havenllama_using_shuffled_acl25_gpt4_unfreeze_gnn_projector_with_lora/without_textualized_graph/epoch5/v1/tmp0.2
+datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/training_dataset_eval/stage2_1989_57_eval/eval/conversations.json
+graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/training_dataset_eval/stage2_1989_57_eval/eval/graph.jsonl
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/training_dataset_eval_result/stage2_1989_57/qformer_50epoch_separate_lr_gnn1e3_qformer_5e4/tmp0.2
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -13,11 +13,11 @@ bf16=True
 f16=False
 output_file_name='eval_res'
 model_max_length=9216
-n_pass_k=15
+n_pass_k=1
 use_trained_gnn=True
-lora_enable=True
+lora_enable=False
 lora_r=64
-temperature=0.2
+temperature=0
 num_query_tokens=24
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \

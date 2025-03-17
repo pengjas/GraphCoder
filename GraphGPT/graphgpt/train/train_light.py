@@ -652,6 +652,7 @@ class LazySupervisedDataset(Dataset):
         self.tokenizer = tokenizer
         self.bert_tokenizer = bert_tokenizer
         self.num_query_tokens = num_query_tokens
+        # self.bert_model = BertModel.from_pretrained(bert_path, torch_dtype=torch.bfloat16, device_map='cuda')
         self.bert_model = BertModel.from_pretrained(bert_path, torch_dtype=torch.bfloat16, device_map='cpu')
         self.list_data_dict = list_data_dict
         self.graph_cfg = graph_cfg

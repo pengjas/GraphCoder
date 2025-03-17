@@ -308,6 +308,8 @@ class GraphLlamaModel(LlamaModel):
             # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             # print("self.graph_tower.W_P.weight[0][:10]:", self.graph_tower.W_P.weight[0][:10])
             # print("self.graph_tower.W_P.weight.grad", self.graph_tower.W_P.weight.grad)
+            print("======================================================================")
+            print("======================================================================")
             new_input_embeds = []
             cur_graph_idx = 0
             for cur_input_ids, cur_input_embeds in zip(input_ids, inputs_embeds):
@@ -492,7 +494,7 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
 
         hidden_states = outputs[0]
         logits = self.lm_head(hidden_states)
-
+        # print("")
         loss = None
         if labels is not None:
             # Shift so that tokens < n predict n
@@ -505,6 +507,9 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
             # Enable model/pipeline parallelism
             shift_labels = shift_labels.to(shift_logits.device)
             loss = loss_fct(shift_logits, shift_labels)
+            predicted_classes = torch.argmax(shift_logits, dim=1)
+            print("predicted_classes[1000:]:", predicted_classes[1000:])
+            print("shift_labels[1000:]:", shift_labels[1000:])
 
         if not return_dict:
             output = (logits,) + outputs[1:]
