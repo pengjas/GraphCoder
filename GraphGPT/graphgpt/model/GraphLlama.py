@@ -296,6 +296,9 @@ class GraphLlamaModel(LlamaModel):
                 #     encoder_attention_mask=graph_mask, # fixme: check whether this mask is correct
                 #     return_dict=True,
                 # )
+                print("======================================================================")
+                print("======================================================================")
+
                 graph_node_features = self.graph_projector(graph_node_features)
                 # graph_node_features = [self.graph_projector(node_feature) for node_feature in graph_node_features]
                 # # else: 
@@ -308,8 +311,8 @@ class GraphLlamaModel(LlamaModel):
             # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             # print("self.graph_tower.W_P.weight[0][:10]:", self.graph_tower.W_P.weight[0][:10])
             # print("self.graph_tower.W_P.weight.grad", self.graph_tower.W_P.weight.grad)
-            print("======================================================================")
-            print("======================================================================")
+            print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             new_input_embeds = []
             cur_graph_idx = 0
             for cur_input_ids, cur_input_embeds in zip(input_ids, inputs_embeds):
@@ -384,7 +387,10 @@ class LayerNorm(nn.LayerNorm):
 
     def forward(self, x: torch.Tensor, mask=None):
         orig_type = x.dtype
-        ret = super().forward(x.type(torch.float32))
+        # x = x.float()
+        x = x.type(torch.float)
+        print("x.dtype:", x.dtype)
+        ret = super().forward(x)
         return ret.type(orig_type)
 
 class Qformer_proj(nn.Module):

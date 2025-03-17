@@ -407,8 +407,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     input_ids,
                     # graph_data=graph_data,
                     graph_data=graph_data.cuda(),
-                    do_sample=False,
-                    # do_sample=True,
+                    # do_sample=False,
+                    do_sample=True,
                     temperature=args.temperature,
                     max_new_tokens=args.model_max_length,
                     stopping_criteria=[stopping_criteria])
@@ -489,8 +489,8 @@ if __name__ == "__main__":
 
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
-    # ray.init()
-    ray.init(local_mode=True)
+    ray.init()
+    # ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
 
 
