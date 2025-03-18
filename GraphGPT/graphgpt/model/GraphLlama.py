@@ -107,7 +107,8 @@ class GraphLlamaModel(LlamaModel):
                 self.graph_tower = graph_transformer(args)
                 self.graph_tower = transfer_param_tograph(clip_graph, self.graph_tower)
 
-            self.ln_graph = LayerNorm(self.config.graph_hidden_size)
+            self.ln_graph = nn.LayerNorm(self.config.graph_hidden_size)
+            # self.ln_graph = LayerNorm(self.config.graph_hidden_size)
             self.num_query_token = self.config.num_query_token
             self.qformer, self.query_tokens = self.init_Qformer(self.config.bert_name, self.num_query_token, self.config.graph_hidden_size, self.config.cross_attention_freq)
             self.qformer.cls = None
@@ -296,8 +297,8 @@ class GraphLlamaModel(LlamaModel):
                 #     encoder_attention_mask=graph_mask, # fixme: check whether this mask is correct
                 #     return_dict=True,
                 # )
-                print("======================================================================")
-                print("======================================================================")
+                # print("======================================================================")
+                # print("======================================================================")
 
                 graph_node_features = self.graph_projector(graph_node_features)
                 # graph_node_features = [self.graph_projector(node_feature) for node_feature in graph_node_features]
@@ -311,8 +312,8 @@ class GraphLlamaModel(LlamaModel):
             # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             # print("self.graph_tower.W_P.weight[0][:10]:", self.graph_tower.W_P.weight[0][:10])
             # print("self.graph_tower.W_P.weight.grad", self.graph_tower.W_P.weight.grad)
-            print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             new_input_embeds = []
             cur_graph_idx = 0
             for cur_input_ids, cur_input_embeds in zip(input_ids, inputs_embeds):
@@ -396,7 +397,7 @@ class LayerNorm(nn.LayerNorm):
 class Qformer_proj(nn.Module):
     def __init__(self, graph_hidden_size, num_query_token, bert_name, cross_attention_freq, llm_hidden_size):
         super(Qformer_proj, self).__init__()
-        self.ln_graph = LayerNorm(graph_hidden_size)
+        self.ln_graph = nn.LayerNorm(graph_hidden_size)
         self.num_query_token = num_query_token
         self.qformer, self.query_tokens = self.init_Qformer(bert_name, num_query_token, graph_hidden_size, cross_attention_freq)
         self.qformer.cls = None
@@ -412,7 +413,8 @@ class Qformer_proj(nn.Module):
     
     def forward(self, graph_node_features):
         graph_embeds, graph_mask = additional_process_for_qformer(graph_node_features)
-        graph_embeds = self.ln_graph(graph_embeds, graph_mask)
+        graph_embeds = self.ln_graph(graph_embeds)
+        # graph_embeds = self.ln_graph(graph_embeds, graph_mask)
         query_tokens = self.query_tokens.expand(graph_embeds.shape[0], -1, -1)
         query_output = self.qformer.bert(
             query_embeds=query_tokens,
@@ -513,9 +515,9 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
             # Enable model/pipeline parallelism
             shift_labels = shift_labels.to(shift_logits.device)
             loss = loss_fct(shift_logits, shift_labels)
-            predicted_classes = torch.argmax(shift_logits, dim=1)
-            print("predicted_classes[1000:]:", predicted_classes[1000:])
-            print("shift_labels[1000:]:", shift_labels[1000:])
+            # predicted_classes = torch.argmax(shift_logits, dim=1)
+            # print("predicted_classes[1000:]:", predicted_classes[1000:])
+            # print("shift_labels[1000:]:", shift_labels[1000:])
 
         if not return_dict:
             output = (logits,) + outputs[1:]
