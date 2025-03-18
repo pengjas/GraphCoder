@@ -3,7 +3,7 @@ output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_us
 tokenizer_path=/data/LPJ/haven_codellama
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/tmp0.2
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_eval_result/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/tmp0.8
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -17,7 +17,7 @@ n_pass_k=15
 use_trained_gnn=True
 lora_enable=False
 lora_r=64
-temperature=0.2
+temperature=0.8
 num_query_tokens=24
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
