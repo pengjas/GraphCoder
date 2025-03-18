@@ -1,0 +1,38 @@
+Please act as a professional Verilog designer.
+Design and implement a pulse width modulation (PWM) signal generator in Verilog, which uses adjustable duty cycle and frequency settings. The design consists of a submodule for maintaining the PWM count and another submodule for generating the PWM signal based on the count and settings.
+
+Module Name:
+    pwm_generator
+
+Input Ports:
+    clk: Clock signal that drives the module.
+    [7:0] duty_cycle: Specifies the duty cycle percentage of the PWM signal.
+    [7:0] freq: Frequency control, setting the PWM signal frequency.
+
+Output Ports:
+    pwm_out: Pulse width modulated output signal.
+
+Internal Modules:
+    PWM Counter Module (pwm_counter)
+    Functionality: Maintains the PWM cycle count and resets based on the frequency.
+    Input Ports:
+    clk: Clock signal.
+    reset: Signal to reset the counter.
+    [7:0] freq: Frequency setting for PWM cycle.
+    Output Ports:
+    [15:0] count: Current PWM cycle count.
+    
+    PWM Signal Generator Module (pwm_signal)
+    Functionality: Generates the PWM output signal based on the current count and duty cycle settings.
+    Input Ports:
+    clk: Clock signal.
+    [15:0] count: Current count from the pwm_counter.
+    [7:0] duty_cycle: Duty cycle percentage.
+    [7:0] freq: Frequency setting for PWM cycle.
+    Output Ports:
+    pwm_out: PWM output signal.
+
+Implementation:
+PWM Counter Operation: The pwm_counter module increments the count on each rising edge of clk. When the count reaches (freq - 1), it resets to 0.
+PWM Signal Generation: The pwm_signal module produces a high output on pwm_out when the count is less than (freq * duty_cycle / 100), otherwise low. The pulse width is adjusted according to duty_cycle.
+Give me the complete code.

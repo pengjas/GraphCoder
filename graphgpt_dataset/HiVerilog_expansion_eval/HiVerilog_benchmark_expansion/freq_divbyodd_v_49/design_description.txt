@@ -1,0 +1,21 @@
+Please act as a professional Verilog designer.
+A pulse width modulator (PWM) that controls the output pulse width based on an adjustable duty cycle. The module generates PWM signals with a duty cycle value provided as a parameter.
+
+Module name:
+    pwm_controller
+
+Input ports:
+    clk: Input clock signal.
+    rst_n: Active low reset signal that initializes the PWM generator.
+
+Output ports:
+    pwm_out: PWM output signal.
+
+Implementation:
+
+The module generates a PWM signal with a duty cycle defined by the parameter DUTY_CYCLE, which defaults to 50%.
+It consists of two submodules: `counter` which is a simple up-counter, and `comparator` that compares the counter value to the duty cycle threshold. 
+The `counter` counts up to a MAX_COUNT value and resets, providing a basis for PWM period.
+The `comparator` outputs a high signal when the counter value is less than the duty cycle threshold, thus controlling the duty cycle of the PWM.
+The active low reset signal rst_n initializes the counter.
+Give me the complete code.

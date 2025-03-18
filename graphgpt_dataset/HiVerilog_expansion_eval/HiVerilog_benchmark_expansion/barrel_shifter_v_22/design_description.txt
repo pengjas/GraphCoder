@@ -1,0 +1,26 @@
+Please act as a professional Verilog designer.
+Design a 4-bit magnitude comparator that takes two 4-bit binary numbers and outputs whether the first number is greater than, less than, or equal to the second number.
+
+Module name: 
+    magnitude_comparator
+
+Function:
+    This module compares two 4-bit numbers and outputs three signals indicating whether the first number (A) is greater than, less than, or equal to the second number (B).
+
+Input ports:
+    A [3:0]: 4-bit input representing the first number.
+    B [3:0]: 4-bit input representing the second number.
+
+Output ports:
+    gt: Output signal that is high if A > B.
+    lt: Output signal that is high if A < B.
+    eq: Output signal that is high if A == B.
+
+Implementation:
+    The magnitude_comparator uses submodules to compare each bit of A and B starting from the most significant bit. The comparison logic determines if A is greater than, less than, or equal to B by cascading comparisons from the highest bit to the lowest bit.
+    - If the higher significant bit of A is greater than B, then A is greater regardless of the lower bits.
+    - If the higher significant bit of A is less than B, then A is less regardless of the lower bits.
+    - If bits are equal, the comparison continues to the next lower bit.
+
+    A series of `bit_compare` submodules are instantiated for bit-by-bit comparison, providing intermediate signals for greater than, less than, or equal conditions that are then used to determine the final output.
+Give me the complete code.

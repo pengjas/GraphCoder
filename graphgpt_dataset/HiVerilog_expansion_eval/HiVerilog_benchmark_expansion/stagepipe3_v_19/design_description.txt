@@ -1,0 +1,15 @@
+Please act as a professional Verilog designer.
+Implement a module for a simple 4-bit arithmetic logic unit (ALU) that performs addition, subtraction, bitwise AND, and bitwise OR based on a 2-bit operation selector.
+
+Module name:  
+    simple_alu               
+Input ports:
+    a[3:0]: 4-bit input operand.
+    b[3:0]: 4-bit input operand.
+    op[1:0]: 2-bit operation selector where 00 is ADD, 01 is SUBTRACT, 10 is AND, and 11 is OR.
+Output ports:
+    result[3:0]: 4-bit output result of the ALU operation.
+
+Implementation:
+The simple_alu module instantiates four submodules: adder, subtractor, and_module, and or_module. Each submodule performs a specific operation based on the operation selector 'op'. The adder module calculates the sum of a and b. The subtractor module calculates the difference between a and b. The and_module performs a bitwise AND operation, and the or_module performs a bitwise OR operation. The output of each submodule is connected to a multiplexer, which selects the final result based on 'op'.
+Give me the complete code.

@@ -1,0 +1,21 @@
+Please act as a professional Verilog designer.
+Implement a module of a 32-bit adder using submodules with multiple bit-level full adders in combinational logic.
+
+Module name:
+    adder_32bit
+
+Input ports:
+    X [31:0]: First 32-bit input operand (binary number to add).
+    Y [31:0]: Second 32-bit input operand (binary number to add).
+Output ports:
+    Sum [31:0]: 32-bit output representing the sum of X and Y.
+    Carry_out: 1-bit output indicating the carry out of the addition.
+
+Implementation:
+Addition Logic: The module adds two 32-bit binary numbers X and Y using combinational logic.
+A carry propagation is handled, starting from the least significant bit to the most significant bit.
+Carry Generation: The full adder generates a carry which is passed to the next higher bit.
+Modular Design:
+The main module (adder_32bit) instantiates four 8-bit adder submodules (adder_8bit), each handling 8 bits of the input operands.
+The outputs (Sum and Carry_out) are calculated through the cascading carries between submodules.
+Give me the complete code.

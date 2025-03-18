@@ -1,0 +1,21 @@
+Please act as a professional Verilog designer.
+Design and implement a Verilog module for a 2x2 multiplier matrix using a row-wise computation method.
+
+Module name:  
+    matrix_multiplier2x2               
+Input ports:
+    clk: Clock signal.
+    rst: Reset signal, active high.
+    x0[7:0]: 8-bit input operand X0.
+    x1[7:0]: 8-bit input operand X1.
+    y0[7:0]: 8-bit input operand Y0.
+    y1[7:0]: 8-bit input operand Y1.
+Output ports:
+    p0[15:0]: 16-bit output representing the product of X0 and Y0.
+    p1[15:0]: 16-bit output representing the product of X1 and Y0.
+    p2[15:0]: 16-bit output representing the product of X0 and Y1.
+    p3[15:0]: 16-bit output representing the product of X1 and Y1.
+
+Implementation:
+In the matrix_multiplier2x2 module, four multiplier units are instantiated, each performing multiplication of its designated pair of input operands. The first multiplier (mult0) processes x0 and y0 directly to compute p0. The second multiplier (mult1) processes x1 and y0 to compute p1. Similarly, mult2 multiplies x0 and y1 to compute p2, and mult3 multiplies x1 and y1 to compute p3. This arrangement allows for parallel computation of the matrix products, enhancing performance for applications requiring matrix operations.
+Give me the complete code.

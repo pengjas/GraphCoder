@@ -1,0 +1,14 @@
+Please act as a professional Verilog designer.
+Implement a module for a 16-bit parity generator which computes the even parity for two 8-bit inputs using a two-level hierarchical design.
+
+Module name:
+    parity_16bit               
+Input ports:
+    X[7:0]: 8-bit input operand X.
+    Y[7:0]: 8-bit input operand Y.
+Output ports:
+    P: Single output representing the even parity of the combined 16 bits of X and Y.
+
+Implementation:
+The top module parity_16bit consists of instances of 8-bit parity generator blocks, followed by a final parity computation of their outputs.
+Give me the complete code.

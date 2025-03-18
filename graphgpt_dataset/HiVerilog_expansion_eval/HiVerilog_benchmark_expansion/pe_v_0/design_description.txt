@@ -1,0 +1,24 @@
+Please act as a professional Verilog designer.
+Implement a modular 32-bit Adder-Subtractor using Verilog. In the top module named `as_module`, instantiate submodules for addition and subtraction. The `as_module` orchestrates these submodules to perform either addition or subtraction based on a mode input.
+
+Module name:
+    as_module
+
+Input ports:
+    clk: Clock signal for synchronous operations.
+    rst: Reset signal, high to reset, low otherwise.
+    mode: Operation mode, 0 for addition and 1 for subtraction.
+    op1: 32-bit input operand 1.
+    op2: 32-bit input operand 2.
+
+Output ports:
+    result: 32-bit output, result of addition or subtraction.
+
+Implementation:
+The module includes:
+Adder Submodule:
+This submodule takes two 32-bit inputs (op1 and op2) and produces a 32-bit result of their addition.
+Subtractor Submodule:
+This submodule subtracts the second 32-bit input (op2) from the first (op1) and outputs the 32-bit result.
+The main as_module module uses the mode input to select and output the result from either the Adder or Subtractor submodule based on the operation mode.
+Give me the complete code.

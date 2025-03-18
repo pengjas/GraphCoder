@@ -1,0 +1,29 @@
+Please act as a professional Verilog designer.
+Design a Verilog module for a 32-bit arithmetic logic unit (ALU) that performs addition, subtraction, bitwise AND, OR operations based on a control signal. Implement this using modular design with specific submodules handling different arithmetic and logical functions.
+
+Module name:
+    configurable_alu
+
+Function:
+A 32-bit ALU that can perform addition, subtraction, bitwise AND, and OR operations, controlled by a 2-bit signal.
+
+Input ports:
+    - clk: Clock signal (1-bit), used to synchronize the operations.
+    - op_code: Operation code (2-bit), determines the operation to perform:
+        - 00: Addition
+        - 01: Subtraction
+        - 10: Bitwise AND
+        - 11: Bitwise OR
+    - operand_a [31:0]: First 32-bit operand.
+    - operand_b [31:0]: Second 32-bit operand.
+
+Output ports:
+    - result [31:0]: 32-bit output representing the result of the ALU operation.
+
+Implementation:
+The module includes three submodules: adder, subtractor, and bitwise_operator.
+- The adder module performs the addition of two 32-bit numbers.
+- The subtractor module performs the subtraction between two 32-bit numbers.
+- The bitwise_operator module handles both the AND and OR operations based on an internal control signal derived from op_code.
+The result output depends on op_code and reflects the outcome of the operation performed by the relevant submodule.
+Give me the complete code.

@@ -1,0 +1,17 @@
+Please act as a professional Verilog designer.
+Design a Verilog module named `adder_selector` that performs an 8-bit addition of two input numbers (a, b). The module should also have a submodule that decides if the result should be output directly or zeroed based on a control signal (ctrl). If ctrl is high, output the result of the addition; if ctrl is low, output zero.
+
+Module name:
+    adder_selector
+
+Input ports:
+    a [7:0]: 8-bit input representing the first number.
+    b [7:0]: 8-bit input representing the second number.
+    ctrl: Control signal that determines the output behavior.
+
+Output ports:
+    sum [7:0]: The 8-bit output which is either the sum of a and b or zero based on the ctrl signal.
+
+Implementation:
+The top_module `adder_selector` contains an instance of an 8-bit adder `my_adder8` and uses a conditional statement in always block to decide the output based on ctrl signal. It sets the output `sum` to either the result of the addition or zero.
+Give me the complete code.

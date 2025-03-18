@@ -1,0 +1,21 @@
+Please act as a professional Verilog designer.
+Design a 32-bit binary ripple counter that operates on an active-high signal and provides a toggle output every clock cycle. The counter should increase when the signal is high and reset when low.
+
+Module name: binary_ripple_counter
+
+Function:
+A 32-bit binary ripple counter that toggles its count based on an external control signal. The counter increases with each clock pulse if the control signal is high; it resets to zero when the signal is low.
+
+Input ports:
+- clk: Clock signal (1-bit), used to synchronize the counting process.
+- control_signal: External control signal (1-bit), determines if the counter should count or reset.
+
+Output ports:
+- count [31:0]: 32-bit output representing the current counter value.
+
+Implementation:
+The module consists of three submodules: toggle_logic, counter_logic, and counter_register.
+- The toggle_logic module determines whether to toggle the count based on the control signal.
+- The counter_logic module calculates the next count value based on the current count and toggle conditions.
+- The counter_register module updates the current count value on the rising edge of the clock signal or resets it based on the control_signal condition.
+Give me the complete code.

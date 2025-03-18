@@ -1,0 +1,24 @@
+Please act as a professional Verilog designer.
+A data multiplexer module designed to select and output data based on priority control signals. The module segregates input data streams and channels them through specific paths based on control signals, utilizing submodules for the multiplexing process.
+
+Module name:
+    data_mux
+
+Input ports:
+    clk: Clock signal for synchronization.
+    sel [2:0]: Selection signal determining the active data input path (0 for path1, 1 for path2, and so forth).
+    d0 [7:0]: 8-bit data input from path 0.
+    d1 [7:0]: 8-bit data input from path 1.
+    d2 [7:0]: 8-bit data input from path 2.
+
+Output ports:
+    data_out [7:0]: 8-bit data output reflecting the selected input data.
+
+Implementation:
+    The data multiplexer utilizes three submodules, each handling one data input path.
+    Based on the selection signal sel:
+    - If sel is 3'b000, data is fetched from the first path (mux_path0).
+    - If sel is 3'b001, data is fetched from the second path (mux_path1).
+    - If sel is 3'b010, data is fetched from the third path (mux_path2).
+    The output data_out is assigned the output from the active submodule based on the selection signal.
+Give me the complete code.

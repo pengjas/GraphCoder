@@ -1,0 +1,18 @@
+Please act as a professional Verilog designer.
+Implement a module of an 8-bit multiplier that uses modular design principles.
+
+Module name:
+    mult_8bit
+
+Input ports:
+    X[7:0]: 8-bit input operand X.
+    Y[7:0]: 8-bit input operand Y.
+
+Output ports:
+    P[15:0]: 16-bit output representing the product of X and Y.
+
+Implementation:
+The top module mult_8bit uses a series of add_shift modules to perform the multiplication operation through repeated additions based on the shifting method. Each add_shift module is responsible for conditionally adding the multiplicand X shifted left by a specific number of positions to an accumulator based on a corresponding bit in the multiplier Y.
+
+Give me the complete code.
+Give me the complete code.

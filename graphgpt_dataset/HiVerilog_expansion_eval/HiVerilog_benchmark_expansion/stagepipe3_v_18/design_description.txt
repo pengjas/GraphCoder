@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Design and implement a Verilog module for a simple 4-bit arithmetic logic unit (ALU) with basic operations including addition, subtraction, AND, OR operations.
+
+Module name:  
+    simple_alu4bit               
+Input ports:
+    clk: Clock signal.
+    op_code[1:0]: 2-bit operation selector.
+    operand_a[3:0]: 4-bit input operand A.
+    operand_b[3:0]: 4-bit input operand B.
+Output ports:
+    result[3:0]: 4-bit output result of the ALU operation.
+
+Implementation:
+The simple_alu4bit module consists of four primary operational stages: adder, subtractor, and_logical, or_logical. Each stage is implemented as a separate submodule that performs the specific arithmetic or logical operation based on the op_code input. The adder stage computes the sum of operand_a and operand_b. The subtractor stage computes the difference between operand_a and operand_b. The and_logical stage performs a bitwise AND operation, and the or_logical stage performs a bitwise OR operation. The result from the appropriate submodule is selected based on the op_code and output through the result port.
+Give me the complete code.

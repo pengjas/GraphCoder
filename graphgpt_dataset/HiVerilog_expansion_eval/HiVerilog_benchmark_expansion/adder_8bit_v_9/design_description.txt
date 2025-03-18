@@ -1,0 +1,14 @@
+Please act as a professional Verilog designer.
+Implement a module for a 4-bit multiplier using shift and add method in combinational logic.
+
+Module name:  
+    multiplier_4bit               
+Input ports:
+    a[3:0]: 4-bit input multiplicand.
+    b[3:0]: 4-bit input multiplier.
+Output ports:
+    product[7:0]: 8-bit output representing the product of A and B.
+
+Implementation:
+The module uses a series of bit-shifts and add operations controlled by the bits of the multiplier.
+Give me the complete code.

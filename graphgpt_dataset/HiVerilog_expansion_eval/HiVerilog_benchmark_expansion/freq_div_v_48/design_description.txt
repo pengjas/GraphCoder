@@ -1,0 +1,22 @@
+Please act as a professional Verilog designer.
+Implement a modular pulse width modulator (PWM) that generates three distinct PWM signals based on a fixed 100MHz input clock. The module should produce PWM signals with 25%, 50%, and 75% duty cycles.
+
+Module name:
+    pwm_generator
+
+Input ports:
+    CLK_in: Input clock signal
+    RST: Reset signal
+
+Output ports:
+    PWM_25: PWM output with a 25% duty cycle.
+    PWM_50: PWM output with a 50% duty cycle.
+    PWM_75: PWM output with a 75% duty cycle.
+
+Implementation:
+The module uses three submodules to generate the required PWM signals:
+pwm_25 generates the PWM signal with a 25% duty cycle.
+pwm_50 generates the PWM signal with a 50% duty cycle.
+pwm_75 generates the PWM signal with a 75% duty cycle.
+Each submodule counts clock cycles to determine the duration of the high and low states of the output, resetting the count either when it reaches the full cycle count or when RST is active. If RST is asserted, all PWM outputs are reset to 0.
+Give me the complete code.

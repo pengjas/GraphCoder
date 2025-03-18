@@ -1,0 +1,22 @@
+Please act as a professional Verilog designer.
+Design a digital alarm system using Verilog, which sets off an alarm based on predefined temperature and smoke sensor inputs. This system consists of an 8-bit temperature sensor input and a 1-bit smoke detector signal. An alarm is triggered if the temperature is above a threshold or if smoke is detected.
+
+Module name: 
+    alarm_system
+
+Function:
+    A digital alarm system that monitors signals from an 8-bit temperature sensor and a 1-bit smoke detector. The system triggers a 1-bit alarm output when the temperature exceeds a specified threshold or if smoke is detected.
+
+Input ports:
+    temp_sensor [7:0]: 8-bit input from the temperature sensor.
+    smoke_sensor [0]: 1-bit input indicating smoke detection.
+
+Output ports:
+    alarm_out [0]: 1-bit output that triggers the alarm.
+
+Implementation:
+    The alarm system evaluates the inputs from the temperature sensor and the smoke detector. If the temperature value exceeds a pre-set threshold, or if the smoke detector signal is high, the alarm is triggered.
+    The system utilizes comparison logic to check if the temperature is above the threshold and a logical OR operation to evaluate the condition of either temperature or smoke triggering the alarm.
+    - The `compare_temp` submodule compares the 8-bit temperature input against a predefined threshold.
+    - The `or_logic` submodule takes the output from `compare_temp` and the smoke detector input to perform an OR operation, determining the final alarm state.
+Give me the complete code.

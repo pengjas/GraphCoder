@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Implement a module of an 8-bit multiplier that uses modular design principles.
+
+Module name:
+    mult_8bit
+
+Input ports:
+    X[7:0]: 8-bit input operand X.
+    Y[7:0]: 8-bit input operand Y.
+
+Output ports:
+    P[15:0]: 16-bit output representing the product of X and Y.
+
+Implementation:
+The top module mult_8bit combines the products from multiple instances of the gen_product module, which calculates partial products. Each gen_product module handles the multiplication operation for one bit of Y with all bits of X and accumulates the results using shift and add methodology.
+Give me the complete code.

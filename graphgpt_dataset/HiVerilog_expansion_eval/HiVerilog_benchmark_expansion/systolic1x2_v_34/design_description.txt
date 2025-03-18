@@ -1,0 +1,19 @@
+Please act as a professional Verilog designer.
+Design a Verilog module for a dual-latch system with separate input triggers.
+
+Module name:  
+    dual_latch_system               
+Input ports:
+    clk: Clock signal.
+    reset: Reset signal, active high.
+    d0[7:0]: 8-bit input data for first latch.
+    d1[7:0]: 8-bit input data for second latch.
+    load0: Load signal for first latch, active high.
+    load1: Load signal for second latch, active high.
+Output ports:
+    q0[7:0]: 8-bit output from the first latch.
+    q1[7:0]: 8-bit output from the second latch.
+
+Implementation:
+In the dual_latch_system module, two separate latches (latch0 and latch1) are instantiated. Each latch captures the input data when its respective load signal is asserted. The first latch (latch0) captures data from d0 on a positive edge of load0. The second latch (latch1) captures data from d1 on a positive edge of load1. Reset functionality is common for both latches, resetting their outputs to zero when the reset signal is active.
+Give me the complete code.

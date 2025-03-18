@@ -1,0 +1,20 @@
+Please act as a professional Verilog designer.
+Design a Priority Encoder in Verilog, which encodes an 8-bit input into a 3-bit output code corresponding to the highest order '1' found in the input.
+
+Module name: 
+    priority_encoder
+
+Function:
+    An 8-bit Priority Encoder which scans the input from the most significant bit (MSB) to least significant bit (LSB). It outputs a 3-bit binary code representing the position of the highest order bit that is set to '1'. If no bits are set, an additional 'valid' output is set to '0'.
+
+Input ports:
+    in [7:0]: 8-bit input where each bit will be scanned to find the highest order '1'.
+
+Output ports:
+    code [2:0]: 3-bit output code indicating the position of the first '1' from MSB.
+    valid: Output signal that indicates if the output code is valid (i.e., at least one '1' is present in the input).
+
+Implementation:
+    The priority encoder checks each bit of the input starting from the MSB using a series of conditional checks and logic gates. If a '1' is detected, the corresponding binary code for the position is set at the output. The output 'valid' is set to '1' if any '1' is detected across all bits; otherwise, it remains '0'.
+    The process involves using multiple instances of a `check_bit` submodule, which determines if the current inspected bit is '1' and if it is the highest order '1' found so far based on priority logic.
+Give me the complete code.

@@ -1,0 +1,18 @@
+Please act as a professional Verilog designer.
+Design a 32-bit adder using Verilog, incorporating a set of 8-bit submodules for the addition process. Each submodule should perform 8-bit addition with carry in and carry out.
+
+Module name:
+    adder_32bit
+
+Input ports:
+    A [31:0]: First 32-bit input operand for addition.
+    B [31:0]: Second 32-bit input operand for addition.
+    Cin: Carry input for the least significant bit addition.
+Output ports:
+    Sum [31:0]: 32-bit output sum of A and B.
+    Cout: Carry output from the most significant bit addition.
+
+Implementation:
+Addition Logic: The module adds two 32-bit numbers A and B by using cascaded 8-bit adder submodules that handle carry propagation.
+Modular Design: The main module (adder_32bit) instantiates four 8-bit adder submodules (adder_8bit). Carry outputs of each submodule are chained to the carry inputs of the next higher submodule, starting from the least significant to the most significant.
+Give me the complete code.

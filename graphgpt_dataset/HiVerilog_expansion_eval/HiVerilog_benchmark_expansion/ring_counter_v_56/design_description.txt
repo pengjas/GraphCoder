@@ -1,0 +1,20 @@
+Please act as a professional Verilog designer.
+Implement a modular 4-bit binary up counter with synchronous reset functionality.
+
+Module name:
+    binary_up_counter
+
+Input ports:
+    clk: Clock signal that drives the counting.
+    reset: Synchronous reset signal to set the counter to zero.
+
+Output ports:
+    out [3:0]: 4-bit output representing the current count value.
+
+Internal logic:
+Count Initialization: A submodule initializes the counter to zero when the reset signal is asserted.
+Count Increment: Another submodule handles the increment operation of the counter, increasing the count by one on each rising edge of the clock signal, unless the reset is asserted.
+
+Modularity: The design consists of separate submodules for initialization and counting, promoting better organization and code reusability.
+Reset Behavior: When reset is high, the counter is set to zero (out = 4'b0000).
+Give me the complete code.

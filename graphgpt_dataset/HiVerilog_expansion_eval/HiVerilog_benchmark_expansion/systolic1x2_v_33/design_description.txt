@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Implement a module for a dual-mode counter that can operate in both up and down counting modes controlled by an external signal.
+
+Module name:  
+    dual_mode_counter               
+Input ports:
+    clk: Clock signal.
+    rst: Reset signal, active high.
+    mode: Mode selection signal (0 for up-counting, 1 for down-counting).
+    enable: Counter enable signal.
+Output ports:
+    count[7:0]: 8-bit output representing the current count value.
+
+Implementation:
+In the dual_mode_counter module, a Counter submodule is instantiated. The Counter operates differently based on the mode signal. In up-counting mode, the count value increments each clock cycle when enable is high. In down-counting mode, the count decrements each cycle when enable is high. The count value is reset to zero when the reset signal is asserted.
+Give me the complete code.
