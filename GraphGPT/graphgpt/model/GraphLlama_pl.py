@@ -162,7 +162,7 @@ class GraphGPT_pl(LightningModule):
             training_args.use_graph_start_end = model_args.use_graph_start_end
             self.model.config.sep_graph_conv_front = data_args.sep_graph_conv_front
             self.model.initialize_graph_tokenizer(use_graph_start_end=model_args.use_graph_start_end, tokenizer=tokenizer, device='cuda',
-                                            tune_graph_mlp_adapter=model_args.tune_graph_mlp_adapter, pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter)
+                                            tune_graph_mlp_adapter=model_args.tune_graph_mlp_adapter, pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter, pretrain_input_embedding_path=model_args.pretrain_input_embedding_path)
 
             params_no_grad = [n for n, p in self.model.named_parameters() if not p.requires_grad]
             if training_args.bits in [4, 8]:
