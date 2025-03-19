@@ -1,6 +1,6 @@
 # to fill in the following path to run the first stage of our GraphGPT!
 model_path=/data/LPJ/haven_codellama
-# model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
+# model_path=/data/LPJ/netable w_CodeLlama-7b-Instruct-hf
 instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
