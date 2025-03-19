@@ -6,9 +6,9 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_constructio
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tune_qformer_havenllama_using_1989_57_with_lora/v0_3epoch_separate_lr_gnn1e3_qformer5e4_lora4e5_rank32
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tune_qformer_havenllama_using_1989_57_with_lora/v0_3epoch_separate_lr_gnn2e4_qformer1e4_lora1e5_rank64
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_qformer_1989_57_finetune_with_lora_3epoch_separate_lr_gnn1e3_qformer5e4_lora4e5_rank32
+model_save_name=haven_llama_qformer_1989_57_finetune_with_lora_3epoch_separate_lr_gnn2e4_qformer1e4_lora1e5_rank64
 resume='/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt'
 if_resume=False
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
@@ -64,11 +64,11 @@ python graphgpt/train/train_light.py \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
     --use_seperate_lr True \
-    --gnn_lr 1e-3 \
-    --projector_lr 5e-4 \
-    --llm_lr 4e-5 \
+    --gnn_lr 2e-4 \
+    --projector_lr 1e-4 \
+    --llm_lr 1e-5 \
     --freeze_graph_mlp_adapter False \
-    --lora_r 32 \
+    --lora_r 64 \
     --if_resume ${if_resume} \
     --resume ${resume}\
     --val_early_stop_threshold ${val_early_stop_threshold} \
