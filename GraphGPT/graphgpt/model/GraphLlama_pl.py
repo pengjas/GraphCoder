@@ -153,9 +153,9 @@ class GraphGPT_pl(LightningModule):
             # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             if training_args.bits in [4, 8]:
                 self.model.get_model().graph_projector.to(dtype=compute_dtype, device=training_args.device)
-                self.model.get_model().ln_graph.to(dtype=compute_dtype, device=training_args.device)
-                self.model.get_model().qformer.to(dtype=compute_dtype, device=training_args.device)
-                self.model.get_model().opt_proj.to(dtype=compute_dtype, device=training_args.device)
+                # self.model.get_model().ln_graph.to(dtype=compute_dtype, device=training_args.device)
+                # self.model.get_model().qformer.to(dtype=compute_dtype, device=training_args.device)
+                # self.model.get_model().opt_proj.to(dtype=compute_dtype, device=training_args.device)
 
             self.model.config.use_graph_start_end = data_args.use_graph_start_end = model_args.use_graph_start_end
             # graph_config.use_graph_start_end = training_args.use_graph_start_end = model_args.use_graph_start_end

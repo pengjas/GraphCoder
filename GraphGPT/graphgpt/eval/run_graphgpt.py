@@ -284,12 +284,15 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # tokenizer.pad_token = tokenizer.eos_token
     # tokenizer.pad_token_id = tokenizer.eos_token_id
     print('finish initiate tokenizer')
-
+    if args.load_from_ckpt:
     # test_model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     # ckpt = torch.load(args.model_name, map_location='cpu')
-    model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
+        model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
                                          ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
-    
+    else:
+        model_args.pretrain_graph_mlp_adapter = args.pretrain_graph_mlp_adapter
+        model_args.pretrain_input_embedding_path = args.pretrain_input_embedding_path
+        model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
 
     if args.lora_enable:
@@ -481,6 +484,9 @@ if __name__ == "__main__":
     parser.add_argument("--lora_r", type=int, default=16)
     parser.add_argument("--num_query_tokens", type=int, default=24)
     parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--load_from_ckpt", type=str2bool, default=False)
+    parser.add_argument("--pretrain_graph_mlp_adapter", type=str, default=None)
+    parser.add_argument("--pretrain_input_embedding_path", type=str, default=None)
     
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)
