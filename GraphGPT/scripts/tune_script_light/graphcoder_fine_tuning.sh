@@ -6,11 +6,11 @@ instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_constructio
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/fine_tune_qformer_havenllama_using_1989_57_with_lora/v1_5epoch_separate_lr_gnn3e4_qformer2e4_lora1e5_rank32
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=haven_llama_qformer_1989_57_finetune_with_lora_5epoch_separate_lr_gnn3e4_qformer2e4_lora1e5_rank32
+model_save_name=pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora_v0_20epoch_separate_lr_gnn5e3_qformer5e4
 resume='/data/LPJ/ICML25/all_checkpoints/fine_tune_qformer_havenllama_using_1989_57_with_lora/v0_3epoch_separate_lr_gnn1e3_qformer5e4_lora4e5_rank32/haven_llama_qformer_1989_57_finetune_with_lora_3epoch_separate_lr_gnn1e3_qformer5e4_lora4e5_rank32.ckpt'
-if_resume=True
+if_resume=False
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 val_graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 val_early_stop_threshold=0.1
@@ -32,7 +32,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 5 \
+    --num_train_epochs 20 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -57,12 +57,12 @@ python graphgpt/train/train_light.py \
     --bert_tokenizer_max_length 25 \
     --gpus '0,1,2,3' \
     --freeze_backbone True \
-    --lora_enable True \
+    --lora_enable False \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
     --use_seperate_lr True \
-    --gnn_lr 3e-4 \
-    --projector_lr 2e-4 \
+    --gnn_lr 5e-4 \
+    --projector_lr 5e-4 \
     --llm_lr 1e-5 \
     --freeze_graph_mlp_adapter False \
     --lora_r 32 \

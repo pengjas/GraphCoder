@@ -34,6 +34,7 @@ import json
 import os.path as osp
 import glob
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool, GlobalAttention, Set2Set
+from transformers.configuration_utils import PretrainedConfig
 
 DEFAULT_GRAPH_TOKEN = "<graph>"
 DEFAULT_GRAPH_PATCH_TOKEN = "<g_patch>"
@@ -165,26 +166,27 @@ class GraphLlamaModel(LlamaModel):
 
 
         if not hasattr(self, 'graph_tower'):
-            if self.config.graph_tower == 'MPNN': 
-                graph_tower = MPNN(in_channels = self.config.graph_hidden_size, hidden_channels = self.config.graph_hidden_size * 2, out_channels = self.config.graph_hidden_size, dropout = 0.1, num_layers = 2, if_param = False)
-            elif self.config.graph_tower == "clip_gcn_arxiv": 
+            graph_tower = MLP_GNN(self.config.graph_hidden_size)
+            # if self.config.graph_tower == 'MPNN': 
+            #     graph_tower = MPNN(in_channels = self.config.graph_hidden_size, hidden_channels = self.config.graph_hidden_size * 2, out_channels = self.config.graph_hidden_size, dropout = 0.1, num_layers = 2, if_param = False)
+            # elif self.config.graph_tower == "clip_gcn_arxiv": 
 
-                clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path)
-                graph_tower = GNN(args)
-                graph_tower = transfer_param_tograph(clip_graph, graph_tower)
-            elif self.config.graph_tower == "clip_gt":
-                clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
-                graph_tower = graph_transformer(args)
-                graph_tower = transfer_param_tograph(clip_graph, graph_tower)
-            # graph_tower = MPNN(in_channels = self.config.graph_hidden_size, hidden_channels = self.config.graph_hidden_size * 2, out_channels = self.config.graph_hidden_size, dropout = 0.1, num_layers = 2)
-            elif self.config.graph_tower == "clip_gt_arxiv":
-                clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
-                graph_tower = graph_transformer(args)
-                graph_tower = transfer_param_tograph(clip_graph, graph_tower)
-            elif self.config.graph_tower == "clip_gt_arxiv_pub":
-                clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
-                graph_tower = graph_transformer(args)
-                graph_tower = transfer_param_tograph(clip_graph, graph_tower)
+            #     clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path)
+            #     graph_tower = GNN(args)
+            #     graph_tower = transfer_param_tograph(clip_graph, graph_tower)
+            # elif self.config.graph_tower == "clip_gt":
+            #     clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
+            #     graph_tower = graph_transformer(args)
+            #     graph_tower = transfer_param_tograph(clip_graph, graph_tower)
+            # # graph_tower = MPNN(in_channels = self.config.graph_hidden_size, hidden_channels = self.config.graph_hidden_size * 2, out_channels = self.config.graph_hidden_size, dropout = 0.1, num_layers = 2)
+            # elif self.config.graph_tower == "clip_gt_arxiv":
+            #     clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
+            #     graph_tower = graph_transformer(args)
+            #     graph_tower = transfer_param_tograph(clip_graph, graph_tower)
+            # elif self.config.graph_tower == "clip_gt_arxiv_pub":
+            #     clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
+            #     graph_tower = graph_transformer(args)
+            #     graph_tower = transfer_param_tograph(clip_graph, graph_tower)
         else:
             graph_tower = self.graph_tower
         graph_tower.requires_grad_(False)
@@ -272,7 +274,7 @@ class GraphLlamaModel(LlamaModel):
                         # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                         # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
                         # print(g)
-                        node_forward_out = self.graph_tower(g)
+                        node_forward_out = self.graph_tower(g.graph_node)
                         graph_node_features.append(node_forward_out)
                 elif type(graph_data[0]) is dict:
                     for g_dict in graph_data:
@@ -369,6 +371,21 @@ class GraphLlamaModel(LlamaModel):
             output_attentions=output_attentions, output_hidden_states=output_hidden_states,
             return_dict=return_dict
         )
+class MLP_GNN(nn.Module):
+    def __init__(self, graph_hidden_size):
+        super(MLP_GNN, self).__init__()
+        self.config = PretrainedConfig()
+        self.sequential = nn.Sequential(
+            nn.Linear(graph_hidden_size, graph_hidden_size * 6),
+            nn.GELU(),
+            nn.Linear(graph_hidden_size * 6, graph_hidden_size * 4),
+            nn.GELU(),
+            nn.Linear(graph_hidden_size * 4, graph_hidden_size)
+        )
+    
+    def forward(self, graph_node_features):
+        return self.sequential(graph_node_features)
+
 
 def additional_process_for_qformer(graph_node_features):
 
@@ -447,7 +464,7 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
         super(LlamaForCausalLM, self).__init__(config)
         self.model = GraphLlamaModel(config)
 
-        self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
+        self.lm_head = nn.Linear(config.hidden_size, out_features=config.vocab_size, bias=False)
 
         # Initialize weights and apply final processing
         self.post_init()
@@ -557,6 +574,7 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
 
     def initialize_graph_tokenizer(self, use_graph_start_end, tokenizer, device,
                                     tune_graph_mlp_adapter=False, pretrain_graph_mlp_adapter=None, pretrain_input_embedding_path=None):
+        # vision_config = PretrainedConfig()
         vision_config = self.get_graph_tower().config
         vision_config.use_graph_start_end = use_graph_start_end
         tokenizer.add_tokens([DEFAULT_GRAPH_PATCH_TOKEN], special_tokens=True)
