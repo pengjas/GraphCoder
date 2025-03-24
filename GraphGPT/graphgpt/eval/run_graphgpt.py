@@ -415,6 +415,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     temperature=args.temperature,
                     max_new_tokens=args.model_max_length,
                     stopping_criteria=[stopping_criteria])
+            # torch.cuda.empty_cache()
             # print("==============================================================")
             input_token_len = input_ids.shape[1]
             n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
@@ -448,6 +449,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     for entry in res_data:
                         json.dump(entry, fout)
                         fout.write('\n')  # 添加换行符
+            torch.cuda.empty_cache()
+            
 
     return res_data
     # with open(args.output_res_path, "w") as fout:
