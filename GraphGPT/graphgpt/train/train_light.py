@@ -88,6 +88,7 @@ class ModelArguments:
     model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
     num_query_token: int = field(default=24)
     pretrain_input_embedding_path: Optional[str] = field(default=None)
+    pretrain_mlp_gnn_path: Optional[str] = field(default=None)
 
 
 @dataclass

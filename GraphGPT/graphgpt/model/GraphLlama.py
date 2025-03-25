@@ -161,7 +161,7 @@ class GraphLlamaModel(LlamaModel):
         return graph_tower
 
     def initialize_graph_modules(self, graph_tower, graph_select_layer,
-                                  pretrain_graph_mlp_adapter=None, fsdp=None): # TODO: modify this function
+                                  pretrain_graph_mlp_adapter=None, pretrain_mlp_gnn_path=None, fsdp=None): # TODO: modify this function
         self.config.graph_tower = graph_tower
 
 
@@ -234,6 +234,10 @@ class GraphLlamaModel(LlamaModel):
             graph_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
             # self.graph_projector.load_state_dict({k.split('.')[-1]: v for k, v in graph_projector_weights.items()})
             self.graph_projector.load_state_dict(graph_projector_weights)
+        
+        if pretrain_mlp_gnn_path is not None:
+            mlp_gnn_weights = torch.load(pretrain_mlp_gnn_path, map_location='cpu')
+            self.graph_tower.load_state_dict(mlp_gnn_weights)
 
     def forward(
         self,

@@ -108,6 +108,7 @@ class GraphGPT_pl(LightningModule):
                 graph_tower=model_args.graph_tower,
                 graph_select_layer=model_args.graph_select_layer,
                 pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter,
+                pretrain_mlp_gnn_path=model_args.pretrain_mlp_gnn_path,
                 fsdp=None
             )
             self.model.get_graph_tower().to(dtype=compute_dtype) 
