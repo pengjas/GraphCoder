@@ -292,6 +292,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     else:
         model_args.pretrain_graph_mlp_adapter = args.pretrain_graph_mlp_adapter
         model_args.pretrain_input_embedding_path = args.pretrain_input_embedding_path
+        model_args.pretrain_mlp_gnn_path = args.pretrain_mlp_gnn_path
         model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
 
@@ -490,6 +491,7 @@ if __name__ == "__main__":
     parser.add_argument("--load_from_ckpt", type=str2bool, default=False)
     parser.add_argument("--pretrain_graph_mlp_adapter", type=str, default=None)
     parser.add_argument("--pretrain_input_embedding_path", type=str, default=None)
+    parser.add_argument("--pretrain_mlp_gnn_path", type=str, default=None)
     
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)

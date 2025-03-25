@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
 output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora_v0_20epoch_separate_lr_gnn5e3_qformer5e4.ckpt
-tokenizer_path=/data/LPJ/haven_codellama
+tokenizer_path=/data/LPJ/codev_codellama
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/tmp0.2
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/graphcoder_codevllama_using_pretrained_qformer_without_gnn/v0_20epoch_separate_lr_gnn5e3_qformer5e4/tmp0.2
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -19,9 +19,10 @@ lora_enable=False
 lora_r=32
 temperature=0.2
 num_query_tokens=24
-load_from_ckpt=True
-pretrain_input_embedding_path="/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt"
+load_from_ckpt=False
+pretrain_input_embedding_path=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora_v0_20epoch_separate_lr_gnn5e3_qformer5e4.ckpt
 pretrain_graph_mlp_adapter=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/projector.bin
+pretrain_mlp_gnn_path=/data/LPJ/ICML25/all_checkpoints/graph_tower/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/mlp_gnn.bin
 
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
@@ -45,4 +46,5 @@ python ./graphgpt/eval/run_graphgpt.py \
     --num_query_tokens ${num_query_tokens} \
     --load_from_ckpt ${load_from_ckpt} \
     --pretrain_input_embedding_path ${pretrain_input_embedding_path} \
-    --pretrain_graph_mlp_adapter ${pretrain_graph_mlp_adapter}
+    --pretrain_graph_mlp_adapter ${pretrain_graph_mlp_adapter} \
+    --pretrain_mlp_gnn_path ${pretrain_mlp_gnn_path}
