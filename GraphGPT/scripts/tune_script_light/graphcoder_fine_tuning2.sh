@@ -1,14 +1,14 @@
 # to fill in the following path to run the first stage of our GraphGPT!
-model_path=/data/LPJ/codev_codellama
+model_path=/data/LPJ/haven_codellama
 # model_path=/data/LPJ/new_CodeLlama-7b-Instruct-hf
 instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn2e3_qformer5e4
+output_model=/data/LPJ/ICML25/all_checkpoints/fine_tuning_mlp_qformer_havenllama_with_lora_using_stage2_1989_57/v0_3epoch_separate_lr_gnn2e4_qformer1e4_lora1e5_rank64
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=codev_llama_qformer_1989_57_pretrain_without_lora_20epoch_separate_lr_gnn2e3_qformer5e4
+model_save_name=fine_tuning_mlp_qformer_havenllama_with_lora_using_stage2_1989_57_v0_3epoch_separate_lr_gnn2e4_qformer1e4_lora1e5_rank64
 resume='/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt'
 if_resume=False
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
@@ -16,8 +16,10 @@ val_graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval
 val_early_stop_threshold=0.1
 if_val=False
 num_query_token=24
-tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/projector.bin
-pretrain_input_embedding_path="/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt"
+tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/projector.bin
+pretrain_input_embedding_path=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora_v0_20epoch_separate_lr_gnn5e3_qformer5e4.ckpt
+pretrain_mlp_gnn_path=/data/LPJ/ICML25/all_checkpoints/graph_tower/pretrain_qformer_havenllama_without_gnn_using_1989_57_without_lora/v0_20epoch_separate_lr_gnn5e3_qformer5e4/mlp_gnn.bin
+
 
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
@@ -35,7 +37,7 @@ python graphgpt/train/train_light.py \
     --use_graph_start_end True \
     --bf16 True \
     --output_dir ${output_model} \
-    --num_train_epochs 20 \
+    --num_train_epochs 3 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --real_batch_size 2 \
@@ -60,12 +62,12 @@ python graphgpt/train/train_light.py \
     --bert_tokenizer_max_length 25 \
     --gpus '0,1,2,3' \
     --freeze_backbone True \
-    --lora_enable False \
+    --lora_enable True \
     --model_save_name ${model_save_name} \
     --freeze_gnn False \
     --use_seperate_lr True \
-    --gnn_lr 2e-3 \
-    --projector_lr 5e-4 \
+    --gnn_lr 2e-4 \
+    --projector_lr 1e-4 \
     --llm_lr 1e-5 \
     --freeze_graph_mlp_adapter False \
     --lora_r 64 \
@@ -75,4 +77,5 @@ python graphgpt/train/train_light.py \
     --if_val ${if_val} \
     --num_query_token ${num_query_token} \
     --pretrain_input_embedding_path ${pretrain_input_embedding_path} \
+    --pretrain_mlp_gnn_path ${pretrain_mlp_gnn_path}
 
