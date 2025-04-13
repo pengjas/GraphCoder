@@ -952,6 +952,10 @@ def train():
             # use_fast=True
             use_fast=False
         )
+    # if tokenizer.pad_token is None:
+    #     tokenizer.pad_token = tokenizer.eos_token
+    # tokenizer.pad_token = tokenizer.eos_token
+
     bert_tokenizer = BertTokenizer.from_pretrained(
         data_args.bert_path,
         model_max_length=data_args.bert_tokenizer_max_length,
@@ -963,6 +967,9 @@ def train():
     elif model_args.version == "qwen":
         tokenizer.pad_token = tokenizer.unk_token
         conversation_lib.default_conversation = conversation_lib.conv_templates["qwen"]
+    elif model_args.version == "deepseek":
+        # tokenizer.pad_token = tokenizer.unk_token
+        conversation_lib.default_conversation = conversation_lib.conv_templates["deepseek"]
     else: 
         raise ValueError
 

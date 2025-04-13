@@ -256,6 +256,19 @@ conv_qwen = Conversation(
     sep2="<|im_end|>",
 )
 
+conv_deepseek = Conversation(
+    # system="A chat between a curious user and an artificial intelligence assistant. "
+    # "The assistant gives helpful, detailed, and polite answers to the user's questions.",
+    system="Please act as a professional Verilog designer.",
+    roles=("USER", "ASSISTANT"),
+    version="v1",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.TWO,
+    sep=" ",
+    sep2="<|EOT|>",
+)
+
 conv_mpt = Conversation(
     system="""<|im_start|>system
 - You are a helpful language and vision assistant.
@@ -391,6 +404,7 @@ conv_templates = {
     "bair_v1": conv_bair_v1,
     "vicuna_v1_1": conv_vicuna_v1_1,
     "qwen": conv_qwen,
+    "deepseek": conv_deepseek,
     "mpt": conv_mpt,
     "mpt_text": conv_mpt_text,
 }

@@ -48,7 +48,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [
-                "--model_name_or_path", "/data/LPJ/codev_codellama",
+                "--model_name_or_path", "/data/LPJ/haven_deepseek",
                 "--version", "v1",
                 "--data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/training_dataset_eval/stage2_1989_57_eval/eval_train_all_same_dataset_to_debug/conversations.json",
                 "--val_data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json",
@@ -100,8 +100,8 @@
                 "--val_early_stop_threshold", "0.5",
                 "--if_val", "False",
                 "--num_query_token", "24",
-                "--pretrain_graph_mlp_adapter", "/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/projector.bin",
-                "--pretrain_input_embedding_path", "/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt"
+                // "--pretrain_graph_mlp_adapter", "/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/projector.bin",
+                // "--pretrain_input_embedding_path", "/data/LPJ/ICML25/all_checkpoints/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v0_50epoch_separate_lr_gnn1e3_qformer_5e4/haven_llama_qformer_1989_57_pretrain_without_lora_50epoch_separate_lr_gnn1e3_qformer_5e4.ckpt"
             ]
         }
     ]
