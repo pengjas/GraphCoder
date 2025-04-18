@@ -1,13 +1,13 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenqwen_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havenqwen_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt
-tokenizer_path=/data/LPJ/haven_qwen
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havendeepseek_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havendeepseek_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt
+tokenizer_path=/data/LPJ/haven_deepseek
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/clean_graph/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/clean_graph/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/pretrain_qformer_havenqwen_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/tmp0.2
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/pretrain_qformer_havendeepseek_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/tmp0.2
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
-conv_mode=qwen
+conv_mode=deepseek
 # conv_mode=graphchat_v1
 bf16=True
 f16=False
@@ -48,7 +48,6 @@ python ./graphgpt/eval/run_graphgpt.py \
     --load_from_ckpt ${load_from_ckpt} \
     --pretrain_input_embedding_path ${pretrain_input_embedding_path} \
     --pretrain_graph_mlp_adapter ${pretrain_graph_mlp_adapter}
-
 
 
 
