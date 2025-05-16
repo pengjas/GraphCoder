@@ -47,105 +47,6 @@ DEFAULT_GRAPH_PATCH_TOKEN = "<g_patch>"
 DEFAULT_G_START_TOKEN = "<g_start>"
 DEFAULT_G_END_TOKEN = "<g_end>"
 
-# @dataclass
-# class ModelArguments:
-#     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
-#     version: Optional[str] = field(default="v0")
-#     freeze_backbone: bool = field(default=False)
-#     tune_graph_mlp_adapter: bool = field(default=False)
-#     graph_tower: Optional[str] = field(default=None)
-#     graph_select_layer: Optional[int] = field(default=-1)   # default to the last layer
-#     pretrain_graph_mlp_adapter: Optional[str] = field(default=None)
-#     use_graph_start_end: bool = field(default=False)
-#     model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
-
-
-# @dataclass
-# class DataArguments:
-#     data_path: str = field(default=None,
-#                            metadata={"help": "Path to the training data."})
-#     lazy_preprocess: bool = False
-#     is_graph: bool = False
-#     sep_graph_conv_front: bool = False
-#     graph_token_len: int = 0
-#     graph_content: Optional[str] = field(default=None)
-#     graph_data_path: Optional[str] = field(default=None)
-#     image_aspect_ratio: str = 'square'
-#     bert_path: Optional[str] = field(default='/data/LPJ/bert/bert-L12-H128-uncased')
-#     bert_gpu: Optional[int] = field(default=3)
-#     bert_tokenizer_max_length: Optional[int] = field(default=15)
-
-
-# @dataclass
-# class TrainingArguments:
-#     cache_dir: Optional[str] = field(default=None)
-#     optim: str = field(default="adamw_torch")
-#     remove_unused_columns: bool = field(default=False)
-#     freeze_graph_mlp_adapter: bool = field(default=False)
-#     freeze_gnn: bool = field(default=False)
-#     force_fsdp: bool = field(default=False)
-#     model_max_length: int = field(
-#         default=512,
-#         metadata={
-#             "help":
-#             "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
-#         },
-#     )
-#     double_quant: bool = field(
-#         default=True,
-#         metadata={"help": "Compress the quantization statistics through double quantization."}
-#     )
-#     quant_type: str = field(
-#         default="nf4",
-#         metadata={"help": "Quantization data type to use. Should be one of `fp4` or `nf4`."}
-#     )
-#     bits: int = field(
-#         default=16,
-#         metadata={"help": "How many bits to use."}
-#     )
-#     strategy: str = field(
-#         default='fsdp'
-#     )
-#     real_batch_size: int = field(default=1)
-
-#     lora_enable: bool = False
-#     lora_r: int = 64
-#     lora_alpha: int = 16
-#     lora_dropout: float = 0.05
-#     lora_weight_path: str = ""
-#     lora_bias: str = "none"
-#     disable_tqdm: bool =False
-
-#     gpus: Optional[str] = field(default='0,1')
-#     resume: Optional[str] = field(default=None)
-
-#     adam_epsilon: float = field(default=1e-8)
-#     warmup_steps:int = field(default=1000)
-#     num_workers:int = field(default=16)
-
-#     bf16: bool = field(default=False) 
-#     fp16: bool = field(default=False) 
-#     output_dir: str = field(default='./checkpoints/graphchat-gt-graphmatch-7b') 
-#     num_train_epochs: int = field(default=3)
-#     per_device_train_batch_size: int = field(default=1)
-#     per_device_eval_batch_size: int = field(default=1)
-#     gradient_accumulation_steps: int = field(default=1)
-#     evaluation_strategy: str = field(default='no')
-#     save_strategy: str = field(default='steps')
-#     save_steps: int = field(default=2400)
-#     save_total_limit: int = field(default=1)
-#     learning_rate: float = field(default=2e-5)
-#     weight_decay: float = field(default=0.)
-#     warmup_ratio: float = field(default=0.03)
-#     lr_scheduler_type: str = field(default='cosine')
-#     logging_steps: int = field(default=1)
-#     tf32: bool = field(default=True) 
-#     gradient_checkpointing: bool = field(default=True)
-#     report_to: str = field(default='wandb')
-#     use_seperate_lr: bool = field(default=False)
-#     gnn_lr: float = field(default=1e-4)
-#     projector_lr: float = field(default=1e-4)
-#     llm_lr: float = field(default=1e-4)
 
 def load_graph(graph, bert_tokenizer, bert_model): 
     # graph_data_all = torch.load(graph_data_path)
@@ -500,8 +401,8 @@ if __name__ == "__main__":
 
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
-    ray.init()
-    # ray.init(local_mode=True)
+    # ray.init()
+    ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
 
 
