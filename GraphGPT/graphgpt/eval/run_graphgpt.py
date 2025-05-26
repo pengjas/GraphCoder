@@ -175,6 +175,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         output_dir='/data/LPJ/ICML25/GraphGPT/checkpoints/pretraining_stage/v0',
         num_train_epochs=3,
         model_max_length=args.model_max_length,
+        # gpus='cpu',
         gpus='0',
         lora_enable=args.lora_enable,
         lora_r=args.lora_r,
@@ -190,7 +191,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # test_model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     # ckpt = torch.load(args.model_name, map_location='cpu')
         model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
-                                         ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
+                                        #  ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
+                                         ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer, map_location='cpu')
     else:
         model_args.pretrain_graph_mlp_adapter = args.pretrain_graph_mlp_adapter
         model_args.pretrain_input_embedding_path = args.pretrain_input_embedding_path
@@ -398,11 +400,10 @@ if __name__ == "__main__":
     # parser.add_argument("--end_id", type=int, default=20567)
 
     args = parser.parse_args()
-
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
-    # ray.init()
-    ray.init(local_mode=True)
+    ray.init()
+    # ray.init(local_mode=True)
     run_eval(args, args.num_gpus)
 
 
