@@ -965,7 +965,7 @@ def train():
         tokenizer.pad_token = tokenizer.unk_token
         conversation_lib.default_conversation = conversation_lib.conv_templates["vicuna_v1_1"]
     elif model_args.version == "qwen":
-        tokenizer.pad_token = tokenizer.unk_token
+        # tokenizer.pad_token = tokenizer.unk_token
         conversation_lib.default_conversation = conversation_lib.conv_templates["qwen"]
     elif model_args.version == "deepseek":
         # tokenizer.pad_token = tokenizer.unk_token
