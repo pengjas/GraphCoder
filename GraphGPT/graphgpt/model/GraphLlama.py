@@ -185,7 +185,8 @@ class GraphLlamaModel(LlamaModel):
 
         if pretrain_graph_mlp_adapter is not None:
             graph_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
-            self.graph_projector.load_state_dict({k.split('.')[-1]: v for k, v in graph_projector_weights.items()})
+            self.graph_projector.load_state_dict(graph_projector_weights)
+            # self.graph_projector.load_state_dict({k.split('.')[-1]: v for k, v in graph_projector_weights.items()})
 
     def forward(
         self,
@@ -422,7 +423,7 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
         return model_inputs
 
     def initialize_graph_tokenizer(self, use_graph_start_end, tokenizer, device,
-                                    tune_graph_mlp_adapter=False, pretrain_graph_mlp_adapter=None):
+                                    tune_graph_mlp_adapter=False, pretrain_graph_mlp_adapter=None, pretrain_input_embedding_path=None):
         vision_config = self.get_graph_tower().config
         vision_config.use_graph_start_end = use_graph_start_end
         tokenizer.add_tokens([DEFAULT_GRAPH_PATCH_TOKEN], special_tokens=True)
@@ -453,8 +454,22 @@ class GraphLlamaForCausalLM(LlamaForCausalLM):
                     p.requires_grad = False
 
             if pretrain_graph_mlp_adapter:
-                mm_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
-                embed_tokens_weight = mm_projector_weights['model.embed_tokens.weight']
+                # mm_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
+                # embed_tokens_weight = mm_projector_weights['model.embed_tokens.weight']
+                # assert num_new_tokens == 2
+                # if input_embeddings.shape == embed_tokens_weight.shape:
+                #     input_embeddings[-num_new_tokens:] = embed_tokens_weight[-num_new_tokens:]
+                # elif embed_tokens_weight.shape[0] == num_new_tokens:
+                #     input_embeddings[-num_new_tokens:] = embed_tokens_weight
+                # else:
+                #     raise ValueError(f"Unexpected embed_tokens_weight shape. Pretrained: {embed_tokens_weight.shape}. Current: {input_embeddings.shape}. Numer of new tokens: {num_new_tokens}.")
+                mm_projector_weights = torch.load(pretrain_input_embedding_path, map_location='cpu')
+                # mm_projector_weights = torch.load(pretrain_graph_mlp_adapter, map_location='cpu')
+                for key in mm_projector_weights['state_dict']:
+                    if 'embed_tokens.weight' in key:
+                        embed_tokens_weight = mm_projector_weights['state_dict'][key]
+                        break
+                # embed_tokens_weight = mm_projector_weights['state_dict']['model.model.embed_tokens.weight']
                 assert num_new_tokens == 2
                 if input_embeddings.shape == embed_tokens_weight.shape:
                     input_embeddings[-num_new_tokens:] = embed_tokens_weight[-num_new_tokens:]

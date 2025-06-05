@@ -48,7 +48,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [
-                "--model_name_or_path", "/data/LPJ/haven_qwen",
+                "--model_name_or_path", "/data/LPJ/haven_codellama",
                 "--version", "qwen",
                 "--data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v2_with_module_head/import_for_graphgpt/conversations.json",
                 "--graph_content", "./arxiv_ti_ab.json",
@@ -92,6 +92,7 @@
                 "--projector_lr", "3e-4" ,
                 "--llm_lr", "3e-5",
                 "--freeze_graph_mlp_adapter", "False",
+                "--pretrain_graph_mlp_adapter", "/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_4layers_havenqwen_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_proj5e4/projector.bin"
             ]
         }
     ]

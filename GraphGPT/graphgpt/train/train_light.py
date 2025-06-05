@@ -86,6 +86,7 @@ class ModelArguments:
     pretrain_graph_mlp_adapter: Optional[str] = field(default=None)
     use_graph_start_end: bool = field(default=False)
     model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
+    pretrain_input_embedding_path: Optional[str] = field(default=None)
 
 
 @dataclass
