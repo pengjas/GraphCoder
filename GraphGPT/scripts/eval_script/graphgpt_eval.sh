@@ -1,9 +1,9 @@
 # to fill in the following path to extract projector for the second tuning stage!
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havenllama_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt
-tokenizer_path=/data/LPJ/haven_codellama
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havendeepseek_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havendeepseek_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt
+tokenizer_path=/data/LPJ/haven_deepseek
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/clean_graph/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/clean_graph/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/ablation_study/havencodellama/pretrained_gnn_qformer/tmp0.2
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/ablation_study/havendeepseek/pretrained_gnn_qformer/tmp0.2
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
@@ -51,3 +51,25 @@ python ./graphgpt/eval/run_graphgpt.py \
 
 
 
+
+
+model=/data/LPJ/ICML25/llamafactory/fine_tuned_model/haven_deepseek_stage2_1989_57/v3_clean_graph_3peoch
+output_file=eval_res
+output_dir=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/text_modality/haven/havendeepseek/3epochs_fine_tune/tmp0.2
+benchmark_jsonl=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/for_text_llm/clean_graph/conversations.jsonl
+temperature=0.2
+gpu_name=4
+n=10
+tokenizer=/data/LPJ/haven_deepseek
+max_length=6912
+
+python /data/LPJ/ICML25/llamafactory/model_inference/inference_ray.py \
+    --model ${model} \
+    --output_file ${output_file} \
+    --output_dir ${output_dir} \
+    --benchmark_jsonl ${benchmark_jsonl} \
+    --temperature ${temperature} \
+    --gpu_name ${gpu_name} \
+    --n ${n} \
+    --tokenizer ${tokenizer} \
+    --max_length ${max_length}
