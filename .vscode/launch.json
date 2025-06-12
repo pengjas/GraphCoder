@@ -51,7 +51,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [
-                "--model_name_or_path", "/data/LPJ/haven_qwen",
+                "--model_name_or_path", "/data/LPJ/CodeLlama-7b-Instruct-hf",
                 "--version", "qwen",
                 "--data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/cleaned_graph/conversations.json",
                 "--val_data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json",

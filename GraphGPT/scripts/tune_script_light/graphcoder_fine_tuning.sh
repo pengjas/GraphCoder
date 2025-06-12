@@ -1,14 +1,14 @@
 # to fill in the following path to run the first stage of our GraphGPT!
-model_path=/data/LPJ/haven_qwen
+model_path=/data/LPJ/CodeLlama-7b-Instruct-hf
 # model_path=/data/LPJ/netable w_CodeLlama-7b-Instruct-hf
 instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/cleaned_graph/conversations.json
 # instruct_ds=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
 # graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/cleaned_graph/graph.jsonl
 pretra_gnn=clip_gt_arxiv
-output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenqwen_using_1989_57_without_lora/v2_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4
+output_model=/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_codellama_using_1989_57_without_lora/v0_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4
 bert_path=/data/LPJ/bert/bert-L12-H128-uncased
-model_save_name=pretrain_qformer_havenqwen_using_1989_57_without_lora_v2_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4
+model_save_name=pretrain_qformer_codellama_using_1989_57_without_lora_v0_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4
 resume='/data/LPJ/ICML25/all_checkpoints/fine_tune_qformer_havenllama_using_1989_57_with_lora/v0_3epoch_separate_lr_gnn1e3_qformer5e4_lora4e5_rank32/haven_llama_qformer_1989_57_finetune_with_lora_3epoch_separate_lr_gnn1e3_qformer5e4_lora4e5_rank32.ckpt'
 if_resume=False
 val_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/conversations.json
@@ -20,7 +20,7 @@ num_query_token=24
 # tuned_proj_path=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_unified_lr_8e3_gnn_projector_without_lora/projector.bin
 python graphgpt/train/train_light.py \
     --model_name_or_path ${model_path} \
-    --version qwen \
+    --version v1 \
     --data_path ${instruct_ds} \
     --val_data_path ${val_data_path} \
     --graph_content ./arxiv_ti_ab.json \
