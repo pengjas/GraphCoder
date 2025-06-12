@@ -1,0 +1,23 @@
+Please act as a professional Verilog designer.
+Implement a module of a parallel adder with 1x4 configuration in combinational logic.
+
+Module name:  
+    parallel_adder1x4               
+Input ports:
+    a0[7:0]: 8-bit input operand A0.
+    a1[7:0]: 8-bit input operand A1.
+    a2[7:0]: 8-bit input operand A2.
+    a3[7:0]: 8-bit input operand A3.
+    b0[7:0]: 8-bit input operand B0.
+    b1[7:0]: 8-bit input operand B1.
+    b2[7:0]: 8-bit input operand B2.
+    b3[7:0]: 8-bit input operand B3.
+Output ports:
+    sum0[8:0]: 9-bit output representing the sum of A0 and B0.
+    sum1[8:0]: 9-bit output representing the sum of A1 and B1.
+    sum2[8:0]: 9-bit output representing the sum of A2 and B2.
+    sum3[8:0]: 9-bit output representing the sum of A3 and B3.
+
+Implementation:
+In the parallel_adder1x4 module, four Adder Units (AU) are instantiated. Each AU performs the addition of its corresponding pair of inputs. AU0 (au0) computes the sum of inputs a0 and b0. AU1 (au1) computes the sum of inputs a1 and b1. AU2 (au2) computes the sum of inputs a2 and b2. AU3 (au3) computes the sum of inputs a3 and b3. Each AU outputs a result with a carry bit, which accommodates the possibility of overflow in binary addition. This arrangement ensures independent, simultaneous operations, promoting efficiency in operations such as vector addition.
+Give me the complete code.

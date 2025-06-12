@@ -1,0 +1,27 @@
+Please act as a professional Verilog designer.
+Design a modular Arithmetic Logic Unit (ALU) for 32-bit integers. The top module, alu_module, should integrate submodules for addition, subtraction, bitwise AND, and bitwise OR operations. The alu_module connects these submodules to perform the specified operation based on an operation selector input.
+
+Module name:
+    alu_module
+
+Input ports:
+    clk: Clock signal for synchronous operations.
+    a: 32-bit input operand A.
+    b: 32-bit input operand B.
+    op_sel: 2-bit operation selector (00 for ADD, 01 for SUB, 10 for AND, 11 for OR).
+
+Output ports:
+    result: 32-bit output representing the ALU operation result.
+
+Implementation:
+The module includes:
+Adder Submodule:
+    This submodule takes two 32-bit inputs and provides a 32-bit output of their sum.
+Subtractor Submodule:
+    This submodule takes two 32-bit inputs and provides a 32-bit output of their difference.
+AND Submodule:
+    This submodule performs a bitwise AND operation on two 32-bit inputs to produce a 32-bit output.
+OR Submodule:
+    This submodule performs a bitwise OR operation on two 32-bit inputs to produce a 32-bit output.
+The main alu_module uses the operation selector to choose which submodule's output to route to the main output result.
+Give me the complete code.

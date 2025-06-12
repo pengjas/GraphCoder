@@ -1,0 +1,24 @@
+Please act as a professional Verilog designer.
+Implement a modular Dual-mode Arithmetic Unit for 16-bit integers. In the dual_mode_arithmetic module, there are submodules for addition and subtraction. The dual_mode_arithmetic module selects either addition or subtraction based on the mode input.
+
+Module name:
+    dual_mode_arithmetic
+
+Input ports:
+    clk: Clock signal used for synchronous operations.
+    rst: Reset signal. Defined as 1 for reset and 0 for reset signal inactive.
+    mode: Mode selection signal. Defined as 0 for addition and 1 for subtraction.
+    a: 16-bit input operand A.
+    b: 16-bit input operand B.
+
+Output ports:
+    result: 16-bit output representing the arithmetic result.
+
+Implementation:
+The module includes:
+Adder Submodule:
+This submodule takes two 16-bit inputs (a and b) and produces a 16-bit result of their addition.
+Subtractor Submodule:
+This submodule subtracts the input B from input A and outputs a 16-bit result.
+The main dual_mode_arithmetic module uses a multiplexer controlled by the mode input to select between the outputs of the adder and subtractor submodules and drives the output result accordingly.
+Give me the complete code.

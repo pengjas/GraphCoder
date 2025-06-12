@@ -1,0 +1,14 @@
+Please act as a professional Verilog designer.
+Implement a module of a 4-bit multiplier using a series of full adders in sequential logic.
+
+Module name:  
+    multiplier_4bit               
+Input ports:
+    a[3:0]: 4-bit input operand A.
+    b[3:0]: 4-bit input operand B.
+Output ports:
+    product[7:0]: 8-bit output representing the product of A and B.
+
+Implementation:
+The module utilizes a series of full adders and shift registers to perform the multiplication operation.
+Give me the complete code.

@@ -1,0 +1,30 @@
+Please act as a professional Verilog designer.
+Design a 4-bit arithmetic logic unit (ALU) that performs bitwise AND, bitwise OR, addition, and subtraction based on a 2-bit operation selector. The ALU takes two 4-bit inputs and outputs the 4-bit result along with a carry or borrow flag.
+
+Module name: 
+    simple_alu
+
+Function:
+    A 4-bit ALU which can perform bitwise AND, bitwise OR, addition, and subtraction. The operation is determined by a 2-bit control signal.
+
+Input ports:
+    a [3:0]: 4-bit input operand A.
+    b [3:0]: 4-bit input operand B.
+    op [1:0]: 2-bit control signal to select the operation:
+              00 - bitwise AND
+              01 - bitwise OR
+              10 - addition
+              11 - subtraction
+
+Output ports:
+    result [3:0]: 4-bit result of the operation.
+    carry_borrow: Carry out for addition and borrow flag for subtraction.
+
+Implementation:
+    The ALU operations are handled based on the `op` signal:
+    - 00: Performs bitwise AND using a series of AND gates.
+    - 01: Performs bitwise OR using a series of OR gates.
+    - 10: Performs addition using a 4-bit adder that also provides a carry output.
+    - 11: Performs subtraction using a 4-bit subtractor, where the borrow out is considered.
+    Each operation type is implemented in its own submodule: `bitwise_and`, `bitwise_or`, `adder_4bit`, and `subtractor_4bit`.
+Give me the complete code.

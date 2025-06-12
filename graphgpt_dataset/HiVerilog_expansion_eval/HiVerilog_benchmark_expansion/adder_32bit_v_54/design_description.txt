@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Implement a module of a 32-bit binary subtractor that employs a series of 8-bit subtractor blocks to perform the operation, and handles borrow-in and borrow-out.
+
+Module name:  
+    subtractor_32bit               
+Input ports:
+    A[32:1]: 32-bit input operand A.
+    B[32:1]: 32-bit input operand B.
+    Bin: Borrow-in input.
+Output ports:
+    D[32:1]: 32-bit output representing the difference of A minus B.
+    Bout: Borrow-out output.
+
+Implementation:
+The top module subtractor_32bit consists of several instances of the 8-bit subtractor block you design.
+Give me the complete code.

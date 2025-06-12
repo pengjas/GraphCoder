@@ -1,0 +1,15 @@
+Please act as a professional Verilog designer.
+Implement a module of a cyclic data rotator with a 4-bit configuration utilizing combinational logic.
+
+Module name:  
+    cyclic_rotator4              
+Input ports:
+    en: Enable signal, active high.
+    rot_dir: Rotation direction, 1 for left, 0 for right.
+    in_data[3:0]: 4-bit input data to rotate.
+Output ports:
+    out_data[3:0]: 4-bit output data after rotation.
+
+Implementation:
+In the cyclic_rotator4 module, two submodules are instantiated for each rotation direction: left_rotate and right_rotate. Based on the rot_dir input, the respective rotation submodule is activated to perform a one-bit position shift either to the left or right. The left_rotate submodule performs a cyclic shift to the left (e.g., 1001 becomes 0011), and the right_rotate submodule performs a cyclic shift to the right (e.g., 1001 becomes 1100). Each submodule uses bitwise concatenation and slicing to achieve the rotation. The top module uses a multiplexer controlled by the rot_dir input to select between the outputs of these two submodules, sending the result to the out_data output.
+Give me the complete code.

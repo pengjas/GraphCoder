@@ -1,0 +1,18 @@
+Please act as a professional Verilog designer.
+Design a modular Verilog system for a 4-bit binary up-counter with asynchronous reset and enable control. The system increments the count on each rising edge of the clock if the enable signal is high. When the asynchronous reset is activated (active high), the counter resets to zero. The final count should be displayed continuously on the output port with an overflow flag indicating when the counter wraps around from the maximum count back to zero.
+
+Module name:
+    binary_up_counter
+Input ports:
+    clk: Clock input for synchronization.
+    rst: Asynchronous reset signal (active high).
+    en: Enable signal to control the counting.
+Output ports:
+    count_out[3:0]: 4-bit output displaying the current count.
+    overflow: Output signal that indicates an overflow condition (set high on wrap-around).
+
+Implementation:
+The design consists of the following submodules:
+1. Count Control Module: Manages the count increment and initializes count on reset.
+2. Overflow Detection Module: Detects and outputs an overflow condition when the counter wraps around.
+Give me the complete code.

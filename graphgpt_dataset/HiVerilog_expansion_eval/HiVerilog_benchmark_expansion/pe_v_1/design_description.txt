@@ -1,0 +1,25 @@
+Please act as a professional Verilog designer.
+Implement a modular 32-bit Integer Divider and Subtractor system using Verilog. The main module, named `ds`, should include submodules for division and subtraction. It connects these to perform the operations, handling 32-bit integers.
+
+Module name:
+    ds
+
+Input ports:
+    clk: Clock signal for synchronous operations.
+    rst: Reset signal, high to reset, low otherwise.
+    x: 32-bit dividend input.
+    y: 32-bit divisor input.
+    z: 32-bit subtrahend input.
+
+Output ports:
+    quotient: 32-bit output for the division result.
+    difference: 32-bit output for the subtraction result.
+
+Implementation:
+The module includes:
+Divider Submodule:
+This submodule takes two 32-bit inputs (x and y) and calculates the division, providing a 32-bit quotient.
+Subtractor Submodule:
+This submodule takes the division result and a 32-bit input z, computing the subtraction (quotient - z) and outputting a 32-bit difference.
+The main `ds` module integrates these submodules, outputting the results for quotient and difference.
+Give me the complete code.

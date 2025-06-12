@@ -47,105 +47,6 @@ DEFAULT_GRAPH_PATCH_TOKEN = "<g_patch>"
 DEFAULT_G_START_TOKEN = "<g_start>"
 DEFAULT_G_END_TOKEN = "<g_end>"
 
-# @dataclass
-# class ModelArguments:
-#     model_name_or_path: Optional[str] = field(default="facebook/opt-125m")
-#     version: Optional[str] = field(default="v0")
-#     freeze_backbone: bool = field(default=False)
-#     tune_graph_mlp_adapter: bool = field(default=False)
-#     graph_tower: Optional[str] = field(default=None)
-#     graph_select_layer: Optional[int] = field(default=-1)   # default to the last layer
-#     pretrain_graph_mlp_adapter: Optional[str] = field(default=None)
-#     use_graph_start_end: bool = field(default=False)
-#     model_save_name: Optional[str] = field(default="model_{epoch}-{step}")
-
-
-# @dataclass
-# class DataArguments:
-#     data_path: str = field(default=None,
-#                            metadata={"help": "Path to the training data."})
-#     lazy_preprocess: bool = False
-#     is_graph: bool = False
-#     sep_graph_conv_front: bool = False
-#     graph_token_len: int = 0
-#     graph_content: Optional[str] = field(default=None)
-#     graph_data_path: Optional[str] = field(default=None)
-#     image_aspect_ratio: str = 'square'
-#     bert_path: Optional[str] = field(default='/data/LPJ/bert/bert-L12-H128-uncased')
-#     bert_gpu: Optional[int] = field(default=3)
-#     bert_tokenizer_max_length: Optional[int] = field(default=15)
-
-
-# @dataclass
-# class TrainingArguments:
-#     cache_dir: Optional[str] = field(default=None)
-#     optim: str = field(default="adamw_torch")
-#     remove_unused_columns: bool = field(default=False)
-#     freeze_graph_mlp_adapter: bool = field(default=False)
-#     freeze_gnn: bool = field(default=False)
-#     force_fsdp: bool = field(default=False)
-#     model_max_length: int = field(
-#         default=512,
-#         metadata={
-#             "help":
-#             "Maximum sequence length. Sequences will be right padded (and possibly truncated)."
-#         },
-#     )
-#     double_quant: bool = field(
-#         default=True,
-#         metadata={"help": "Compress the quantization statistics through double quantization."}
-#     )
-#     quant_type: str = field(
-#         default="nf4",
-#         metadata={"help": "Quantization data type to use. Should be one of `fp4` or `nf4`."}
-#     )
-#     bits: int = field(
-#         default=16,
-#         metadata={"help": "How many bits to use."}
-#     )
-#     strategy: str = field(
-#         default='fsdp'
-#     )
-#     real_batch_size: int = field(default=1)
-
-#     lora_enable: bool = False
-#     lora_r: int = 64
-#     lora_alpha: int = 16
-#     lora_dropout: float = 0.05
-#     lora_weight_path: str = ""
-#     lora_bias: str = "none"
-#     disable_tqdm: bool =False
-
-#     gpus: Optional[str] = field(default='0,1')
-#     resume: Optional[str] = field(default=None)
-
-#     adam_epsilon: float = field(default=1e-8)
-#     warmup_steps:int = field(default=1000)
-#     num_workers:int = field(default=16)
-
-#     bf16: bool = field(default=False) 
-#     fp16: bool = field(default=False) 
-#     output_dir: str = field(default='./checkpoints/graphchat-gt-graphmatch-7b') 
-#     num_train_epochs: int = field(default=3)
-#     per_device_train_batch_size: int = field(default=1)
-#     per_device_eval_batch_size: int = field(default=1)
-#     gradient_accumulation_steps: int = field(default=1)
-#     evaluation_strategy: str = field(default='no')
-#     save_strategy: str = field(default='steps')
-#     save_steps: int = field(default=2400)
-#     save_total_limit: int = field(default=1)
-#     learning_rate: float = field(default=2e-5)
-#     weight_decay: float = field(default=0.)
-#     warmup_ratio: float = field(default=0.03)
-#     lr_scheduler_type: str = field(default='cosine')
-#     logging_steps: int = field(default=1)
-#     tf32: bool = field(default=True) 
-#     gradient_checkpointing: bool = field(default=True)
-#     report_to: str = field(default='wandb')
-#     use_seperate_lr: bool = field(default=False)
-#     gnn_lr: float = field(default=1e-4)
-#     projector_lr: float = field(default=1e-4)
-#     llm_lr: float = field(default=1e-4)
 
 def load_graph(graph, bert_tokenizer, bert_model): 
     # graph_data_all = torch.load(graph_data_path)
@@ -255,6 +156,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         graph_select_layer=-2,
         use_graph_start_end=True,
         freeze_backbone=True,
+        num_query_token=args.num_query_tokens,
     )
     data_args = DataArguments(
         # data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json',
@@ -273,9 +175,11 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         output_dir='/data/LPJ/ICML25/GraphGPT/checkpoints/pretraining_stage/v0',
         num_train_epochs=3,
         model_max_length=args.model_max_length,
+        # gpus='cpu',
         gpus='0',
         lora_enable=args.lora_enable,
         lora_r=args.lora_r,
+        lora_alpha=args.lora_alpha
     )
     print('start initiate tokenizer from {}'.format(args.tokenizer_path))
     tokenizer = transformers.AutoTokenizer.from_pretrained(args.tokenizer_path, model_max_length=train_args.model_max_length, padding_side="right")
@@ -283,12 +187,16 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # tokenizer.pad_token = tokenizer.eos_token
     # tokenizer.pad_token_id = tokenizer.eos_token_id
     print('finish initiate tokenizer')
-
+    if args.load_from_ckpt:
     # test_model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     # ckpt = torch.load(args.model_name, map_location='cpu')
-    model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
-                                         ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
-    
+        model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
+                                        #  ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
+                                         ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer, map_location='cpu')
+    else:
+        model_args.pretrain_graph_mlp_adapter = args.pretrain_graph_mlp_adapter
+        model_args.pretrain_input_embedding_path = args.pretrain_input_embedding_path
+        model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
 
     if args.lora_enable:
@@ -343,7 +251,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         model_max_length=args.bert_tokenizer_max_length,
         padding_side="right")
     
-    bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.float32).to('cuda')
+    bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.bfloat16).to('cpu')
+    # bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.bfloat16).to('cuda')
     # model = model.float()
     # bert_model = bert_model.float()
     for idx, (instruct_item, (graph_index, graph)) in tqdm(enumerate(zip(prompt_file, graph_pd.iterrows())), total=len(prompt_file)):
@@ -356,7 +265,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
             res_data = []
 
             graph_dict = load_graph( graph=graph, bert_tokenizer=bert_tokenizer, bert_model=bert_model)
-            graph_token_len = graph_dict['graph_token_len']
+            # graph_token_len = graph_dict['graph_token_len']
+            graph_token_len = args.num_query_tokens
             graph_data = graph_dict['graph_data']
 
             qs = instruct_item["conversations"][0]["value"]
@@ -404,10 +314,12 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     input_ids,
                     # graph_data=graph_data,
                     graph_data=graph_data.cuda(),
+                    # do_sample=False,
                     do_sample=True,
                     temperature=args.temperature,
-                    max_new_tokens=1024,
+                    max_new_tokens=args.model_max_length,
                     stopping_criteria=[stopping_criteria])
+            # torch.cuda.empty_cache()
             # print("==============================================================")
             input_token_len = input_ids.shape[1]
             n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
@@ -441,6 +353,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     for entry in res_data:
                         json.dump(entry, fout)
                         fout.write('\n')  # 添加换行符
+            torch.cuda.empty_cache()
+            
 
     return res_data
     # with open(args.output_res_path, "w") as fout:
@@ -475,13 +389,17 @@ if __name__ == "__main__":
     parser.add_argument("--n_pass_k", type=int, default=10)
     parser.add_argument("--lora_enable", type=str2bool, default=True)
     parser.add_argument("--lora_r", type=int, default=16)
+    parser.add_argument("--lora_alpha", type=int, default=16)
+    parser.add_argument("--num_query_tokens", type=int, default=24)
     parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--load_from_ckpt", type=str2bool, default=False)
+    parser.add_argument("--pretrain_graph_mlp_adapter", type=str, default=None)
+    parser.add_argument("--pretrain_input_embedding_path", type=str, default=None)
     
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)
 
     args = parser.parse_args()
-
     # eval_model(args)
     # print("++++++++++++++++++++++++++++++++", args.lora_enable)
     ray.init()

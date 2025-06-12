@@ -1,0 +1,23 @@
+Please act as a professional Verilog designer.
+Design a Verilog module implementing a dual shift register system with individual load and shift control.
+
+Module name:
+dual_shift_register
+
+Input ports:
+clk: Clock signal.
+rst: Reset signal, active high.
+load0: Load control signal for shift register 0.
+load1: Load control signal for shift register 1.
+data0[7:0]: 8-bit input data for shift register 0.
+data1[7:0]: 8-bit input data for shift register 1.
+shift0: Shift control signal for shift register 0.
+shift1: Shift control signal for shift register 1.
+
+Output ports:
+out0[7:0]: 8-bit output from shift register 0.
+out1[7:0]: 8-bit output from shift register 1.
+
+Implementation:
+The dual_shift_register module consists of two distinct submodules, each being a shift register. Shift register 0 (sr0) loads data from data0 when load0 is high, otherwise it shifts its contents to the right when shift0 is high. Similarly, shift register 1 (sr1) operates with data1, load1, and shift1 signals.
+Give me the complete code.

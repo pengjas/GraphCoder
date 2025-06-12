@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Implement a module of a 16-bit comparator using combinational logic that outputs equality, greater than, and less than signals.
+
+Module name:
+    comparator_16bit
+Input ports:
+    a[15:0]: 16-bit input operand A.
+    b[15:0]: 16-bit input operand B.
+Output ports:
+    eq: Output signal that is high if A equals B.
+    gt: Output signal that is high if A is greater than B.
+    lt: Output signal that is high if A is less than B.
+
+Implementation:
+The comparator_16bit is built using multiple 4-bit comparator slices. Each 4-bit comparator slice outputs local equality, greater than, and less than signals. These outputs are then combined in a hierarchical manner to deduce the overall relationship between the 16-bit inputs A and B.
+Give me the complete code.

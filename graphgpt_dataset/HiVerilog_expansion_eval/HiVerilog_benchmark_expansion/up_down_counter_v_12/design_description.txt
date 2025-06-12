@@ -1,0 +1,27 @@
+Please act as a professional Verilog designer.
+Design a 32-bit arithmetic logic unit (ALU) in Verilog that performs addition, subtraction, bitwise AND, OR, and XOR operations based on a 3-bit control input, structured with a top module and several submodules for handling specific operations.
+
+Module name:
+    multi_function_alu
+
+Function:
+A 32-bit ALU that performs multiple arithmetic and logical operations determined by a control signal, with modular implementation.
+
+Input ports:
+    - op_code: Operation code (3-bit), selects the operation to perform (000 for ADD, 001 for SUB, 010 for AND, 011 for OR, 100 for XOR).
+    - operand_a [31:0]: First operand (32-bit).
+    - operand_b [31:0]: Second operand (32-bit).
+
+Output ports:
+    - result [31:0]: 32-bit output of the selected operation.
+    - zero: Output signal (1-bit), high if the result is zero.
+
+Implementation:
+The module consists of five submodules: adder, subtractor, and_bit, or_bit, and xor_bit.
+- The adder module calculates the sum of operand_a and operand_b.
+- The subtractor module calculates the difference between operand_a and operand_b.
+- The and_bit module performs bitwise AND on operand_a and operand_b.
+- The or_bit module performs bitwise OR on operand_a and operand_b.
+- The xor_bit module performs bitwise XOR on operand_a and operand_b.
+The result is selected based on the op_code, and the zero flag is set if the result is zero.
+Give me the complete code.

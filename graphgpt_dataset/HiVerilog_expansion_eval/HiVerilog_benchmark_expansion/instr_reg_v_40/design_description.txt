@@ -1,0 +1,23 @@
+Please act as a professional Verilog designer.
+A data multiplexer module designed to route data from multiple inputs to a single output based on a control signal. This module uses submodules for handling data from various sources, aggregating the selected data into a single output channel for downstream processing.
+
+Module name:
+    data_mux
+
+Input ports:
+    clk: Clock signal for synchronization.
+    sel [1:0]: Control signal to select the input source.
+    in0 [7:0]: 8-bit data from input source 0.
+    in1 [7:0]: 8-bit data from input source 1.
+    in2 [7:0]: 8-bit data from input source 2.
+    in3 [7:0]: 8-bit data from input source 3.
+
+Output ports:
+    out [7:0]: The selected 8-bit data output.
+
+Implementation:
+    The data multiplexer is implemented using four submodules, each responsible for holding data from a distinct source.
+    On the rising edge of the clock (clk), if the sel signal selects an input, the corresponding submodule outputs its stored data to the main output.
+    Each submodule reacts to changes in the input data when the selection signal matches its specific code, otherwise it retains the previous value.
+    The output port out directly reflects the data from the selected submodule.
+Give me the complete code.

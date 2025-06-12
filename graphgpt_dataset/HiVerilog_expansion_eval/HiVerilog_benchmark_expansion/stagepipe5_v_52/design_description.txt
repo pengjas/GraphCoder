@@ -1,0 +1,17 @@
+Please act as a professional Verilog designer.
+Implement a simple arithmetic logic unit (ALU) that performs four functions: addition, subtraction, bitwise AND, and bitwise OR operations based on a 2-bit control input.
+
+Module name:
+    simple_alu
+Input ports:
+    clk: Clock signal.
+    rst: Reset signal, active high.
+    op_code[1:0]: Control signal to choose the operation (00 for addition, 01 for subtraction, 10 for AND, 11 for OR).
+    operand_a[31:0]: 32-bit input operand A.
+    operand_b[31:0]: 32-bit input operand B.
+Output ports:
+    result[31:0]: 32-bit result of the operation.
+
+Implementation:
+In the simple_alu module, four operations are instantiated: add, subtract, bitwise_and, and bitwise_or. The add module performs addition of operand_a and operand_b. The subtract module performs subtraction of operand_b from operand_a. The bitwise_and module performs a bitwise AND operation between operand_a and operand_b. The bitwise_or module performs a bitwise OR operation between operand_a and operand_b. The selected result from these operations is output based on the op_code input.
+Give me the complete code.
