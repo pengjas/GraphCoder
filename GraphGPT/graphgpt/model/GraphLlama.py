@@ -171,7 +171,7 @@ class GraphLlamaModel(LlamaModel):
 
                 clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path)
                 graph_tower = GNN(args)
-                graph_tower = transfer_param_tograph(clip_graph, graph_tower)
+                # graph_tower = transfer_param_tograph(clip_graph, graph_tower)
             elif self.config.graph_tower == "clip_gt":
                 clip_graph, args= load_model_pretrained(CLIP, self.config.pretrain_graph_model_path) 
                 graph_tower = graph_transformer(args)
