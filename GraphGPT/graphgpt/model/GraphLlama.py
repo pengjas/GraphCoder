@@ -111,12 +111,8 @@ class GraphLlamaModel(LlamaModel):
         if hasattr(config, "use_graph_proj"):
             self.graph_projector = nn.Sequential(
                 nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                # nn.GELU(),
+                # nn.Linear(self.config.hidden_size, self.config.hidden_size),
                 # nn.GELU(),
                 # nn.Linear(self.config.hidden_size, self.config.hidden_size),
                 # nn.GELU(),
@@ -173,12 +169,12 @@ class GraphLlamaModel(LlamaModel):
         if not hasattr(self, 'graph_projector'):
             self.graph_projector = nn.Sequential(
                 nn.Linear(self.config.graph_hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size),
-                nn.GELU(),
-                nn.Linear(self.config.hidden_size, self.config.hidden_size)
+                # nn.GELU(),
+                # nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                # nn.GELU(),
+                # nn.Linear(self.config.hidden_size, self.config.hidden_size),
+                # nn.GELU(),
+                # nn.Linear(self.config.hidden_size, self.config.hidden_size)
             )
             # nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
             # self.graph_projector = nn.Linear(self.config.graph_hidden_size, self.config.hidden_size)
