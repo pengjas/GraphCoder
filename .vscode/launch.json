@@ -58,7 +58,7 @@
                 "--graph_content", "./arxiv_ti_ab.json",
                 "--graph_data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/gpt_dataset_construction/stage2_1989_57/with_head/cleaned_graph/graph.jsonl",
                 "--val_graph_data_path", "/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/train_with_eval_dataset/with_module_head/graph_as_prefix/availiable_for_graphcoder/graph_output.jsonl",
-                "--graph_tower", "clip_gt_arxiv",
+                "--graph_tower", "clip_gcn_arxiv",
                 "--tune_graph_mlp_adapter", "True",
                 "--graph_select_layer", "-2",
                 "--use_graph_start_end", "True",
