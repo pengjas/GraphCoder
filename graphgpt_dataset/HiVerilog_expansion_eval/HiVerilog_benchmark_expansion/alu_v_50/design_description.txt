@@ -1,0 +1,24 @@
+Please act as a professional Verilog designer.
+Design a modular multiplier for a 32-bit processor using Verilog. The input operands a and b are both 32-bit, and the operation to be executed is defined by the signal multc, which selects between signed and unsigned multiplication. The 64-bit output y outputs the result of the operation, with the msb and lsb outputs indicating the most and least significant bits of the result respectively. The zero output indicates if the result is zero.
+
+The operations and their corresponding opcodes are:
+- MULT (signed multiplication): 1'b0
+- MULTU (unsigned multiplication): 1'b1
+
+Module name:
+multiplier
+
+Input ports:
+a: a 32-bit input operand
+b: a 32-bit input operand
+multc: a 1-bit control signal for selecting the operation type
+
+Output ports:
+y: a 64-bit output representing the result of the multiplication
+msb: a 32-bit output representing the most significant bits of the result
+lsb: a 32-bit output representing the least significant bits of the result
+zero: a 1-bit output indicating whether the result is zero
+
+Implementation:
+The module incorporates submodules for both signed and unsigned multiplication, selecting the result based on the multc control signal.
+Give me the complete code.

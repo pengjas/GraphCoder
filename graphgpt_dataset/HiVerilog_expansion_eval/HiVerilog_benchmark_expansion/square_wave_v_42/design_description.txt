@@ -1,0 +1,34 @@
+Please act as a professional Verilog designer.
+Design a pulse width modulation (PWM) controller using Verilog that adjusts the duty cycle of the output PWM signal based on an 8-bit input control value. The system includes submodules for pulse generation and duty cycle control.
+
+Module Name:
+    pwm_controller
+
+Input Ports:
+    clk: Clock signal that drives the module.
+    [7:0] duty_cycle: Control value defining the duty cycle of the PWM signal.
+
+Output Ports:
+    pwm_out: PWM output signal.
+
+Internal Modules:
+    Pulse Generator Module (pulse_gen)
+    Functionality: Generates pulses based on the current duty cycle setting.
+    Input Ports:
+    clk: Clock signal.
+    [7:0] duty_cycle: 8-bit value determining pulse width.
+    Output Ports:
+    pwm_out: PWM output signal.
+
+    Duty Cycle Controller Module (duty_ctrl)
+    Functionality: Manages the adjustment of the duty cycle based on input control.
+    Input Ports:
+    clk: Clock signal.
+    [7:0] duty_cycle: 8-bit control input.
+    Output Ports:
+    [7:0] adjusted_duty: Adjusted duty cycle setting.
+
+Implementation:
+Pulse Generation: The pulse_gen module outputs high or low signals on pwm_out based on comparison between an internal counter and the adjusted_duty value.
+Duty Cycle Adjustment: The duty_ctrl module produces an adjusted duty cycle which dynamically changes the output pulse width by modifying internal settings according to the input duty_cycle value.
+Give me the complete code.

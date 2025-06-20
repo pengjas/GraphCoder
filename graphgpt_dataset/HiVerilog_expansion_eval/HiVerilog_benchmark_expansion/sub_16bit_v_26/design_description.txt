@@ -1,0 +1,15 @@
+Please act as a professional Verilog designer.
+Implement a module of a carry-lookahead 16-bit adder using the Carry-Lookahead Adder (CLA) architecture.
+
+Module name:
+    add_16bit
+Input ports:
+    A[16:1]: 16-bit input operand A.
+    B[16:1]: 16-bit input operand B.
+Output ports:
+    S[16:1]: 16-bit output representing the sum of A and B.
+    C_out: Carry-out output.
+
+Implementation:
+The top module add_16bit consists of several instances of the 4-bit full adder block you design.
+Give me the complete code.

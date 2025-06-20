@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Implement a module of a 4-bit multiplier using a series of adders and shift operations.
+
+Module name:
+    mul_4bit
+
+Input ports:
+    X[3:0]: 4-bit input operand X.
+    Y[3:0]: 4-bit input operand Y.
+
+Output ports:
+    P[7:0]: 8-bit output representing the product of X and Y.
+
+Implementation:
+The top module mul_4bit performs multiplication by using bitwise AND operations and shifts to construct partial products, which are then added using an adder_8bit module. The adder_8bit module is composed of full_adder modules to handle the addition of each bit.
+Give me the complete code.

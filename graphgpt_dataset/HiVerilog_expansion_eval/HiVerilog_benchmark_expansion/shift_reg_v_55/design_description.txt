@@ -1,0 +1,16 @@
+Please act as a professional Verilog designer.
+Design a binary counter module that increments the count by one on every rising edge of the clock, using three T flip-flops configured to toggle their state. The counter should reset to zero when the reset input is high.
+
+Module name:
+    binary_counter
+
+Input ports:
+    clk: Clock signal for synchronization.
+    reset: Reset signal to reset the counter to zero.
+
+Output ports:
+    count: 3-bit output reflecting the current count value.
+
+Implementation:
+The binary counter consists of three instances of the provided T flip-flop module (my_tff). Each flip-flop's output represents a bit of the binary count. The first T flip-flop toggles on every clock cycle. Each subsequent T flip-flop toggles when all lower-order bits are high. A synchronous reset is applied to each flip-flop.
+Give me the complete code.

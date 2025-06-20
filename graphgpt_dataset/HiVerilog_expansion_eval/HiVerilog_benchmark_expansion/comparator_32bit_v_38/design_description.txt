@@ -1,0 +1,21 @@
+Please act as a professional Verilog designer.
+Implement a module of a 32-bit arithmetic logic unit (ALU) that performs addition, subtraction, and bitwise AND operation using submodules for each function in combinational logic.
+
+Module name:
+    alu_32bit
+
+Input ports:
+    A [31:0]: First 32-bit input operand.
+    B [31:0]: Second 32-bit input operand.
+    op [1:0]: Operation selector where 00 = addition, 01 = subtraction, 10 = AND.
+
+Output ports:
+    result [31:0]: 32-bit output result of the selected operation.
+    carry_out: 1-bit output for carry (relevant in addition and subtraction).
+
+Implementation:
+Operational Logic: The ALU selects between addition, subtraction, and AND operations based on the operation selector 'op'.
+Adder and subtractor modules handle arithmetic operations, generating both result and carry/borrow outputs.
+AND operation is handled by a separate bitwise AND submodule.
+The top module (alu_32bit) instantiates these submodules and uses multiplexing logic to choose the correct output based on the operation selected.
+Give me the complete code.

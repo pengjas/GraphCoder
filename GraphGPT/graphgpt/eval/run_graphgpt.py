@@ -255,6 +255,7 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         graph_select_layer=-2,
         use_graph_start_end=True,
         freeze_backbone=True,
+        num_query_token=args.num_query_tokens,
     )
     data_args = DataArguments(
         # data_path='/data/LPJ/ICML25/graphgpt_dataset/gpt_dataset_construction/rtlcoder_gpt4_v1/import_for_graphgpt/conversations.json',
@@ -283,12 +284,16 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
     # tokenizer.pad_token = tokenizer.eos_token
     # tokenizer.pad_token_id = tokenizer.eos_token_id
     print('finish initiate tokenizer')
-
+    if args.load_from_ckpt:
     # test_model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     # ckpt = torch.load(args.model_name, map_location='cpu')
-    model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
+        model = GraphGPT_pl.load_from_checkpoint(checkpoint_path=args.model_name
                                          ,training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
-    
+    else:
+        model_args.pretrain_graph_mlp_adapter = args.pretrain_graph_mlp_adapter
+        model_args.pretrain_input_embedding_path = args.pretrain_input_embedding_path
+        model_args.pretrain_mlp_gnn_path = args.pretrain_mlp_gnn_path
+        model = GraphGPT_pl(training_args=train_args, model_args=model_args, data_args=data_args, tokenizer=tokenizer)
     
 
     if args.lora_enable:
@@ -343,7 +348,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
         model_max_length=args.bert_tokenizer_max_length,
         padding_side="right")
     
-    bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.float32).to('cuda')
+    bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.bfloat16).to('cpu')
+    # bert_model = BertModel.from_pretrained(args.bert_path, torch_dtype=torch.bfloat16).to('cuda')
     # model = model.float()
     # bert_model = bert_model.float()
     for idx, (instruct_item, (graph_index, graph)) in tqdm(enumerate(zip(prompt_file, graph_pd.iterrows())), total=len(prompt_file)):
@@ -356,7 +362,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
             res_data = []
 
             graph_dict = load_graph( graph=graph, bert_tokenizer=bert_tokenizer, bert_model=bert_model)
-            graph_token_len = graph_dict['graph_token_len']
+            # graph_token_len = graph_dict['graph_token_len']
+            graph_token_len = args.num_query_tokens
             graph_data = graph_dict['graph_data']
 
             qs = instruct_item["conversations"][0]["value"]
@@ -404,10 +411,12 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     input_ids,
                     # graph_data=graph_data,
                     graph_data=graph_data.cuda(),
+                    # do_sample=False,
                     do_sample=True,
                     temperature=args.temperature,
-                    max_new_tokens=1024,
+                    max_new_tokens=args.model_max_length,
                     stopping_criteria=[stopping_criteria])
+            # torch.cuda.empty_cache()
             # print("==============================================================")
             input_token_len = input_ids.shape[1]
             n_diff_input_output = (input_ids != output_ids[:, :input_token_len]).sum().item()
@@ -441,6 +450,8 @@ def eval_model(args, prompt_file, start_idx, end_idx, graph_pd):
                     for entry in res_data:
                         json.dump(entry, fout)
                         fout.write('\n')  # 添加换行符
+            torch.cuda.empty_cache()
+            
 
     return res_data
     # with open(args.output_res_path, "w") as fout:
@@ -475,7 +486,12 @@ if __name__ == "__main__":
     parser.add_argument("--n_pass_k", type=int, default=10)
     parser.add_argument("--lora_enable", type=str2bool, default=True)
     parser.add_argument("--lora_r", type=int, default=16)
+    parser.add_argument("--num_query_tokens", type=int, default=24)
     parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--load_from_ckpt", type=str2bool, default=False)
+    parser.add_argument("--pretrain_graph_mlp_adapter", type=str, default=None)
+    parser.add_argument("--pretrain_input_embedding_path", type=str, default=None)
+    parser.add_argument("--pretrain_mlp_gnn_path", type=str, default=None)
     
     # parser.add_argument("--start_id", type=int, default=0)
     # parser.add_argument("--end_id", type=int, default=20567)

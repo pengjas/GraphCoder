@@ -108,6 +108,7 @@ class GraphGPT_pl(LightningModule):
                 graph_tower=model_args.graph_tower,
                 graph_select_layer=model_args.graph_select_layer,
                 pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter,
+                pretrain_mlp_gnn_path=model_args.pretrain_mlp_gnn_path,
                 fsdp=None
             )
             self.model.get_graph_tower().to(dtype=compute_dtype) 
@@ -122,11 +123,23 @@ class GraphGPT_pl(LightningModule):
                 self.model.requires_grad_(False)
                 for p in self.model.get_model().graph_projector.parameters():
                     p.requires_grad = True
+                # for p in self.model.get_model().ln_graph.parameters():
+                #     p.requires_grad = True
+                # for p in self.model.get_model().qformer.parameters():
+                #     p.requires_grad = True
+                # for p in self.model.get_model().opt_proj.parameters():
+                #     p.requires_grad = True
 
             self.model.config.freeze_graph_mlp_adapter = training_args.freeze_graph_mlp_adapter
             if training_args.freeze_graph_mlp_adapter:
                 for p in self.model.get_model().graph_projector.parameters():
                     p.requires_grad = False
+                # for p in self.model.get_model().ln_graph.parameters():
+                #     p.requires_grad = False
+                # for p in self.model.get_model().qformer.parameters():
+                #     p.requires_grad = False
+                # for p in self.model.get_model().opt_proj.parameters():
+                #     p.requires_grad = False
             
             if training_args.freeze_gnn:
                 for p in self.model.get_model().graph_tower.parameters():
@@ -141,13 +154,16 @@ class GraphGPT_pl(LightningModule):
             # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             if training_args.bits in [4, 8]:
                 self.model.get_model().graph_projector.to(dtype=compute_dtype, device=training_args.device)
+                # self.model.get_model().ln_graph.to(dtype=compute_dtype, device=training_args.device)
+                # self.model.get_model().qformer.to(dtype=compute_dtype, device=training_args.device)
+                # self.model.get_model().opt_proj.to(dtype=compute_dtype, device=training_args.device)
 
             self.model.config.use_graph_start_end = data_args.use_graph_start_end = model_args.use_graph_start_end
             # graph_config.use_graph_start_end = training_args.use_graph_start_end = model_args.use_graph_start_end
             training_args.use_graph_start_end = model_args.use_graph_start_end
             self.model.config.sep_graph_conv_front = data_args.sep_graph_conv_front
             self.model.initialize_graph_tokenizer(use_graph_start_end=model_args.use_graph_start_end, tokenizer=tokenizer, device='cuda',
-                                            tune_graph_mlp_adapter=model_args.tune_graph_mlp_adapter, pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter)
+                                            tune_graph_mlp_adapter=model_args.tune_graph_mlp_adapter, pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter, pretrain_input_embedding_path=model_args.pretrain_input_embedding_path)
 
             params_no_grad = [n for n, p in self.model.named_parameters() if not p.requires_grad]
             if training_args.bits in [4, 8]:
@@ -177,6 +193,7 @@ class GraphGPT_pl(LightningModule):
     def training_step(self, batch, batch_idx):
         bs = len(batch["input_ids"])
         loss_dict = self.model(**batch)
+        
         loss = loss_dict['loss']
         
         log_dict = {f'train_loss': loss.item()}

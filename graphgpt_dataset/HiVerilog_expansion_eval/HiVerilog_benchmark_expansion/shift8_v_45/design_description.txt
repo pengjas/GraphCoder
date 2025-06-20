@@ -1,0 +1,15 @@
+Please act as a professional Verilog designer.
+Design a Verilog top-level module named `bitwise_reverse8` that includes a module `bit_reverse` to reverse the order of bits in an 8-bit input. The top module should instantiate two separate `bit_reverse` modules. The first module reverses the input data `din`, and the second module reverses the output of the first module, effectively returning the original order but through two stages of processing.
+
+Module name:
+    bitwise_reverse8
+
+Input ports:
+    din [7:0]: 8-bit data input whose bits are to be reversed.
+
+Output ports:
+    dout [7:0]: 8-bit output data, which is the twice reversed input data (original order restored).
+
+Implementation:
+The top module, `bitwise_reverse8`, instantiates two `bit_reverse` modules. The first module reverses the bits of the input `din`, and the second module reverses the bits of the output from the first module. This design demonstrates bit manipulation and module instantiation for creating a data flow through multiple processing stages.
+Give me the complete code.

@@ -1,0 +1,14 @@
+Please act as a professional Verilog designer.
+Design a 32-bit binary multiplier using combinational logic that multiplies two 16-bit binary numbers.
+
+Module name:  
+    multiplier_32bit               
+Input ports:
+    x[15:0]: 16-bit input operand X.
+    y[15:0]: 16-bit input operand Y.
+Output ports:
+    prod[31:0]: 32-bit output representing the product of X and Y.
+
+Implementation:
+In the multiplier_32bit module, you will need to design a smaller bit-width multiplier (8-bit multiplier), which will be instantiated multiple times.
+Give me the complete code.

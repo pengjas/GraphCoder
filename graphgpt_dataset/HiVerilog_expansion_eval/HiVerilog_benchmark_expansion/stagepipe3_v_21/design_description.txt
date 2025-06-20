@@ -1,0 +1,18 @@
+Please act as a professional Verilog designer.
+Implement a module for a basic 4-function arithmetic unit that computes add, subtract, multiply, and divide operations based on opcode input.
+
+Module name:  
+    arithmetic_unit               
+Input ports:
+    clk: Clock signal.
+    rst: Reset signal, active high.
+    opcode[1:0]: 2-bit input specifying the operation (00-add, 01-subtract, 10-multiply, 11-divide).
+    data_a[7:0]: 8-bit input operand A.
+    data_b[7:0]: 8-bit input operand B.
+Output ports:
+    result[15:0]: 16-bit output result of the arithmetic operation.
+    valid: Output flag indicating if the result is valid (e.g., not a division by zero).
+
+Implementation:
+In the arithmetic_unit module, four different arithmetic operation stages (adder, subtractor, multiplier, divider) are instantiated. The operation to be performed is selected based on the opcode input. The adder module performs addition, the subtractor performs subtraction, the multiplier carries out multiplication, and the divider handles division, including setting the valid flag to 0 when division by zero is attempted. The result from the selected operation stage is output through the result port.
+Give me the complete code.

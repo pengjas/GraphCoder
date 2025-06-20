@@ -1,0 +1,14 @@
+Please act as a professional Verilog designer.
+Design and implement a 32-bit comparator module in Verilog which uses hierarchical structure with 8-bit comparator submodules.
+
+Module name:  
+    comparator_32bit               
+Input ports:
+    a[31:0]: 32-bit input operand A.
+    b[31:0]: 32-bit input operand B.
+Output ports:
+    equal: Output signal that is high when A equals B.
+
+Implementation:
+The comparator_32bit module should utilize four instances of an 8-bit comparator submodule. Each submodule compares corresponding sections of the inputs and the results are combined to produce the final output.
+Give me the complete code.

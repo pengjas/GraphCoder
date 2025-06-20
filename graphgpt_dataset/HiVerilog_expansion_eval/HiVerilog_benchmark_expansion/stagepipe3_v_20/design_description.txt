@@ -1,0 +1,18 @@
+Please act as a professional Verilog designer.
+Implement a module for a 4-bit arithmetic logic unit (ALU) with basic arithmetic and logical operations.
+
+Module name:  
+    simple_alu               
+Input ports:
+    clk: Clock signal.
+    rst: Reset signal, active high.
+    op_code[1:0]: 2-bit operation code to specify the ALU operation.
+    data_a[3:0]: 4-bit input operand A.
+    data_b[3:0]: 4-bit input operand B.
+Output ports:
+    result[3:0]: 4-bit output resulting from the specified ALU operation.
+    zero: Output high when result is zero.
+
+Implementation:
+In the simple_alu module, the basic arithmetic operations (addition, subtraction) and logical operations (AND, OR) are supported. The op_decoder submodule interprets the op_code and triggers the corresponding operation in the arithmetic_logic submodule. The result_manager submodule checks the result from arithmetic_logic and outputs a zero flag if the result is zero.
+Give me the complete code.
