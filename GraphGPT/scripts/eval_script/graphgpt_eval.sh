@@ -1,14 +1,15 @@
 # to fill in the following path to extract projector for the second tuning stage!
 output_model=/data/LPJ/ICML25/all_checkpoints/fine_tune_qformer_codellama_using_1989_57_with_lora/v0_cleaned_graph_3epoch_separate_lr_gnn8e4_qformer2e4_lora2e5_rank64/fine_tune_qformer_codellama_using_1989_57_with_lora_v0_cleaned_graph_3epoch_separate_lr_gnn8e4_qformer2e4_lora2e5_rank64.ckpt
-tokenizer_path=/data/LPJ/codev_codellama
+tokenizer_path=/data/LPJ/codev_deepseek
 datapath=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/clean_graph/conversations.json
 graph_data_path=/data/LPJ/ICML25/GraphCoder/graphgpt_dataset/HiVerilog_expansion_eval/with_head/clean_graph/graph.jsonl
-res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/adaptive/codev/codellama/using_gnn_prj_from_pretrained_haven_graphcoder/v1_clean_graph_20epoch_separate_lr_gnn2e3_qformer5e4/tmp0.2
+res_path=/data/LPJ/ICML25/GraphCoder/eval_result/HiVerilog_expansion_result/adaptive/codev/deepseek/using_gnn_prj_from_pretrained_haven_graphcoder/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/tmp0.2
 num_gpus=4
 bert_path='/data/LPJ/bert/bert-L12-H128-uncased'
 bert_tokenizer_max_length=25
 # conv_mode=qwen
-conv_mode=graphchat_v1
+conv_mode=deepseek
+# conv_mode=graphchat_v1
 bf16=True
 f16=False
 output_file_name='eval_res'
@@ -22,8 +23,8 @@ lora_alpha=128
 temperature=0.2
 num_query_tokens=24
 load_from_ckpt=False
-pretrain_input_embedding_path="/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havenllama_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt"
-pretrain_graph_mlp_adapter=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v1_clean_graph_20epoch_separate_lr_gnn2e3_qformer5e4/projector.bin
+pretrain_input_embedding_path="/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havendeepseek_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havendeepseek_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt"
+pretrain_graph_mlp_adapter=/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havendeepseek_using_1989_57_without_lora/v1_clean_graph_20epoch_separate_lr_gnn2e3_qformer5e4/projector.bin
 
 python ./graphgpt/eval/run_graphgpt.py \
     --model_max_length ${model_max_length} \
