@@ -20,8 +20,8 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [
-                "--tokenizer_path", "/data/LPJ/haven_deepseek",
-                "--conv_mode", "deepseek",
+                "--tokenizer_path", "/data/LPJ/codev_codellama",
+                "--conv_mode", "graphchat_v1",
                 "--bert_tokenizer_max_length", "25",
                 "--bert_path", "/data/LPJ/bert/bert-L12-H128-uncased",
                 "--model_name", "/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havendeepseek_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havendeepseek_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt",
@@ -38,9 +38,9 @@
                 "--lora_enable", "False",
                 "--temperature", "0.1",
                 "--num_query_tokens", "24",
-                "--load_from_ckpt", "True",
-                "--pretrain_input_embedding_path", "aaa",
-                "--pretrain_graph_mlp_adapter", "aaa",
+                "--load_from_ckpt", "False",
+                "--pretrain_input_embedding_path", "/data/LPJ/ICML25/all_checkpoints/pretrain_qformer_havenllama_using_1989_57_without_lora/v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4/pretrain_qformer_havenllama_using_1989_57_without_lora_v1_cleaned_graph_20epoch_separate_lr_gnn2e3_qformer5e4.ckpt",
+                "--pretrain_graph_mlp_adapter", "/data/LPJ/ICML25/all_checkpoints/projector/pretrain_gnn_qformer_havenllama_using_1989_57_without_lora/v1_clean_graph_20epoch_separate_lr_gnn2e3_qformer5e4/projector.bin",
             ]
         },
         {
